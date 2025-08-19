@@ -1,0 +1,31 @@
+$primary: #4F46E5;
+$background: #FFFFFF;
+$text: #1F2937;
+$error: #DC2626;
+$gray: #9CA3AF;
+
+.color-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem;
+
+  .color-box {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 0.8rem;
+    font-family: sans-serif;
+    border-radius: 8px;
+
+    &.primary { background: $primary; }
+    &.background { background: $background; color: #000; }
+    &.text { background: $text; }
+    &.error { background: $error; }
+    &.gray { background: $gray; color: #000; }
+  }
+}

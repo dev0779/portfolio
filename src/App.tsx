@@ -4,6 +4,7 @@ import { GlobalThemeContext } from "@/Theme/GlobalThemeProvider";
 import { Dialog } from "@/components/Dialog/Dialog";
 import { Login, Register } from "./Features/Auth";
 import "./app.scss";
+import "./Theme/theme-preview.scss";
 
 const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -61,6 +62,14 @@ function App() {
             }}
           />
       </Dialog>
+
+      <div className="color-preview">
+        <div className="color-box primary">Primary</div>
+        <div className="color-box background">Background</div>
+        <div className="color-box text">Text</div>
+        <div className="color-box error">Error</div>
+        <div className="color-box gray">Gray</div>
+      </div>
     </>
   );
 }
