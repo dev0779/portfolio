@@ -20,16 +20,27 @@ function App() {
   const [login, setLogin] = useState<boolean>(false);
   const [register, setRegister] = useState<boolean>(false);
 
+  const [showSpan, setShowSpan] = useState(false);
   return (
     <>
       <div className="p-4">
-        <Box>Hello! This uses the global theme.</Box>
+
+        <Box tooltip="hello">Hello! This uses the global theme.</Box>
         <button
+          tooltip="hello"
           className="mt-4 p-2 bg-blue-500 text-white rounded"
           onClick={toggle}
         >
           Toggle Theme
         </button>
+
+        <button
+          className="mt-4 p-2 bg-orange-500 text-white rounded"
+          onClick={() => setShowSpan(!showSpan)}
+        >
+          click
+        </button>
+        {showSpan && <span tooltip="hi ivo"> click on me ivo </span>}
       </div>
       <div className="appNav">
         <button
@@ -47,20 +58,19 @@ function App() {
       </div>
 
       <Dialog open={login} onOpenChange={setLogin}>
-          <Login
-            onSuccess={() => {
-              setLogin(false);
-            }}
-          />
-       
+        <Login
+          onSuccess={() => {
+            setLogin(false);
+          }}
+        />
       </Dialog>
 
       <Dialog open={register} onOpenChange={setRegister}>
-          <Register
-            onSuccess={() => {
-              setRegister(false);
-            }}
-          />
+        <Register
+          onSuccess={() => {
+            setRegister(false);
+          }}
+        />
       </Dialog>
 
       <div className="color-preview">

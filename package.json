@@ -25,7 +25,8 @@
     "sass": "^1.90.0",
     "styled-components": "^6.1.19",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.12"
+    "tailwindcss": "^4.1.12",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

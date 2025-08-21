@@ -119,3 +119,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Base tooltip box */
+.tippy-box[data-theme~="contrast-box"] {
+  @apply shadow-lg pointer-events-auto;
+}
+
+/* Light app → black tooltip */
+:root:not(.dark) .tippy-box[data-theme~="contrast-box"] {
+  @apply bg-black text-white;
+}
+
+/* Dark app → white tooltip */
+.dark .tippy-box[data-theme~="contrast-box"] {
+  @apply bg-white text-black;
+}
+
+/* Optional semi-transparent */
+:root:not(.dark) .tippy-box[data-theme~="contrast-box"] {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.dark .tippy-box[data-theme~="contrast-box"] {
+  background-color: rgba(255, 255, 255, 0.9);
+}

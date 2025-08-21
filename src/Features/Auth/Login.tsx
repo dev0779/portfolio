@@ -24,11 +24,7 @@ const Login = ({ onSuccess }: LoginProps) => {
     defaultValues: { username: "", password: "" },
   });
 
-  const {
-    clearErrors,
-    setError,
-    handleSubmit,
-  } = formMethods;
+  const { clearErrors, setError, handleSubmit } = formMethods;
 
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION, {
     onCompleted: (data) => {
@@ -76,6 +72,7 @@ const Login = ({ onSuccess }: LoginProps) => {
       <TextInput
         name="password"
         label="password"
+        type="password"
         required={requiredErrorMessage}
         onChange={() => clearErrors("password")}
       />

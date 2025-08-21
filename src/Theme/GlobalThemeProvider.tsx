@@ -9,7 +9,7 @@ import { defaultTheme } from "./defaultTheme";
 import { CustomCSS } from "./CustomCSS";
 import type { Theme } from "./ThemeTypes";
 import { darkTheme, lightTheme, type ThemeContextType } from "@/Theme";
-import type { isFetchableDevEnvironment } from "vite";
+
 
 const gridConfig = {
   breakpoints: {
