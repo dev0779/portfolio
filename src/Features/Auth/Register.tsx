@@ -1,6 +1,6 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { requiredErrorMessage } from "../../Utils/errors";
-import { TextInput } from "@/components/Fields";
+import { requiredErrorMessage } from "../../utils/errors";
+import { TextInput } from "@/shared/Fields";
 import { useMutation } from "@apollo/client";
 import { CREATE_USER } from "@/Api/graphql/User/user.mutation";
 
@@ -40,11 +40,11 @@ const Register = ({ onSuccess }: RegisterProps) => {
   } = formMethods;
 
   const onSubmit = (data: RegisterFormValues) => {
-    console.log('data', data)
+    console.log("data", data);
     createUser({
       variables: {
-        ...data
-      }
+        ...data,
+      },
     });
   };
 

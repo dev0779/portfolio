@@ -1,0 +1,25 @@
+.checkbox {
+  &__wrapper {
+    width: 100%;
+    display: flex;
+  }
+
+  &__box {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding:0.5rem 0;
+  }
+
+  &__box span{
+    padding-left:0.3rem;
+    font-size: 12px;
+  }
+
+
+  input {
+    display: none;
+  }
+
+}

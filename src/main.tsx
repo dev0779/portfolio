@@ -4,9 +4,9 @@ import "./index.css";
 import App from "./App.tsx";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./Api/ApolloClient.ts";
-import { GlobalThemeProvider } from "./Theme/GlobalThemeProvider.tsx";
-import { UserProvider } from "./Context/UserContext/UserContext.tsx";
-import { TooltipProvider } from "./components/Tooltip/TooltipProvider.tsx";
+import { GlobalThemeProvider } from "./theme/GlobalThemeProvider.tsx";
+import { UserProvider } from "./context/UserContext/UserContext.tsx";
+import { TooltipProvider } from "./shared/Tooltip/TooltipProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -19,5 +19,5 @@ createRoot(document.getElementById("root")!).render(
         </GlobalThemeProvider>
       </UserProvider>
     </ApolloProvider>
-  </StrictMode>
+  </StrictMode>,
 );

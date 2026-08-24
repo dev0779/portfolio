@@ -1,17 +1,11 @@
 import { useRef, useState, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
-import {
-  ErrorMessage,
-  IconCol,
-  InputWrapper,
-  Label,
-  MainCol,
-  StyledInput,
-} from "./Fields.styled";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
+import "./TextInput.scss";
 
 import * as PhosphorIcons from "phosphor-react";
-import { Icon } from "../Icons/Icon";
-import { useTheme } from "@/Hooks";
+import { Icon } from "../../Icons/Icon";
+import { useTheme } from "@/hooks";
 
 interface TextInputProps {
   name: string;
@@ -42,8 +36,8 @@ export const TextInput = ({
   readOnly,
   defaultValue,
   type,
-  loading,
   svg,
+  error,
 }: TextInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -65,20 +59,43 @@ export const TextInput = ({
   const iconColor = errors[name]
     ? themeState.errorColor
     : disabled
-    ? themeState.grayColor
-    : textInputRef.current === document.activeElement
-    ? themeState.primaryColor
-    : themeState.blackColor;
+      ? themeState.grayColor
+      : textInputRef.current === document.activeElement
+        ? themeState.primaryColor
+        : themeState.blackColor;
 
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
+  const hasError = !!errors[name] || !!error;
 
   return (
-    <>
-      <InputWrapper disabled={disabled}>
+    <div
+      className={`text-input ${disabled ? "text-input--disabled" : ""} ${hasError ? "text-input--error" : ""}`}
+    >
+      <label className="text-input__label" htmlFor={name}>
+        {required ? `${label} * ` : label}
+      </label>
+      <div
+        className={`text-input__wrapper  ${errors?.[name] ? "text-input__wrapper--error" : ""}`}
+      >
+        {type !== "password" && svg && (
+          <Icon name={svg || "User"} size={16} color={iconColor} />
+        )}
+        <input
+          id={name}
+          type={inputType}
+          disabled={disabled}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          defaultValue={defaultValue}
+          ref={(e) => {
+            ref(e);
+            textInputRef.current = e;
+          }}
+          {...rest}
+        />
         {type === "password" && (
-          <IconCol
-            clickable={isPassword}
+          <div
             onClick={
               isPassword ? () => setShowPassword(!showPassword) : undefined
             }
@@ -88,34 +105,12 @@ export const TextInput = ({
               size={18}
               color={iconColor}
             />
-          </IconCol>
+          </div>
         )}
-        {type !== "password" && (
-          <IconCol>
-            <Icon name={svg || "User"} size={16} color={iconColor} />
-          </IconCol>
-        )}
-        <MainCol>
-          <Label htmlFor={name}>{required ? `${label}*` : label}</Label>
-          <StyledInput
-            id={name}
-            type={inputType}
-            disabled={disabled}
-            placeholder={placeholder}
-            readOnly={readOnly}
-            defaultValue={defaultValue}
-            ref={(e) => {
-              ref(e);
-              textInputRef.current = e;
-            }}
-            {...rest}
-          />
-          {loading && <span>loading...</span>}
-        </MainCol>
-      </InputWrapper>
+      </div>
       {errors?.[name] && (
         <ErrorMessage>{errors[name]?.message?.toString()}</ErrorMessage>
       )}
-    </>
+    </div>
   );
 };

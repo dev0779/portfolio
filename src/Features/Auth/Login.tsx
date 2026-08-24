@@ -1,10 +1,10 @@
 import { FormProvider, useForm, type FieldErrors } from "react-hook-form";
-import { requiredErrorMessage, scrollToFirstError } from "../../Utils/errors";
+import { requiredErrorMessage, scrollToFirstError } from "../../utils/errors";
 import { useMutation } from "@apollo/client/react/hooks/useMutation";
 import { LOGIN_MUTATION } from "../../Api/graphql/Auth/auth.mutations";
-import { TextInput } from "@/components/Fields";
+import { TextInput } from "@/shared/Fields";
 import { useContext } from "react";
-import { UserContext } from "@/Context/UserContext/UserContext";
+import { UserContext } from "@/context/UserContext/UserContext";
 
 interface LoginFormValues {
   username: string;

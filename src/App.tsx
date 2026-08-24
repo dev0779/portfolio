@@ -1,30 +1,69 @@
-import { useContext, useState } from "react";
+/* import { useContext, useState } from "react"; */
 import styled from "styled-components";
-import { GlobalThemeContext } from "@/Theme/GlobalThemeProvider";
-import { Dialog } from "@/components/Dialog/Dialog";
-import { Login, Register } from "./Features/Auth";
+/* import { GlobalThemeContext } from "@/theme/GlobalThemeProvider";
+import { Dialog } from "@/shared/Dialog/Dialog";
+import { Login, Register } from "./features/Auth"; */
 import "./app.scss";
 import "./Theme/theme-preview.scss";
+import { FormProvider, useForm } from "react-hook-form";
+import { TextInput } from "./shared/Fields/text-input/TextInput";
+import { Checkbox } from "./shared/Fields/checkbox/Checkbox";
+import { RadioGroupButtons } from "./shared/Fields/radio-group-buttons/RadioGroupButtons";
 
-const Box = styled.div`
+/* const Box = styled.div`
   background: ${({ theme }) => theme.background};
   color: ${({ theme }) => theme.text};
   border: 2px solid ${({ theme }) => theme.text};
   padding: 2rem;
   font-family: ${({ theme }) => theme.fonts.fontFamilyBody};
-  transition: background 0.3s ease, color 0.3s ease;
-`;
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+`; */
 
 function App() {
-  const { toggle } = useContext(GlobalThemeContext);
-  const [login, setLogin] = useState<boolean>(false);
-  const [register, setRegister] = useState<boolean>(false);
+  const formMethods = useForm();
 
-  const [showSpan, setShowSpan] = useState(false);
+  const customerOptions = [
+    {
+      label: "company",
+      value: 1,
+    },
+    {
+      label: "privado",
+      value: 2,
+    },
+  ];
+
   return (
     <>
-      <div className="p-4">
+      <FormProvider {...formMethods}>
+        <TextInput
+          name="Username"
+          label="User name"
+          placeholder="Enter full name"
+          error="true"
+          required
+        />
+        <TextInput
+          name="password"
+          label="password"
+          type="password"
+          placeholder="enter your password"
+          required
+        />
+        <TextInput name="address" label="address" svg="AddressBook" required />
 
+        <Checkbox name="some" label="please check if read" />
+        <RadioGroupButtons
+          name="customerType"
+          label="Customer Type"
+          required
+          options={customerOptions}
+          direction="column"
+        />
+      </FormProvider>
+      {/*       <div className="p-4">
         <Box tooltip="hello">Hello! This uses the global theme.</Box>
         <button
           tooltip="hello"
@@ -55,9 +94,9 @@ function App() {
         >
           Register
         </button>
-      </div>
+      </div> */}
 
-      <Dialog open={login} onOpenChange={setLogin}>
+      {/*       <Dialog open={login} onOpenChange={setLogin}>
         <Login
           onSuccess={() => {
             setLogin(false);
@@ -71,15 +110,15 @@ function App() {
             setRegister(false);
           }}
         />
-      </Dialog>
+      </Dialog> */}
 
-      <div className="color-preview">
+      {/*       <div className="color-preview">
         <div className="color-box primary">Primary</div>
         <div className="color-box background">Background</div>
         <div className="color-box text">Text</div>
         <div className="color-box error">Error</div>
         <div className="color-box gray">Gray</div>
-      </div>
+      </div> */}
     </>
   );
 }

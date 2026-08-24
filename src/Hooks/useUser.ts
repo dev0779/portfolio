@@ -1,14 +1,12 @@
 import { useContext } from "react";
-import { UserContext } from "../Context/UserContext/UserContext";
+import { UserContext } from "../context/UserContext/UserContext";
 
+export const useUser = () => {
+  const userContext = useContext(UserContext);
 
-export const useUser= () =>{
-
-    const userContext = useContext(UserContext);
-
-    if(!userContext){
-        throw new Error('user not available!');
-    } else {
-        return userContext
-    }
+  if (!userContext) {
+    throw new Error("user not available!");
+  } else {
+    return userContext;
+  }
 };

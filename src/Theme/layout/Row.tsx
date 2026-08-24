@@ -1,5 +1,5 @@
 import React, { type PropsWithChildren } from "react";
-import { useTheme } from "@/Hooks"
+import { useTheme } from "@/hooks";
 
 export const Row = ({ children }: PropsWithChildren) => {
   const { gridConfig } = useTheme();
@@ -7,7 +7,10 @@ export const Row = ({ children }: PropsWithChildren) => {
   return (
     <div
       className="flex flex-wrap"
-      style={{ marginLeft: `-${gridConfig.gutter}`, marginRight: `-${gridConfig.gutter}` }}
+      style={{
+        marginLeft: `-${gridConfig.gutter}`,
+        marginRight: `-${gridConfig.gutter}`,
+      }}
     >
       {children}
     </div>

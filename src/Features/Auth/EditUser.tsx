@@ -1,10 +1,9 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { requiredErrorMessage } from "../../Utils/errors";
-import { TextInput } from "@/components/Fields";
+import { requiredErrorMessage } from "../../utils/errors";
+import { TextInput } from "@/shared/Fields";
 
 export const EditUser = () => {
-  
   const formMethods = useForm({
     shouldFocusError: false,
     shouldUnregister: true,

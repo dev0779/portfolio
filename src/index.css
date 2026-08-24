@@ -120,6 +120,18 @@
   }
 }
 
+.tippy-box[data-theme~="select"] {
+  border: 1px solid gray;
+  background-color: white !important;
+  color: black;
+  width: 100%;
+  max-width: 100vw !important;
+}
+
+.tippy-box[data-theme~="select"] .tippy-content{
+  padding:0.5rem;
+}
+
 /* Base tooltip box */
 .tippy-box[data-theme~="contrast-box"] {
   @apply shadow-lg pointer-events-auto;
@@ -136,7 +148,7 @@
 }
 
 /* Optional semi-transparent */
-:root:not(.dark) .tippy-box[data-theme~="contrast-box"] {
+.tippy-box[data-theme~="contrast-box"] {
   background-color: rgba(0, 0, 0, 0.85);
 }
 

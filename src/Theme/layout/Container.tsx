@@ -1,6 +1,5 @@
-
 import React, { type PropsWithChildren } from "react";
-import { useTheme } from "@/Hooks";
+import { useTheme } from "@/hooks";
 
 export const Container = ({ children }: PropsWithChildren) => {
   const { gridConfig } = useTheme();

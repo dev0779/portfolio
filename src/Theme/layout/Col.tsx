@@ -1,6 +1,5 @@
 import React from "react";
-import { useTheme } from "@/Hooks/useTheme";
-
+import { useTheme } from "@/hooks/useTheme";
 
 interface ColProps {
   xs?: number;
@@ -30,5 +29,9 @@ export const Col = ({ xs, sm, md, lg, xl, children }: ColProps) => {
     ${xl ? `xl:w-[${getWidthPercent(xl)}]` : ""}
   `;
 
-  return <div className={className} style={style}>{children}</div>;
+  return (
+    <div className={className} style={style}>
+      {children}
+    </div>
+  );
 };
