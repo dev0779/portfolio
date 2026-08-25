@@ -1,0 +1,143 @@
+.signature-input {
+  width: 100%;
+
+  &__label {
+    position: relative;
+    top: 7px;
+    left: 8px;
+    width: fit-content;
+    z-index: 1;
+    margin: 0;
+    padding: 0 0.3rem;
+    background-color: white;
+    font-size: 12px;
+    color: black;
+    transition: color 0.2s ease;
+    display: flex;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid gray;
+    border-radius: 8px;
+    transition: border-color 0.2s ease;
+    background-color: white;
+  }
+
+  &__canvas {
+    display: block;
+    width: 100%;
+    height: 180px;
+    cursor: crosshair;
+  }
+
+  // NORMAL HOVER
+
+  &:hover {
+    .signature-input__label {
+      color: black;
+    }
+
+    .signature-input__wrapper {
+      border-color: black;
+    }
+  }
+
+  // NORMAL FOCUS
+
+  &:focus-within {
+    .signature-input__label {
+      color: blue;
+    }
+
+    .signature-input__wrapper {
+      border-color: blue;
+    }
+  }
+
+  // ERROR
+
+  &--error {
+    .signature-input__label {
+      color: red;
+    }
+
+    .signature-input__wrapper {
+      border-color: red;
+    }
+
+    // Error + focus
+
+    &:focus-within {
+      .signature-input__label {
+        color: red;
+      }
+
+      .signature-input__wrapper {
+        border-color: blue;
+      }
+    }
+
+    // Error + hover
+
+    &:hover {
+      .signature-input__label {
+        color: red;
+      }
+
+      .signature-input__wrapper {
+        border-color: red;
+      }
+    }
+  }
+
+  // DISABLED
+
+  &--disabled {
+    .signature-input__label {
+      color: gray;
+    }
+
+    .signature-input__wrapper {
+      border-color: gray;
+    }
+
+    &:hover,
+    &:focus-within {
+      .signature-input__label {
+        color: gray;
+      }
+
+      .signature-input__wrapper {
+        border-color: gray;
+      }
+    }
+
+    .signature-input__canvas {
+      cursor: not-allowed;
+    }
+  }
+
+  &__actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding:0.3rem;
+  }
+
+  &__clear {
+    border: none;
+    background: blue;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-size: 12px;
+    color:white;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -6,3 +6,4 @@ export { RadioGroupButtons } from "./radio-group-buttons/RadioGroupButtons";
 export { Select } from "./selectors/Select";
 export { PasswordInput } from "./password-input/PasswordInput";
 export { DateInput } from "./date-input/DateInput";
+export { SignatureInput } from "./signature-input/SignatureInput";

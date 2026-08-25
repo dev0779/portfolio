@@ -15,6 +15,7 @@ import {
   NumberInput,
   PasswordInput,
   DateInput,
+  SignatureInput,
 } from "./shared/Fields";
 
 /* const Box = styled.div`
@@ -115,6 +116,8 @@ function App() {
           disabledDates={{ dayOfWeek: [0, 6] }}
           format="dd-MM-yyyy"
         />
+
+        <SignatureInput name="signature" label="Signature" />
       </FormProvider>
       {/*       <div className="p-4">
         <Box tooltip="hello">Hello! This uses the global theme.</Box>
