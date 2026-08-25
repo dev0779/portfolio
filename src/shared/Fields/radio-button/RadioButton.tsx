@@ -1,7 +1,7 @@
-import { Icon } from "@/shared/Icons/Icon";
-import { useTheme } from "@/hooks";
+import { Icon } from '@/shared/Icons/Icon';
+import { useTheme } from '@/hooks';
 
-import "./RadioButton.scss";
+import './RadioButton.scss';
 
 export type RadioValue = string | number | boolean;
 
@@ -35,27 +35,32 @@ export const Radio = <T extends RadioValue>({
         : themeState.blackColor;
 
   return (
-    <div className="radio">
-      <label
-        className={`radio__wrapper ${disabled ? "radio__wrapper--disabled" : ""}`}
-      >
-        <input
-          type="radio"
-          name={name}
-          checked={checked}
-          onChange={() => onChange(value)}
-          disabled={disabled}
-        />
+    <label
+      className={`radio-button__option ${
+        disabled
+          ? 'radio-button__option--disabled'
+          : ''
+      }`}
+    >
+      <input
+        type="radio"
+        name={name}
+        value={String(value)}
+        checked={checked}
+        onChange={() => onChange(value)}
+        disabled={disabled}
+      />
 
-        <Icon
-          name={checked ? "RadioButton" : "Circle"}
-          weight={checked ? "fill" : "regular"}
-          size={20}
-          color={iconColor}
-        />
+      <Icon
+        name={checked ? 'RadioButton' : 'Circle'}
+        weight={checked ? 'fill' : 'regular'}
+        size={20}
+        color={iconColor}
+      />
 
-        <span className="radio__text">{label}</span>
-      </label>
-    </div>
+      <span className="radio-button__text">
+        {label}
+      </span>
+    </label>
   );
 };

@@ -9,6 +9,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { TextInput } from "./shared/Fields/text-input/TextInput";
 import { Checkbox } from "./shared/Fields/checkbox/Checkbox";
 import { RadioGroupButtons } from "./shared/Fields/radio-group-buttons/RadioGroupButtons";
+import { Select } from "./shared/Fields/selectors/Select";
 
 /* const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -25,6 +26,17 @@ function App() {
   const formMethods = useForm();
 
   const customerOptions = [
+    {
+      label: "company",
+      value: 1,
+    },
+    {
+      label: "privado",
+      value: 2,
+    },
+  ];
+
+  const selectOptions = [
     {
       label: "company",
       value: 1,
@@ -62,6 +74,14 @@ function App() {
           options={customerOptions}
           direction="column"
         />
+
+        <Select
+          name="customerType"
+          label="Customer Type"
+          placeholder="Choose customer type"
+          options={selectOptions}
+          required
+          />
       </FormProvider>
       {/*       <div className="p-4">
         <Box tooltip="hello">Hello! This uses the global theme.</Box>

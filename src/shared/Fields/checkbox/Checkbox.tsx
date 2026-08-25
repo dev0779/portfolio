@@ -74,7 +74,8 @@ export const Checkbox = ({
           <Icon
             name={checked ? "CheckSquare" : "Square"}
             size={20}
-            color={checked ? "blue" : iconColor}
+            weight={checked ? "fill" : "regular"}
+            color={iconColor}
           />
           <span>{labelToRender}</span>
         </label>
