@@ -3,10 +3,12 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useMemo, useRef, type JSX } from "react";
 import { useFormContext } from "react-hook-form";
 import "./Checkbox.scss";
+import Tippy from "@tippyjs/react";
 
 interface CheckboxProps {
   name: string;
   label: string;
+  info?: string;
   required?: string;
   disabled?: boolean;
   readOnly?: boolean;
@@ -17,6 +19,7 @@ interface CheckboxProps {
 export const Checkbox = ({
   name,
   label,
+  info,
   value,
   required,
   disabled,
@@ -77,10 +80,19 @@ export const Checkbox = ({
             weight={checked ? "fill" : "regular"}
             color={iconColor}
           />
-          <span>{labelToRender}</span>
+          <span>
+            {labelToRender}
+            {info && (
+                <Tippy content={info}>
+                  <span className="checkbox__info">
+                    <Icon name="Info" color="blue" weight="fill" size={16} />
+                  </span>
+                </Tippy>
+              )}
+          </span>
         </label>
       </div>
-      {errors[name] && <span>{errors[name]?.message?.toString()}</span>}
+      {errors[name] && <span className="checkbox__error">{errors[name]?.message?.toString()}</span>}
     </div>
   );
 };

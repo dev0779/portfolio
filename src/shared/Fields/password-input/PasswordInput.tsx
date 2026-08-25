@@ -1,14 +1,12 @@
-import { useRef, type JSX } from "react";
+import { useRef, useState, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./TextInput.scss";
-
-import * as PhosphorIcons from "phosphor-react";
+import "./PasswordInput.scss";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import Tippy from "@tippyjs/react";
 
-interface TextInputProps {
+interface PasswordInputProps {
   name: string;
   label: string;
   info?: string;
@@ -22,10 +20,9 @@ interface TextInputProps {
   validate?: RegisterOptions["validate"];
   required?: boolean | string;
   error?: string;
-  svg?: keyof typeof PhosphorIcons;
 }
 
-export const TextInput = ({
+export const PasswordInput = ({
   name,
   required,
   label,
@@ -37,9 +34,8 @@ export const TextInput = ({
   disabled,
   readOnly,
   defaultValue,
-  svg,
   error,
-}: TextInputProps): JSX.Element => {
+}: PasswordInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
   const {
@@ -48,6 +44,7 @@ export const TextInput = ({
   } = useFormContext();
 
   const textInputRef = useRef<HTMLInputElement | null>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { ref, ...rest } = register(name, {
     required,
@@ -83,10 +80,9 @@ export const TextInput = ({
       <div
         className={`text-input__wrapper  ${errors?.[name] ? "text-input__wrapper--error" : ""}`}
       >
-        {svg && <Icon name={svg || "User"} size={16} color={iconColor} />}
         <input
           id={name}
-          type="text"
+          type={showPassword ? "text" : "password"}
           disabled={disabled}
           placeholder={placeholder}
           readOnly={readOnly}
@@ -97,9 +93,17 @@ export const TextInput = ({
           }}
           {...rest}
         />
+
+        <div onClick={() => setShowPassword(!showPassword)}>
+          <Icon
+            name={showPassword ? "Eye" : "EyeSlash"}
+            size={18}
+            color={iconColor}
+          />
+        </div>
       </div>
       {errors?.[name] && (
-        <span className="radio__error">{errors[name]?.message?.toString()}</span>
+        <span className="text-input__error">{errors[name]?.message.toString()}</span>
       )}
     </div>
   );

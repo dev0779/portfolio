@@ -1,4 +1,4 @@
-.select {
+.number-input {
   width: 100%;
 
   &__label {
@@ -17,128 +17,103 @@
   }
 
   &__info {
-    cursor: pointer;
     padding-left: 0.3rem;
+    cursor: pointer;
   }
 
   &__wrapper {
     display: flex;
     align-items: center;
-
     padding: 0.2rem 0.5rem;
-
     border: 1px solid gray;
     border-radius: 8px;
-
     transition: border-color 0.2s ease;
 
-    select {
+    input {
       width: 100%;
-      padding: 0.3rem 0;
       border: none;
       outline: none;
       background: transparent;
       font-size: 12px;
-      cursor: pointer;
+      padding-left: 0.3rem;
+
+      appearance: textfield;
+      -moz-appearance: textfield;
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
     }
   }
 
-  &__required {
-    margin-left: 0.2rem;
-  }
-
-  &__error {
-    display: block;
-
-    margin-top: 0.3rem;
-
-    font-size: 11px;
-    color: red;
-  }
-
-  // NORMAL HOVER
-
   &:hover {
-    .select__label {
+    .number-input__label {
       color: black;
     }
 
-    .select__wrapper {
+    .number-input__wrapper {
       border-color: black;
     }
   }
 
-  // NORMAL FOCUS
-
   &:focus-within {
-    .select__label {
+    .number-input__label {
       color: blue;
     }
 
-    .select__wrapper {
+    .number-input__wrapper {
       border-color: blue;
     }
   }
 
-  // ERROR
-
   &--error {
-    .select__label {
+    .number-input__label {
       color: red;
     }
 
-    .select__wrapper {
+    .number-input__wrapper {
       border-color: red;
     }
 
-    // Error + focus
-
     &:focus-within {
-      .select__label {
+      .number-input__label {
         color: red;
       }
 
-      .select__wrapper {
+      .number-input__wrapper {
         border-color: blue;
       }
     }
 
-    // Error + hover
-
     &:hover {
-      .select__label {
+      .number-input__label {
         color: red;
       }
 
-      .select__wrapper {
+      .number-input__wrapper {
         border-color: red;
       }
     }
   }
 
-  // DISABLED
-
   &--disabled {
-    .select__label {
+    .number-input__label {
       color: gray;
     }
 
-    .select__wrapper {
+    .number-input__wrapper {
       border-color: gray;
-    }
-
-    .select__wrapper select {
-      color: gray;
-      cursor: not-allowed;
     }
 
     &:hover,
     &:focus-within {
-      .select__label {
+      .number-input__label {
         color: gray;
       }
 
-      .select__wrapper {
+      .number-input__wrapper {
         border-color: gray;
       }
     }

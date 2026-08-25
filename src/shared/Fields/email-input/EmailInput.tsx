@@ -1,14 +1,13 @@
 import { useRef, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./TextInput.scss";
-
+import "./EmailInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import Tippy from "@tippyjs/react";
 
-interface TextInputProps {
+interface EmailInputProps {
   name: string;
   label: string;
   info?: string;
@@ -25,7 +24,7 @@ interface TextInputProps {
   svg?: keyof typeof PhosphorIcons;
 }
 
-export const TextInput = ({
+export const EmailInput = ({
   name,
   required,
   label,
@@ -39,7 +38,7 @@ export const TextInput = ({
   defaultValue,
   svg,
   error,
-}: TextInputProps): JSX.Element => {
+}: EmailInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
   const {
@@ -47,11 +46,23 @@ export const TextInput = ({
     formState: { errors },
   } = useFormContext();
 
-  const textInputRef = useRef<HTMLInputElement | null>(null);
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
 
   const { ref, ...rest } = register(name, {
     required,
-    validate,
+    validate: (value, formValues) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailRegex.test(value)) {
+        return "Please enter a valid email address";
+      }
+
+      if (typeof validate === "function") {
+        return validate(value, formValues);
+      }
+
+      return true;
+    },
     onChange,
     onBlur,
   });
@@ -60,7 +71,7 @@ export const TextInput = ({
     ? themeState.errorColor
     : disabled
       ? themeState.grayColor
-      : textInputRef.current === document.activeElement
+      : emailInputRef.current === document.activeElement
         ? themeState.primaryColor
         : themeState.blackColor;
 
@@ -68,38 +79,48 @@ export const TextInput = ({
 
   return (
     <div
-      className={`text-input ${disabled ? "text-input--disabled" : ""} ${hasError ? "text-input--error" : ""}`}
+      className={`email-input ${
+        disabled ? "email-input--disabled" : ""
+      } ${hasError ? "email-input--error" : ""}`}
     >
-      <label className="text-input__label" htmlFor={name}>
-        {required ? `${label} * ` : label}
+      <label className="email-input__label" htmlFor={name}>
+        {label}
+
+        {required && <span className="email-input__required">*</span>}
+
         {info && (
           <Tippy content={info}>
-            <span className="text-input__info">
+            <span className="email-input__info">
               <Icon name="Info" color="blue" weight="fill" size={16} />
             </span>
           </Tippy>
         )}
       </label>
+
       <div
-        className={`text-input__wrapper  ${errors?.[name] ? "text-input__wrapper--error" : ""}`}
+        className={`email-input__wrapper ${
+          errors?.[name] ? "email-input__wrapper--error" : ""
+        }`}
       >
-        {svg && <Icon name={svg || "User"} size={16} color={iconColor} />}
+        {svg && <Icon name={svg} size={16} color={iconColor} />}
+
         <input
           id={name}
-          type="text"
+          type="email"
           disabled={disabled}
           placeholder={placeholder}
           readOnly={readOnly}
           defaultValue={defaultValue}
-          ref={(e) => {
-            ref(e);
-            textInputRef.current = e;
+          ref={(element) => {
+            ref(element);
+            emailInputRef.current = element;
           }}
           {...rest}
         />
       </div>
+
       {errors?.[name] && (
-        <span className="radio__error">{errors[name]?.message?.toString()}</span>
+        <span className="email-input__error">{errors[name]?.message?.toString()}</span>
       )}
     </div>
   );

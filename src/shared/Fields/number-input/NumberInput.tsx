@@ -1,14 +1,13 @@
 import { useRef, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./TextInput.scss";
-
+import "./NumberInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import Tippy from "@tippyjs/react";
 
-interface TextInputProps {
+interface NumberInputProps {
   name: string;
   label: string;
   info?: string;
@@ -16,16 +15,19 @@ interface TextInputProps {
   disabled?: boolean;
   loading?: boolean;
   readOnly?: boolean;
-  defaultValue?: string;
+  defaultValue?: number;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   validate?: RegisterOptions["validate"];
   required?: boolean | string;
+  min?: number;
+  max?: number;
+  step?: number;
   error?: string;
   svg?: keyof typeof PhosphorIcons;
 }
 
-export const TextInput = ({
+export const NumberInput = ({
   name,
   required,
   label,
@@ -37,9 +39,12 @@ export const TextInput = ({
   disabled,
   readOnly,
   defaultValue,
+  min,
+  max,
+  step,
   svg,
   error,
-}: TextInputProps): JSX.Element => {
+}: NumberInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
   const {
@@ -47,20 +52,21 @@ export const TextInput = ({
     formState: { errors },
   } = useFormContext();
 
-  const textInputRef = useRef<HTMLInputElement | null>(null);
+  const numberInputRef = useRef<HTMLInputElement | null>(null);
 
   const { ref, ...rest } = register(name, {
     required,
     validate,
     onChange,
     onBlur,
+    setValueAs: (value) => value === "" ? null : Number(value),
   });
 
   const iconColor = errors[name]
     ? themeState.errorColor
     : disabled
       ? themeState.grayColor
-      : textInputRef.current === document.activeElement
+      : numberInputRef.current === document.activeElement
         ? themeState.primaryColor
         : themeState.blackColor;
 
@@ -68,38 +74,73 @@ export const TextInput = ({
 
   return (
     <div
-      className={`text-input ${disabled ? "text-input--disabled" : ""} ${hasError ? "text-input--error" : ""}`}
+      className={`number-input ${
+        disabled ? "number-input--disabled" : ""
+      } ${hasError ? "number-input--error" : ""}`}
     >
-      <label className="text-input__label" htmlFor={name}>
-        {required ? `${label} * ` : label}
+      <label
+        className="number-input__label"
+        htmlFor={name}
+      >
+        {label}
+
+        {required && (
+          <span className="number-input__required">
+            *
+          </span>
+        )}
+
         {info && (
           <Tippy content={info}>
-            <span className="text-input__info">
-              <Icon name="Info" color="blue" weight="fill" size={16} />
+            <span className="number-input__info">
+              <Icon
+                name="Info"
+                color="blue"
+                weight="fill"
+                size={16}
+              />
             </span>
           </Tippy>
         )}
       </label>
+
       <div
-        className={`text-input__wrapper  ${errors?.[name] ? "text-input__wrapper--error" : ""}`}
+        className={`number-input__wrapper ${
+          errors?.[name]
+            ? "number-input__wrapper--error"
+            : ""
+        }`}
       >
-        {svg && <Icon name={svg || "User"} size={16} color={iconColor} />}
+        {svg && (
+          <Icon
+            name={svg}
+            size={16}
+            color={iconColor}
+          />
+        )}
+
         <input
           id={name}
-          type="text"
+          type="number"
           disabled={disabled}
           placeholder={placeholder}
           readOnly={readOnly}
           defaultValue={defaultValue}
-          ref={(e) => {
-            ref(e);
-            textInputRef.current = e;
+          min={min}
+          max={max}
+          step={step}
+          ref={(element) => {
+            ref(element);
+            numberInputRef.current = element;
           }}
           {...rest}
         />
       </div>
+
       {errors?.[name] && (
-        <span className="radio__error">{errors[name]?.message?.toString()}</span>
+        <span className="number-input__error">
+           {errors[name]?.message?.toString()}
+           </span>
       )}
     </div>
   );

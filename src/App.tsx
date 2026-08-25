@@ -6,10 +6,16 @@ import { Login, Register } from "./features/Auth"; */
 import "./app.scss";
 import "./Theme/theme-preview.scss";
 import { FormProvider, useForm } from "react-hook-form";
-import { TextInput } from "./shared/Fields/text-input/TextInput";
-import { Checkbox } from "./shared/Fields/checkbox/Checkbox";
-import { RadioGroupButtons } from "./shared/Fields/radio-group-buttons/RadioGroupButtons";
-import { Select } from "./shared/Fields/selectors/Select";
+import {
+  TextInput,
+  Checkbox,
+  RadioGroupButtons,
+  Select,
+  EmailInput,
+  NumberInput,
+  PasswordInput,
+  DateInput,
+} from "./shared/Fields";
 
 /* const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -23,12 +29,15 @@ import { Select } from "./shared/Fields/selectors/Select";
 `; */
 
 function App() {
-  const formMethods = useForm();
+  const formMethods = useForm({
+    mode: "onBlur",
+  });
 
   const customerOptions = [
     {
       label: "company",
       value: 1,
+      info: "im some important info",
     },
     {
       label: "privado",
@@ -55,24 +64,32 @@ function App() {
           label="User name"
           placeholder="Enter full name"
           error="true"
+          info="text info"
+          required
+        />
+        <PasswordInput
+          name="password"
+          label="password"
+          placeholder="enter your password"
+          info="password"
           required
         />
         <TextInput
-          name="password"
-          label="password"
-          type="password"
-          placeholder="enter your password"
+          name="address"
+          label="address"
+          svg="AddressBook"
           required
+          info="your address"
         />
-        <TextInput name="address" label="address" svg="AddressBook" required />
 
-        <Checkbox name="some" label="please check if read" />
+        <Checkbox name="some" label="please check if read" info="hello" />
         <RadioGroupButtons
           name="customerType"
           label="Customer Type"
           required
           options={customerOptions}
           direction="column"
+          info="info radio"
         />
 
         <Select
@@ -80,8 +97,24 @@ function App() {
           label="Customer Type"
           placeholder="Choose customer type"
           options={selectOptions}
+          info="hello im a info"
           required
-          />
+        />
+        <NumberInput
+          name="quantity"
+          label="quantidade"
+          info="quantidade"
+        ></NumberInput>
+
+        <EmailInput name="email" label="email" required />
+
+        <DateInput
+          name="Date"
+          label="date"
+          info="hello"
+          disabledDates={{ dayOfWeek: [0, 6] }}
+          format="dd-MM-yyyy"
+        />
       </FormProvider>
       {/*       <div className="p-4">
         <Box tooltip="hello">Hello! This uses the global theme.</Box>

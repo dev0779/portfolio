@@ -2,7 +2,7 @@ import { FormProvider, useForm, type FieldErrors } from "react-hook-form";
 import { requiredErrorMessage, scrollToFirstError } from "../../utils/errors";
 import { useMutation } from "@apollo/client/react/hooks/useMutation";
 import { LOGIN_MUTATION } from "../../Api/graphql/Auth/auth.mutations";
-import { TextInput } from "@/shared/Fields";
+import { TextInput, PasswordInput } from "@/shared/Fields";
 import { useContext } from "react";
 import { UserContext } from "@/context/UserContext/UserContext";
 
@@ -69,10 +69,9 @@ const Login = ({ onSuccess }: LoginProps) => {
         onChange={() => clearErrors("username")}
       />
 
-      <TextInput
+      <PasswordInput
         name="password"
         label="password"
-        type="password"
         required={requiredErrorMessage}
         onChange={() => clearErrors("password")}
       />

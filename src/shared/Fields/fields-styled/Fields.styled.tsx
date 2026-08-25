@@ -72,5 +72,6 @@ export const ErrorMessage = styled.span`
   color: ${({ theme }) => theme.errorColor};
   font-size: 0.75rem;
   margin-top: 0.25rem;
+  padding-left:0.5rem;
   min-height: 1em;
 `;

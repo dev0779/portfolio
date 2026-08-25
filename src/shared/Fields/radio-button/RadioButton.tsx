@@ -1,13 +1,15 @@
-import { Icon } from '@/shared/Icons/Icon';
-import { useTheme } from '@/hooks';
+import { Icon } from "@/shared/Icons/Icon";
+import { useTheme } from "@/hooks";
 
-import './RadioButton.scss';
+import "./RadioButton.scss";
+import Tippy from "@tippyjs/react";
 
 export type RadioValue = string | number | boolean;
 
 type RadioProps<T extends RadioValue = string> = {
   name: string;
   label: string;
+  info?: string;
   value: T;
   checked: boolean;
   disabled?: boolean;
@@ -18,6 +20,7 @@ type RadioProps<T extends RadioValue = string> = {
 export const Radio = <T extends RadioValue>({
   name,
   label,
+  info,
   value,
   checked,
   disabled = false,
@@ -37,9 +40,7 @@ export const Radio = <T extends RadioValue>({
   return (
     <label
       className={`radio-button__option ${
-        disabled
-          ? 'radio-button__option--disabled'
-          : ''
+        disabled ? "radio-button__option--disabled" : ""
       }`}
     >
       <input
@@ -52,14 +53,21 @@ export const Radio = <T extends RadioValue>({
       />
 
       <Icon
-        name={checked ? 'RadioButton' : 'Circle'}
-        weight={checked ? 'fill' : 'regular'}
+        name={checked ? "RadioButton" : "Circle"}
+        weight={checked ? "fill" : "regular"}
         size={20}
         color={iconColor}
       />
 
       <span className="radio-button__text">
         {label}
+        {info && (
+          <Tippy content={info}>
+            <span className="radio-button__info">
+              <Icon name="Info" color="blue" weight="fill" size={16} />
+            </span>
+          </Tippy>
+        )}
       </span>
     </label>
   );

@@ -8,11 +8,14 @@ import {
 import { Radio, type RadioValue } from "../radio-button/RadioButton";
 
 import "./RadioGroupButtons.scss";
+import Tippy from "@tippyjs/react";
+import { Icon } from "@/shared/Icons/Icon";
 
 export type RadioOption<T extends RadioValue = string> = {
   label: string;
   value: T;
   disabled?: boolean;
+  info?: string;
 };
 
 type RadioButtonsProps<
@@ -21,7 +24,8 @@ type RadioButtonsProps<
 > = {
   name: Path<TFieldValues>;
   options: RadioOption<TValue>[];
-  label?: string;
+    label?: string;
+    info?: string;
   required?: boolean;
   disabled?: boolean;
   direction?: "row" | "column";
@@ -34,6 +38,7 @@ export const RadioGroupButtons = <
   name,
   options,
   label,
+  info,
   required = false,
   disabled = false,
   direction = "row",
@@ -58,6 +63,13 @@ export const RadioGroupButtons = <
               {label}
 
               {required && <span className="radio__required">*</span>}
+              {info && (
+                <Tippy content={info}>
+                  <span className="radio__info">
+                    <Icon name="Info" color="blue" weight="fill" size={16} />
+                  </span>
+                </Tippy>
+              )}
             </div>
           )}
 
@@ -73,6 +85,7 @@ export const RadioGroupButtons = <
                     onChange={field.onChange}
                     disabled={disabled || option.disabled}
                     error={!!fieldState.error}
+                    info={option.info}
                   />
                 ))}
               </div>

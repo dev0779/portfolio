@@ -3,15 +3,17 @@ import {
   type FieldValues,
   type Path,
   useFormContext,
-} from 'react-hook-form';
+} from "react-hook-form";
 
-import './Select.scss';
+import Tippy from "@tippyjs/react";
+
+
+import "./Select.scss";
+import { Icon } from "@/shared/Icons/Icon";
 
 export type SelectValue = string | number;
 
-export type SelectOption<
-  TValue extends SelectValue = string,
-> = {
+export type SelectOption<TValue extends SelectValue = string> = {
   label: string;
   value: TValue;
   disabled?: boolean;
@@ -24,9 +26,11 @@ type SelectProps<
   name: Path<TFieldValues>;
   options: SelectOption<TValue>[];
   label?: string;
+  info?: string;
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
+  clearable?: boolean;
 };
 
 export const Select = <
@@ -36,9 +40,11 @@ export const Select = <
   name,
   options,
   label,
-  placeholder = 'Select an option',
+  info,
+  placeholder = "Select an option",
   required = false,
   disabled = false,
+  clearable = false,
 }: SelectProps<TFieldValues, TValue>) => {
   const { control } = useFormContext();
 
@@ -47,30 +53,24 @@ export const Select = <
       name={name}
       control={control}
       rules={{
-        required: required
-          ? 'Please select an option'
-          : false,
+        required: required ? "Please select an option" : false,
       }}
       render={({ field, fieldState }) => (
         <div
-          className={`select ${
-            fieldState.error
-              ? 'select--error'
-              : ''
-          } ${
-            disabled
-              ? 'select--disabled'
-              : ''
+          className={`select ${fieldState.error ? "select--error" : ""} ${
+            disabled ? "select--disabled" : ""
           }`}
         >
           {label && (
             <div className="select__label">
               {label}
-
-              {required && (
-                <span className="select__required">
-                  *
-                </span>
+              {required && <span className="select__required">*</span>}
+              {info && (
+                <Tippy content={info}>
+                  <span className="select__info">
+                    <Icon name="Info" color="blue" weight="fill" size={16} />
+                  </span>
+                </Tippy>
               )}
             </div>
           )}
@@ -80,25 +80,17 @@ export const Select = <
               name={field.name}
               ref={field.ref}
               disabled={disabled}
-              value={field.value ?? ''}
+              value={field.value ?? ""}
               onBlur={field.onBlur}
               onChange={(event) => {
-                const selectedOption =
-                  options.find(
-                    (option) =>
-                      String(option.value) ===
-                      event.target.value,
-                  );
-
-                field.onChange(
-                  selectedOption?.value ?? '',
+                const selectedOption = options.find(
+                  (option) => String(option.value) === event.target.value,
                 );
+
+                field.onChange(selectedOption?.value ?? "");
               }}
             >
-              <option
-                value=""
-                disabled
-              >
+              <option value="" disabled={!clearable}>
                 {placeholder}
               </option>
 
@@ -115,9 +107,7 @@ export const Select = <
           </div>
 
           {fieldState.error && (
-            <span className="select__error">
-              {fieldState.error.message}
-            </span>
+            <span className="select__error">{fieldState.error.message}</span>
           )}
         </div>
       )}

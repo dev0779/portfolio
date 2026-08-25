@@ -16,5 +16,11 @@
   &__text{
     padding-left:0.3rem;
     font-size: 12px;
+    display:flex;
+  }
+
+  &__info{
+    padding-left:0.3rem;
+    cursor:poiner;
   }
 }
