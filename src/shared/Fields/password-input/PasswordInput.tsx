@@ -103,7 +103,7 @@ export const PasswordInput = ({
         </div>
       </div>
       {errors?.[name] && (
-        <span className="text-input__error">{errors[name]?.message.toString()}</span>
+        <ErrorMessage>{errors[name]?.message.toString()}</ErrorMessage>
       )}
     </div>
   );

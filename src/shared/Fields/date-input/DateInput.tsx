@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 
 import { Controller, useFormContext } from "react-hook-form";
 import { format as formatDateDisplay } from "date-fns";
@@ -9,6 +9,7 @@ import "./DateInput.scss";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import Tippy from "@tippyjs/react";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 
 interface DateInputProps {
   name: string;
@@ -24,6 +25,8 @@ interface DateInputProps {
     after?: Date;
     dayOfWeek?: number[];
   };
+  onChange?: (value: string) => void;
+  onBlur?: (value: string) => void;
 }
 
 export const DateInput = ({
@@ -33,9 +36,11 @@ export const DateInput = ({
   placeholder,
   format = "dd-MM-yyyy",
   required,
-  min,
-  max,
+  min = new Date(1950, 0),
+  max = new Date(2030, 11),
   disabledDates,
+  onChange,
+  onBlur,
 }: DateInputProps): JSX.Element => {
   const { control } = useFormContext();
   const { themeState } = useTheme();
@@ -49,6 +54,25 @@ export const DateInput = ({
       String(date.getDate()).padStart(2, "0"),
     ].join("-");
   };
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <Controller
@@ -74,14 +98,14 @@ export const DateInput = ({
 
               {info && (
                 <Tippy content={info}>
-                  <span className="text-input__info">
+                  <span className="date-input__info">
                     <Icon name="Info" color="blue" weight="fill" size={16} />
                   </span>
                 </Tippy>
               )}
             </label>
 
-            <div className="date-input__wrapper">
+            <div className="date-input__wrapper" ref={wrapperRef}>
               {/* DATE FIELD */}
 
               <input
@@ -109,11 +133,14 @@ export const DateInput = ({
                 <div className="date-input__picker">
                   <DayPicker
                     mode="single"
+                    captionLayout="dropdown"
                     selected={selectedDate}
                     onSelect={(date) => {
                       if (!date) return;
 
-                      field.onChange(formatDate(date));
+                      const value = formatDate(date);
+                      field.onChange(value);
+                      onChange?.(value);
                       setIsOpen(false);
                     }}
                     startMonth={min}
@@ -130,9 +157,7 @@ export const DateInput = ({
               )}
             </div>
             {fieldState.error && (
-              <span className="date-input__error">
-                {fieldState.error.message}
-              </span>
+              <ErrorMessage>{fieldState.error.message}</ErrorMessage>
             )}
           </div>
         );

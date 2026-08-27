@@ -9,11 +9,14 @@ interface CheckboxProps {
   name: string;
   label: string;
   info?: string;
-  required?: string;
+  required?: string | boolean;
   disabled?: boolean;
   readOnly?: boolean;
   hideError?: boolean;
   value?: string;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
+  onBlur?: (checked: boolean) => void;
 }
 
 export const Checkbox = ({
@@ -24,6 +27,9 @@ export const Checkbox = ({
   required,
   disabled,
   readOnly,
+  checked,
+  onChange,
+  onBlur,
 }: CheckboxProps): JSX.Element => {
   const { themeState } = useTheme();
   const {
@@ -34,9 +40,18 @@ export const Checkbox = ({
 
   const checkboxRef = useRef<HTMLInputElement | null>(null);
 
-  const { ref, ...rest } = register(name, { required });
+  const watchChecked = watch(name);
+  const currentChecked = checked ?? watchChecked;
 
-  const checked = watch(name);
+  const { ref, ...rest } = register(name, {
+    required,
+    onChange: (event) => {
+      onChange?.(event.target.checked);
+    },
+    onBlur: () => {
+      onBlur?.(checkboxRef.current?.checked ?? false);
+    },
+  });
 
   const labelToRender = useMemo(() => {
     if (label) {
@@ -68,6 +83,11 @@ export const Checkbox = ({
           readOnly={readOnly}
           value={value && value}
           {...rest}
+          {...(checked !== undefined
+            ? {
+                checked,
+              }
+            : {})}
           ref={(e) => {
             ref(e);
             checkboxRef.current = e;
@@ -75,24 +95,28 @@ export const Checkbox = ({
         />
         <label htmlFor={name} className="checkbox__box">
           <Icon
-            name={checked ? "CheckSquare" : "Square"}
+            name={currentChecked ? "CheckSquare" : "Square"}
             size={20}
-            weight={checked ? "fill" : "regular"}
+            weight={currentChecked ? "fill" : "regular"}
             color={iconColor}
           />
           <span>
             {labelToRender}
             {info && (
-                <Tippy content={info}>
-                  <span className="checkbox__info">
-                    <Icon name="Info" color="blue" weight="fill" size={16} />
-                  </span>
-                </Tippy>
-              )}
+              <Tippy content={info}>
+                <span className="checkbox__info">
+                  <Icon name="Info" color="blue" weight="fill" size={16} />
+                </span>
+              </Tippy>
+            )}
           </span>
         </label>
       </div>
-      {errors[name] && <span className="checkbox__error">{errors[name]?.message?.toString()}</span>}
+      {errors[name] && (
+        <span className="checkbox__error">
+          {errors[name]?.message?.toString()}
+        </span>
+      )}
     </div>
   );
 };

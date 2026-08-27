@@ -16,6 +16,10 @@ import {
   PasswordInput,
   DateInput,
   SignatureInput,
+  PhoneNumberInput,
+  CheckboxGroup,
+  TextareaInput,
+  SelectSearch,
 } from "./shared/Fields";
 
 /* const Box = styled.div`
@@ -57,67 +61,92 @@ function App() {
     },
   ];
 
+  const tecnologyOptions = [
+    { label: "React", value: "React" },
+    { label: "Angular", value: "Angular" },
+    { label: "Vue", value: "Vue" },
+  ];
+
   return (
-    <>
+    <span className="padding">
       <FormProvider {...formMethods}>
-        <TextInput
-          name="Username"
-          label="User name"
-          placeholder="Enter full name"
-          error="true"
-          info="text info"
-          required
-        />
-        <PasswordInput
-          name="password"
-          label="password"
-          placeholder="enter your password"
-          info="password"
-          required
-        />
-        <TextInput
-          name="address"
-          label="address"
-          svg="AddressBook"
-          required
-          info="your address"
-        />
+        <span className="block">
+                    <SelectSearch name="search" label="search" options={ selectOptions } />
+          <TextInput
+            name="Username"
+            label="User name"
+            placeholder="Enter full name"
+            error="true"
+            info="text info"
+            required
+          />
+          <PasswordInput
+            name="password"
+            label="password"
+            placeholder="enter your password"
+            info="password"
+            required
+          />
+          <TextInput
+            name="address"
+            label="address"
+            svg="AddressBook"
+            required
+            info="your address"
+          />
 
-        <Checkbox name="some" label="please check if read" info="hello" />
-        <RadioGroupButtons
-          name="customerType"
-          label="Customer Type"
-          required
-          options={customerOptions}
-          direction="column"
-          info="info radio"
-        />
+          <Checkbox name="some" label="please check if read" info="hello" />
+          <RadioGroupButtons
+            name="customerType"
+            label="Customer Type"
+            required
+            options={customerOptions}
+            direction="column"
+            info="info radio"
+          />
 
-        <Select
-          name="customerType"
-          label="Customer Type"
-          placeholder="Choose customer type"
-          options={selectOptions}
-          info="hello im a info"
-          required
-        />
-        <NumberInput
-          name="quantity"
-          label="quantidade"
-          info="quantidade"
-        ></NumberInput>
+          <Select
+            name="customerType"
+            label="Customer Type"
+            placeholder="Choose customer type"
+            options={selectOptions}
+            info="hello im a info"
+            required
+          />
+          <NumberInput
+            name="quantity"
+            label="quantidade"
+            info="quantidade"
+          ></NumberInput>
 
-        <EmailInput name="email" label="email" required />
+          <EmailInput name="email" label="email" required />
 
-        <DateInput
-          name="Date"
-          label="date"
-          info="hello"
-          disabledDates={{ dayOfWeek: [0, 6] }}
-          format="dd-MM-yyyy"
-        />
+          <DateInput
+            name="Date"
+            label="date"
+            info="hello"
+            disabledDates={{ dayOfWeek: [0, 6] }}
+            format="dd-MM-yyyy"
+          />
 
-        <SignatureInput name="signature" label="Signature" />
+          <SignatureInput name="signature" label="Signature" />
+
+          <PhoneNumberInput
+            name="phonenumber"
+            label="Primary Contact"
+            info="use your number"
+            required
+          />
+
+          <CheckboxGroup
+            name="tecnologies"
+            label="add tecnologies"
+            options={tecnologyOptions}
+          />
+
+          <TextareaInput name="reason" label="reasons"></TextareaInput>
+
+        </span>
       </FormProvider>
       {/*       <div className="p-4">
         <Box tooltip="hello">Hello! This uses the global theme.</Box>
@@ -175,7 +204,7 @@ function App() {
         <div className="color-box error">Error</div>
         <div className="color-box gray">Gray</div>
       </div> */}
-    </>
+    </span>
   );
 }
 

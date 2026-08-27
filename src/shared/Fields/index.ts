@@ -1,9 +1,14 @@
+export { SelectSearch } from './selectors/SelectSearch/SelectSearch';
+export { TextareaInput } from "./text-area/TextareaInput";
+export { CheckboxGroup } from "./checkbox-group-buttons/CheckBoxGroupButtons";
+export { PhoneNumberInput } from "./phone-input/PhoneInput";
+export { DateTimeInput } from "./date-time-input/DateTimeInput";
 export { EmailInput } from "./email-input/EmailInput";
 export { NumberInput } from "./number-input/NumberInput";
 export { Checkbox } from "./checkbox/Checkbox";
 export { TextInput } from "./text-input/TextInput";
 export { RadioGroupButtons } from "./radio-group-buttons/RadioGroupButtons";
-export { Select } from "./selectors/Select";
+export { Select } from "./selectors/Select/Select";
 export { PasswordInput } from "./password-input/PasswordInput";
 export { DateInput } from "./date-input/DateInput";
 export { SignatureInput } from "./signature-input/SignatureInput";

@@ -120,7 +120,7 @@ export const EmailInput = ({
       </div>
 
       {errors?.[name] && (
-        <span className="email-input__error">{errors[name]?.message?.toString()}</span>
+        <ErrorMessage>{errors[name]?.message?.toString()}</ErrorMessage>
       )}
     </div>
   );

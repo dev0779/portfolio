@@ -10,6 +10,7 @@ import { Radio, type RadioValue } from "../radio-button/RadioButton";
 import "./RadioGroupButtons.scss";
 import Tippy from "@tippyjs/react";
 import { Icon } from "@/shared/Icons/Icon";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 
 export type RadioOption<T extends RadioValue = string> = {
   label: string;
@@ -24,11 +25,13 @@ type RadioButtonsProps<
 > = {
   name: Path<TFieldValues>;
   options: RadioOption<TValue>[];
-    label?: string;
-    info?: string;
+  label?: string;
+  info?: string;
   required?: boolean;
   disabled?: boolean;
   direction?: "row" | "column";
+  onChange?: (value: TValue) => void;
+  onBlur?: (value: TValue | "") => void;
 };
 
 export const RadioGroupButtons = <
@@ -42,6 +45,8 @@ export const RadioGroupButtons = <
   required = false,
   disabled = false,
   direction = "row",
+  onChange,
+  onBlur,
 }: RadioButtonsProps<TFieldValues, TValue>) => {
   const { control } = useFormContext();
 
@@ -74,25 +79,32 @@ export const RadioGroupButtons = <
           )}
 
           <div className="radio__wrapper">
-              <div className={`radio__group radio__group--${direction}`}>
-                {options.map((option) => (
-                  <Radio
-                    key={String(option.value)}
-                    name={field.name}
-                    label={option.label}
-                    value={option.value}
-                    checked={field.value === option.value}
-                    onChange={field.onChange}
-                    disabled={disabled || option.disabled}
-                    error={!!fieldState.error}
-                    info={option.info}
-                  />
-                ))}
-              </div>
+            <div className={`radio__group radio__group--${direction}`}>
+              {options.map((option) => (
+                <Radio
+                  key={String(option.value)}
+                  name={field.name}
+                  label={option.label}
+                  value={option.value}
+                  checked={field.value === option.value}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    onChange?.(value);
+                  }}
+                  disabled={disabled || option.disabled}
+                  error={!!fieldState.error}
+                  info={option.info}
+                  onBlur={() => {
+                    field.onBlur();
+                    onBlur?.(field.value ?? "");
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
           {fieldState.error && (
-            <span className="radio__error">{fieldState.error.message}</span>
+            <ErrorMessage>{fieldState.error.message}</ErrorMessage>
           )}
         </div>
       )}

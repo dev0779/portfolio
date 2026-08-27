@@ -7,9 +7,9 @@ import {
 
 import Tippy from "@tippyjs/react";
 
-
 import "./Select.scss";
 import { Icon } from "@/shared/Icons/Icon";
+import { ErrorMessage } from "./../../fields-styled/Fields.styled";
 
 export type SelectValue = string | number;
 
@@ -31,6 +31,9 @@ type SelectProps<
   required?: boolean;
   disabled?: boolean;
   clearable?: boolean;
+
+  onChange?: (value: TValue | "") => void;
+  onBlur?: (value: TValue | "") => void;
 };
 
 export const Select = <
@@ -45,6 +48,8 @@ export const Select = <
   required = false,
   disabled = false,
   clearable = false,
+  onChange,
+  onBlur,
 }: SelectProps<TFieldValues, TValue>) => {
   const { control } = useFormContext();
 
@@ -87,7 +92,11 @@ export const Select = <
                   (option) => String(option.value) === event.target.value,
                 );
 
-                field.onChange(selectedOption?.value ?? "");
+                const value = selectedOption?.value ?? "";
+                field.onChange(value);
+                field.onChange(value);
+                onChange?.(value);
+                onBlur?.(value);
               }}
             >
               <option value="" disabled={!clearable}>
@@ -107,7 +116,7 @@ export const Select = <
           </div>
 
           {fieldState.error && (
-            <span className="select__error">{fieldState.error.message}</span>
+            <ErrorMessage>{fieldState.error.message}</ErrorMessage>
           )}
         </div>
       )}

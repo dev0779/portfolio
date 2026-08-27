@@ -1,12 +1,12 @@
-.select {
+.textarea-input {
   width: 100%;
 
   &__label {
     position: relative;
     top: 7px;
     left: 8px;
-    z-index: 1;
     width: fit-content;
+    z-index: 1;
     margin: 0;
     padding: 0 0.3rem;
     background-color: white;
@@ -17,53 +17,40 @@
   }
 
   &__info {
-    cursor: pointer;
     padding-left: 0.3rem;
+    cursor: pointer;
   }
 
   &__wrapper {
     display: flex;
     align-items: center;
-
     padding: 0.2rem 0.5rem;
-
     border: 1px solid gray;
     border-radius: 8px;
-
     transition: border-color 0.2s ease;
 
-    select {
+    textarea {
       width: 100%;
-      padding: 0.3rem 0;
       border: none;
       outline: none;
       background: transparent;
-      font-size: 12px;
-      cursor: pointer;
+      font-size: 14px;
+      padding-left: 0.3rem;
     }
-  }
 
-  &__required {
-    margin-left: 0.2rem;
-  }
-
-  &__error {
-    display: block;
-
-    margin-top: 0.3rem;
-
-    font-size: 11px;
-    color: red;
+    &:focus-within {
+      border-color: blue;
+    }
   }
 
   // NORMAL HOVER
 
   &:hover {
-    .select__label {
+    .textarea-input__label {
       color: black;
     }
 
-    .select__wrapper {
+    .textarea-input__wrapper {
       border-color: black;
     }
   }
@@ -71,74 +58,65 @@
   // NORMAL FOCUS
 
   &:focus-within {
-    .select__label {
+    .textarea-input__label {
       color: blue;
     }
 
-    .select__wrapper {
+    .textarea-input__wrapper {
       border-color: blue;
     }
   }
 
   // ERROR
-
   &--error {
-    .select__label {
+    .textarea-input__label {
       color: red;
     }
 
-    .select__wrapper {
+    .textarea-input__wrapper {
       border-color: red;
     }
 
     // Error + focus
-
     &:focus-within {
-      .select__label {
+      .textarea-input__label {
         color: red;
       }
 
-      .select__wrapper {
+      .textarea-input__wrapper {
         border-color: blue;
       }
     }
 
     // Error + hover
-
     &:hover {
-      .select__label {
+      .textarea-input__label {
         color: red;
       }
 
-      .select__wrapper {
+      .textarea-input__wrapper {
         border-color: red;
       }
     }
   }
 
   // DISABLED
-
   &--disabled {
-    .select__label {
+    .textarea-input__label {
       color: gray;
     }
 
-    .select__wrapper {
+    .textarea-input__wrapper {
       border-color: gray;
-    }
-
-    .select__wrapper select {
-      color: gray;
-      cursor: not-allowed;
     }
 
     &:hover,
     &:focus-within {
-      .select__label {
+      .textarea-input__label {
         color: gray;
       }
 
-      .select__wrapper {
+      .textarea-input__wrapper {
         border-color: gray;
       }
     }

@@ -15,6 +15,7 @@ type RadioProps<T extends RadioValue = string> = {
   disabled?: boolean;
   error?: boolean;
   onChange: (value: T) => void;
+  onBlur: (value: T) => void;
 };
 
 export const Radio = <T extends RadioValue>({
@@ -26,6 +27,7 @@ export const Radio = <T extends RadioValue>({
   disabled = false,
   error = false,
   onChange,
+  onBlur,
 }: RadioProps<T>) => {
   const { themeState } = useTheme();
 
@@ -50,6 +52,7 @@ export const Radio = <T extends RadioValue>({
         checked={checked}
         onChange={() => onChange(value)}
         disabled={disabled}
+        onBlur={() => onBlur(value)}
       />
 
       <Icon

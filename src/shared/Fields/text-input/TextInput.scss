@@ -18,18 +18,15 @@
 
   &__info {
     padding-left: 0.3rem;
-    cursor:pointer;
+    cursor: pointer;
   }
 
   &__wrapper {
     display: flex;
     align-items: center;
-
     padding: 0.2rem 0.5rem;
-
     border: 1px solid gray;
     border-radius: 8px;
-
     transition: border-color 0.2s ease;
 
     input {
@@ -37,7 +34,7 @@
       border: none;
       outline: none;
       background: transparent;
-      font-size: 12px;
+      font-size: 14px;
       padding-left: 0.3rem;
     }
 

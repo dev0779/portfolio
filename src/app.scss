@@ -5,3 +5,10 @@
   border: 1px solid red;
 }
 
+.block {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem !important;
+  width: 100%;
+}
+

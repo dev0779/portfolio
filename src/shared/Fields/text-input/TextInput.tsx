@@ -99,7 +99,7 @@ export const TextInput = ({
         />
       </div>
       {errors?.[name] && (
-        <span className="radio__error">{errors[name]?.message?.toString()}</span>
+        <ErrorMessage>{errors[name]?.message?.toString()}</ErrorMessage>
       )}
     </div>
   );

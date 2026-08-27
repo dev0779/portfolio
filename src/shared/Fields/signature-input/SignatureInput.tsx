@@ -3,12 +3,15 @@ import { Controller, useFormContext } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
 
 import "./SignatureInput.scss";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 
 interface SignatureInputProps {
   name: string;
   label: string;
   required?: boolean;
   height?: number;
+  onChange?: (signature: string) => void;
+  onBlur?: (signature?: string) => void;
 }
 
 export const SignatureInput = ({
@@ -16,6 +19,8 @@ export const SignatureInput = ({
   label,
   required,
   height = 180,
+  onChange,
+  onBlur,
 }: SignatureInputProps): JSX.Element => {
   const { control } = useFormContext();
 
@@ -40,7 +45,9 @@ export const SignatureInput = ({
                 className="signature-input__clear"
                 onClick={() => {
                   signatureRef.current?.clear();
-                  field.onChange("");
+                  field.onChange();
+                  onChange?.("");
+                  onBlur?.("");
                 }}
               >
                 Clear
@@ -60,13 +67,14 @@ export const SignatureInput = ({
                 const signature = signatureRef.current.toDataURL();
 
                 field.onChange(signature);
+                field.onBlur();
+                onChange?.(signature);
+                onBlur?.(signature);
               }}
             />
           </div>
           {fieldState.error && (
-            <span className="signature-input__error">
-              {fieldState.error.message}
-            </span>
+            <ErrorMessage>{fieldState.error.message}</ErrorMessage>
           )}
         </div>
       )}

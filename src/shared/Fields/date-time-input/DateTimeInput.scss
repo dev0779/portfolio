@@ -30,44 +30,37 @@
     border-radius: 8px;
     transition: border-color 0.2s ease;
 
-    input {
-      flex: 1;
-      min-width: 0;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-size: 14px;
-      padding-left: 0.3rem;
-      cursor: pointer;
+    .date-time-input__field {
+      width: 100%;
+
+      .MuiPickersInputBase-root {
+        padding: 0;
+        border: none;
+        background: transparent;
+      }
+
+      .MuiPickersOutlinedInput-root {
+        padding: 0;
+        border: none;
+        background: transparent;
+      }
+
+      // MUI's actual outline
+      .MuiPickersOutlinedInput-notchedOutline {
+        border: none;
+      }
+
+      // MUI picker field
+      .MuiPickersInputBase-input {
+        padding: 0.5rem 0.3rem;
+        font-size: 12px;
+      }
+
+      // Calendar button
+      .MuiIconButton-root {
+        padding: 0.3rem;
+      }
     }
-
-    &:focus-within {
-      border-color: blue;
-    }
-  }
-
-  &__calendar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 18px;
-    flex: 0 0 18px;
-    margin-left: 0.3rem;
-    cursor: pointer;
-  }
-
-  // DATE PICKER
-
-  &__picker {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 0;
-    z-index: 1000;
-
-    background-color: white;
-    border: 1px solid gray;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   // NORMAL HOVER

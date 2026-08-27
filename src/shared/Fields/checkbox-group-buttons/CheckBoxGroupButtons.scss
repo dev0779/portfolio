@@ -1,4 +1,4 @@
-.text-input {
+.checkbox-group {
   width: 100%;
 
   &__label {
@@ -18,108 +18,113 @@
 
   &__info {
     padding-left: 0.3rem;
-    cursor:pointer;
+    cursor: pointer;
   }
 
   &__wrapper {
-    display: flex;
-    align-items: center;
-
-    padding: 0.2rem 0.5rem;
-
+    padding: 1rem;
     border: 1px solid gray;
     border-radius: 8px;
-
     transition: border-color 0.2s ease;
+  }
+  &__inner {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+  }
 
-    input {
-      width: 100%;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-size: 14px;
-      padding-left: 0.3rem;
+  &__group {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+
+    &--row {
+      flex-direction: row;
+      flex-wrap: wrap;
     }
 
-    &:focus-within {
-      border-color: blue;
+    &--column {
+      flex-direction: column;
     }
   }
 
-  // NORMAL HOVER
+  &__required {
+    margin-left: 0.2rem;
+  }
+
+  &__error {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 11px;
+    color: red;
+  }
 
   &:hover {
-    .text-input__label {
+    .radio__label {
       color: black;
     }
 
-    .text-input__wrapper {
+    .radio__wrapper {
       border-color: black;
     }
   }
 
-  // NORMAL FOCUS
-
   &:focus-within {
-    .text-input__label {
+    .radio__label {
       color: blue;
     }
 
-    .text-input__wrapper {
+    .checkbox-group__wrapper {
       border-color: blue;
     }
   }
 
-  // ERROR
   &--error {
-    .text-input__label {
+    .checkbox-group__label {
       color: red;
     }
 
-    .text-input__wrapper {
+    .checkbox-group__wrapper {
       border-color: red;
     }
 
-    // Error + focus
     &:focus-within {
-      .text-input__label {
+      .checkbox-group__label {
         color: red;
       }
 
-      .text-input__wrapper {
+      .checkbox-group__wrapper {
         border-color: blue;
       }
     }
 
-    // Error + hover
     &:hover {
-      .text-input__label {
+      .checkbox-group__label {
         color: red;
       }
 
-      .text-input__wrapper {
+      .checkbox-group__wrapper {
         border-color: red;
       }
     }
   }
 
-  // DISABLED
   &--disabled {
-    .text-input__label {
+    .checkbox-group__label {
       color: gray;
     }
 
-    .text-input__wrapper {
+    .checkbox-group__wrapper {
       border-color: gray;
     }
 
     &:hover,
     &:focus-within {
-      .text-input__label {
+      .checkbox-group__label {
         color: gray;
       }
 
-      .text-input__wrapper {
+      .checkbox-group__wrapper {
         border-color: gray;
       }
     }

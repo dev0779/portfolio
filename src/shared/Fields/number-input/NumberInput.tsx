@@ -59,7 +59,7 @@ export const NumberInput = ({
     validate,
     onChange,
     onBlur,
-    setValueAs: (value) => value === "" ? null : Number(value),
+    setValueAs: (value) => (value === "" ? null : Number(value)),
   });
 
   const iconColor = errors[name]
@@ -78,27 +78,15 @@ export const NumberInput = ({
         disabled ? "number-input--disabled" : ""
       } ${hasError ? "number-input--error" : ""}`}
     >
-      <label
-        className="number-input__label"
-        htmlFor={name}
-      >
+      <label className="number-input__label" htmlFor={name}>
         {label}
 
-        {required && (
-          <span className="number-input__required">
-            *
-          </span>
-        )}
+        {required && <span className="number-input__required">*</span>}
 
         {info && (
           <Tippy content={info}>
             <span className="number-input__info">
-              <Icon
-                name="Info"
-                color="blue"
-                weight="fill"
-                size={16}
-              />
+              <Icon name="Info" color="blue" weight="fill" size={16} />
             </span>
           </Tippy>
         )}
@@ -106,18 +94,10 @@ export const NumberInput = ({
 
       <div
         className={`number-input__wrapper ${
-          errors?.[name]
-            ? "number-input__wrapper--error"
-            : ""
+          errors?.[name] ? "number-input__wrapper--error" : ""
         }`}
       >
-        {svg && (
-          <Icon
-            name={svg}
-            size={16}
-            color={iconColor}
-          />
-        )}
+        {svg && <Icon name={svg} size={16} color={iconColor} />}
 
         <input
           id={name}
@@ -138,9 +118,7 @@ export const NumberInput = ({
       </div>
 
       {errors?.[name] && (
-        <span className="number-input__error">
-           {errors[name]?.message?.toString()}
-           </span>
+        <ErrorMessage>{errors[name]?.message?.toString()}</ErrorMessage>
       )}
     </div>
   );

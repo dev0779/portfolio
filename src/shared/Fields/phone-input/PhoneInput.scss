@@ -1,4 +1,4 @@
-.date-input {
+.phone-input {
   width: 100%;
 
   &__label {
@@ -30,54 +30,29 @@
     border-radius: 8px;
     transition: border-color 0.2s ease;
 
-    input {
-      flex: 1;
-      min-width: 0;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-size: 14px;
-      padding-left: 0.3rem;
-      cursor: pointer;
+    .PhoneInput {
+      .PhoneInputCountry {
+        border-right: 2px solid blue;
+        padding: 0 0.3rem;
+      }
+      .PhoneInputCountryIconImg {
+        border-radius: 4px;
+      }
+      .PhoneInputCountryIcon--border {
+        box-shadow: none;
+        background-color: transparent;
+      }
     }
-
-    &:focus-within {
-      border-color: blue;
-    }
-  }
-
-  &__calendar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 18px;
-    flex: 0 0 18px;
-    margin-left: 0.3rem;
-    cursor: pointer;
-  }
-
-  // DATE PICKER
-
-  &__picker {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    left: 0;
-    z-index: 1000;
-
-    background-color: white;
-    border: 1px solid gray;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
 
   // NORMAL HOVER
 
   &:hover {
-    .date-input__label {
+    .phone-input__label {
       color: black;
     }
 
-    .date-input__wrapper {
+    .phone-input__wrapper {
       border-color: black;
     }
   }
@@ -85,11 +60,11 @@
   // NORMAL FOCUS
 
   &:focus-within {
-    .date-input__label {
+    .phone-input__label {
       color: blue;
     }
 
-    .date-input__wrapper {
+    .phone-input__wrapper {
       border-color: blue;
     }
   }
@@ -97,22 +72,22 @@
   // ERROR
 
   &--error {
-    .date-input__label {
+    .phone-input__label {
       color: red;
     }
 
-    .date-input__wrapper {
+    .phone-input__wrapper {
       border-color: red;
     }
 
     // Error + focus
 
     &:focus-within {
-      .date-input__label {
+      .phone-input__label {
         color: red;
       }
 
-      .date-input__wrapper {
+      .phone-input__wrapper {
         border-color: blue;
       }
     }
@@ -120,11 +95,11 @@
     // Error + hover
 
     &:hover {
-      .date-input__label {
+      .phone-input__label {
         color: red;
       }
 
-      .date-input__wrapper {
+      .phone-input__wrapper {
         border-color: red;
       }
     }
@@ -133,22 +108,22 @@
   // DISABLED
 
   &--disabled {
-    .date-input__label {
+    .phone-input__label {
       color: gray;
     }
 
-    .date-input__wrapper {
+    .phone-input__wrapper {
       border-color: gray;
     }
 
     &,
     &:hover,
     &:focus-within {
-      .date-input__label {
+      .phone-input__label {
         color: gray;
       }
 
-      .date-input__wrapper {
+      .phone-input__wrapper {
         border-color: gray;
       }
     }
