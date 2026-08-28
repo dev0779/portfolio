@@ -53,7 +53,7 @@ type SelectSearchProps<
   onBlur?: (value: TValue | undefined) => void;
 };
 
-export const SelectSearch = <
+export const SelectSearch=<
   TFieldValues extends FieldValues = FieldValues,
   TValue extends SelectSearchValue = string,
 >({
@@ -209,7 +209,7 @@ export const SelectSearch = <
           </div>
         )}
 
-        <div className="select-search__wrapper" onClick={() => setOpen(true)}>
+        {/*         <div className="select-search__wrapper" onClick={() => setOpen(true)}>
           {svg && <Icon name={svg} size={16} color={iconColor} />}
 
           <input
@@ -265,7 +265,7 @@ export const SelectSearch = <
               <Icon name="CaretUp" size={16} color={iconColor} />
             </button>
           )}
-        </div>
+        </div> */}
 
         <InputDropdown
           open={open}
@@ -273,6 +273,68 @@ export const SelectSearch = <
             setOpen(event);
             clearOptions();
           }}
+          trigger={
+            <div
+              className="select-search__wrapper"
+              onClick={() => setOpen(true)}
+            >
+              {svg && <Icon name={svg} size={16} color={iconColor} />}
+
+              <input
+                id={name}
+                name={name}
+                type="text"
+                value={searchValue}
+                placeholder={placeholder}
+                disabled={disabled}
+                readOnly={readOnly}
+                ref={(element) => {
+                  inputRef.current = element;
+                }}
+                onFocus={() => {
+                  if (!disabled && !readOnly) {
+                    setOpen(true);
+                  }
+                }}
+                onBlur={() => {
+                  fieldOnBlur();
+                  onBlur?.(currentFieldValue);
+                }}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setSearchValue(value);
+                  handleOptions(value);
+                }}
+                onKeyDown={handleKeyDown}
+              />
+
+              {currentFieldValue !== undefined && (
+                <button type="button" onClick={handleClear} disabled={disabled}>
+                  <Icon name="X" size={16} color={iconColor} />
+                </button>
+              )}
+              {!open && (
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  disabled={disabled}
+                >
+                  <Icon name="CaretDown" size={16} color={iconColor} />
+                </button>
+              )}
+
+              {open && (
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  disabled={disabled}
+                >
+                  <Icon name="CaretUp" size={16} color={iconColor} />
+                </button>
+              )}
+            </div>
+          }
         >
           <div className="select-search__options">
             {filteredOptions.map((option, index) => (
