@@ -1,8 +1,7 @@
-export { SelectSearch } from './selectors/SelectSearch/SelectSearch';
+export { SelectSearch } from "./selectors/SelectSearch/SelectSearch";
 export { TextareaInput } from "./text-area/TextareaInput";
 export { CheckboxGroup } from "./checkbox-group-buttons/CheckBoxGroupButtons";
 export { PhoneNumberInput } from "./phone-input/PhoneInput";
-export { DateTimeInput } from "./date-time-input/DateTimeInput";
 export { EmailInput } from "./email-input/EmailInput";
 export { NumberInput } from "./number-input/NumberInput";
 export { Checkbox } from "./checkbox/Checkbox";

@@ -8,18 +8,19 @@ import {
   type Path,
 } from "react-hook-form";
 
-import Tippy from "@tippyjs/react";
 import * as PhosphorIcons from "phosphor-react";
 
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
-
-import { InputDropdown } from "../Dropdown/InputDropdown";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 import "./SelectSearch.scss";
 
 import { ErrorMessage } from "../../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
+import isEqual from "lodash/isEqual";
+
+import { InputDropdown } from "../Dropdown/InputDropdown";
 
 export type SelectSearchValue = string | number | object;
 
@@ -53,7 +54,7 @@ type SelectSearchProps<
   onBlur?: (value: TValue | undefined) => void;
 };
 
-export const SelectSearch=<
+export const SelectSearch = <
   TFieldValues extends FieldValues = FieldValues,
   TValue extends SelectSearchValue = string,
 >({
@@ -105,8 +106,8 @@ export const SelectSearch=<
   const currentValue = form ? fieldValue : value;
 
   useEffect(() => {
-    const currentOption = options.find(
-      (option) => option.value === currentValue,
+    const currentOption = options.find((option) =>
+      isEqual(option.value, currentValue),
     );
 
     setSelectedOption(currentOption);
@@ -166,10 +167,7 @@ export const SelectSearch=<
     };
 
     const handleClear = () => {
-      if (!clearable) return;
-
       fieldOnChange(undefined);
-
       setSearchValue("");
       setSelectedOption(undefined);
       setFilteredOptions(options);
@@ -187,6 +185,8 @@ export const SelectSearch=<
           ? themeState.primaryColor
           : themeState.blackColor;
 
+    const listboxId = `${name ?? "select-search"}-listbox`;
+
     return (
       <div
         className={`select-search ${
@@ -200,11 +200,13 @@ export const SelectSearch=<
             {required && <span className="select-search__required">*</span>}
 
             {info && (
-              <Tippy content={info}>
-                <span className="select-search__info">
-                  <Icon name="Info" color="blue" weight="fill" size={16} />
-                </span>
-              </Tippy>
+              <IconTooltip
+                title={info}
+                iconName="Info"
+                iconWeight="regular"
+                iconColor="Black"
+                iconSize={16}
+              ></IconTooltip>
             )}
           </div>
         )}
@@ -239,10 +241,27 @@ export const SelectSearch=<
               handleOptions(value);
             }}
             onKeyDown={handleKeyDown}
+            role="combobox"
+            aria-expanded={open}
+            aria-controls={listboxId}
+            aria-autocomplete="list"
+            aria-activedescendant={
+              highlightedIndex >= 0
+                ? `${listboxId}-option-${highlightedIndex}`
+                : undefined
+            }
           />
 
           {currentFieldValue !== undefined && (
-            <button type="button" onClick={handleClear} disabled={disabled}>
+            <button
+              type="button"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleClear();
+              }}
+              disabled={disabled}
+              className="select-search__button"
+            >
               <Icon name="X" size={16} color={iconColor} />
             </button>
           )}
@@ -251,6 +270,7 @@ export const SelectSearch=<
               type="button"
               onClick={() => setOpen(true)}
               disabled={disabled}
+              className="select-search__button"
             >
               <Icon name="CaretDown" size={16} color={iconColor} />
             </button>
@@ -261,6 +281,7 @@ export const SelectSearch=<
               type="button"
               onClick={() => setOpen(true)}
               disabled={disabled}
+              className="select-search__button"
             >
               <Icon name="CaretUp" size={16} color={iconColor} />
             </button>
@@ -307,10 +328,27 @@ export const SelectSearch=<
                   handleOptions(value);
                 }}
                 onKeyDown={handleKeyDown}
+                role="combobox"
+                aria-expanded={open}
+                aria-controls={listboxId}
+                aria-autocomplete="list"
+                aria-activedescendant={
+                  highlightedIndex >= 0
+                    ? `${listboxId}-option-${highlightedIndex}`
+                    : undefined
+                }
               />
 
               {currentFieldValue !== undefined && (
-                <button type="button" onClick={handleClear} disabled={disabled}>
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleClear();
+                  }}
+                  disabled={disabled}
+                  className="select-search__button"
+                >
                   <Icon name="X" size={16} color={iconColor} />
                 </button>
               )}
@@ -319,6 +357,7 @@ export const SelectSearch=<
                   type="button"
                   onClick={() => setOpen(true)}
                   disabled={disabled}
+                  className="select-search__button"
                 >
                   <Icon name="CaretDown" size={16} color={iconColor} />
                 </button>
@@ -327,8 +366,9 @@ export const SelectSearch=<
               {open && (
                 <button
                   type="button"
-                  onClick={() => setOpen(true)}
+                  onClick={() => setOpen(false)}
                   disabled={disabled}
+                  className="select-search__button"
                 >
                   <Icon name="CaretUp" size={16} color={iconColor} />
                 </button>
@@ -336,44 +376,54 @@ export const SelectSearch=<
             </div>
           }
         >
-          <div className="select-search__options">
-            {filteredOptions.map((option, index) => (
-              <button
-                className={`select-search__option ${
-                  selectedOption?.label === option.label
-                    ? "select-search__selected"
-                    : ""
-                }
+          <div className="select-search__options" id={listboxId} role="listbox">
+            {filteredOptions.map((option, index) => {
+              const isSelected = isEqual(selectedOption?.value, option.value);
+              return (
+                <button
+                  className={`select-search__option ${
+                    isSelected ? "select-search__selected" : ""
+                  }
                   ${
                     highlightedIndex === index
                       ? "select-search__highlighted"
                       : ""
                   }`}
-                key={String(option.value)}
-                type="button"
-                disabled={option.disabled}
-                onMouseDown={(event) => {
-                  event.preventDefault();
-                  handleSelect(option);
-                }}
-              >
-                {selectedOption?.label === option.label && (
-                  <Icon
-                    name="Check"
-                    color={
-                      highlightedIndex === index
-                        ? themeState.whiteColor
-                        : themeState.blackColor
-                    }
-                    hoverColor={themeState.whiteColor}
-                    weight="bold"
-                    size={16}
-                    className="select-search__selected"
-                  />
-                )}
-                <span>{option.label}</span>
-              </button>
-            ))}
+                  id={`${listboxId}-option-${index}`}
+                  key={index}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  disabled={option.disabled}
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                    handleSelect(option);
+                  }}
+                  onMouseEnter={() => {
+                    setHighlightedIndex(index);
+                  }}
+                  ref={(element) => {
+                    optionRefs.current[index] = element;
+                  }}
+                >
+                  {isSelected && (
+                    <Icon
+                      name="Check"
+                      color={
+                        highlightedIndex === index
+                          ? themeState.whiteColor
+                          : themeState.blackColor
+                      }
+                      hoverColor={themeState.whiteColor}
+                      weight="bold"
+                      size={16}
+                      className="select-search__selected"
+                    />
+                  )}
+                  <span>{option.label}</span>
+                </button>
+              );
+            })}
             {filteredOptions.length === 0 && (
               <ErrorMessage>No Results Found</ErrorMessage>
             )}
