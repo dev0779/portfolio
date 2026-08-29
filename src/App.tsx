@@ -23,6 +23,7 @@ import {
 } from "./shared/Fields";
 import { GlobalThemeContext } from "./theme/GlobalThemeProvider";
 import { useContext } from "react";
+import { Loader } from "./shared/Loader/Loader";
 
 /* const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -80,8 +81,13 @@ function App() {
       >
         Toggle Theme
       </button>
+      
       <FormProvider {...formMethods}>
         <span className="block">
+      {/*     <Loader size="xs" text={ true} />
+          <Loader size="s" text={ true} />
+          <Loader size="l" text={true} /> */}
+
           <SelectSearch
             name="search"
             label="search"
