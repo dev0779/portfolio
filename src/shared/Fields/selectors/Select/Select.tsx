@@ -36,24 +36,17 @@ type SelectProps<
   name?: Path<TFieldValues>;
   options: SelectOption<TValue>[];
   value?: TValue;
-
   label?: string;
   info?: string;
   placeholder?: string;
-
   required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
-
   clearable?: boolean;
-
   svg?: keyof typeof PhosphorIcons;
-
   form?: boolean;
-
   interactive?: boolean;
   tooltipChildren?: React.ReactNode;
-
   loading?: boolean;
 
   onChange?: (value: TValue | undefined) => void;
@@ -67,26 +60,17 @@ export const Select = <
   name,
   options,
   value,
-
   label,
   info,
   placeholder = "Select an option",
-
   required = false,
   disabled = false,
   readOnly = false,
-
-  clearable = false,
-
   svg,
-
   form = true,
-
   interactive,
   tooltipChildren,
-
   loading,
-
   onChange,
   onBlur,
 }: SelectProps<TFieldValues, TValue>) => {
@@ -143,42 +127,34 @@ export const Select = <
       switch (event.key) {
         case "ArrowDown":
           event.preventDefault();
-
           if (!open) {
             setOpen(true);
           } else {
             moveDown();
           }
-
           break;
 
         case "ArrowUp":
           event.preventDefault();
-
           if (!open) {
             setOpen(true);
           } else {
             moveUp();
           }
-
           break;
 
         case "Enter":
           event.preventDefault();
-
           if (!open) {
             setOpen(true);
             return;
           }
-
           if (highlightedIndex >= 0) {
             const option = options[highlightedIndex];
-
             if (!option.disabled) {
               handleSelect(option);
             }
           }
-
           break;
 
         case "Escape":
@@ -197,9 +173,7 @@ export const Select = <
       if (option.disabled || readOnly) {
         return;
       }
-
       fieldOnChange(option.value);
-
       setDisplayValue(option.label);
       setSelectedOption(option);
       setOpen(false);
