@@ -1,0 +1,49 @@
+.loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  &__spinner {
+    display: inline-flex;
+    animation: loader-spin 1s linear infinite;
+  }
+
+  &__text {
+    display: inline-block;
+  }
+
+  &__main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    &__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    &__spinner {
+      display: inline-flex;
+      animation: loader-spin 1s linear infinite;
+    }
+
+    &__text {
+      display: inline-block;
+    }
+  }
+}
+
+@keyframes loader-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
