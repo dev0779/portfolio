@@ -19,7 +19,7 @@ export function TooltipProvider({ children }: TooltipProviderProps) {
 
     const attachTooltips = () => {
       const elements = rootRef.current!.querySelectorAll<HTMLElement>(
-        "[tooltip], [tooltipcontent]"
+        "[tooltip], [options]"
       );
       elements.forEach((el) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

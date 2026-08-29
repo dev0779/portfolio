@@ -2,9 +2,10 @@ import { useRef, useState, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import "./PasswordInput.scss";
+import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import Tippy from "@tippyjs/react";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface PasswordInputProps {
   name: string;
@@ -20,6 +21,9 @@ interface PasswordInputProps {
   validate?: RegisterOptions["validate"];
   required?: boolean | string;
   error?: string;
+  svg?: keyof typeof PhosphorIcons;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 }
 
 export const PasswordInput = ({
@@ -35,6 +39,9 @@ export const PasswordInput = ({
   readOnly,
   defaultValue,
   error,
+  svg,
+  interactive,
+  tooltipChildren,
 }: PasswordInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -70,16 +77,24 @@ export const PasswordInput = ({
       <label className="text-input__label" htmlFor={name}>
         {required ? `${label} * ` : label}
         {info && (
-          <Tippy content={info}>
-            <span className="text-input__info">
-              <Icon name="Info" color="blue" weight="fill" size={16} />
-            </span>
-          </Tippy>
+          <IconTooltip
+            name="Info"
+            weight="regular"
+            color="Black"
+            size={16}
+            tooltip={info}
+            interactive={interactive}
+            className="tool"
+            popoverColor="black"
+          >
+            {tooltipChildren}
+          </IconTooltip>
         )}
       </label>
       <div
         className={`text-input__wrapper  ${errors?.[name] ? "text-input__wrapper--error" : ""}`}
       >
+        {svg && <Icon name={svg || "Key"} size={16} color={iconColor} />}
         <input
           id={name}
           type={showPassword ? "text" : "password"}

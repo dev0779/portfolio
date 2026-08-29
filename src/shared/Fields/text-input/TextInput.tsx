@@ -6,7 +6,7 @@ import "./TextInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import Tippy from "@tippyjs/react";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface TextInputProps {
   name: string;
@@ -23,6 +23,8 @@ interface TextInputProps {
   required?: boolean | string;
   error?: string;
   svg?: keyof typeof PhosphorIcons;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 }
 
 export const TextInput = ({
@@ -39,6 +41,8 @@ export const TextInput = ({
   defaultValue,
   svg,
   error,
+  interactive,
+  tooltipChildren,
 }: TextInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -73,11 +77,18 @@ export const TextInput = ({
       <label className="text-input__label" htmlFor={name}>
         {required ? `${label} * ` : label}
         {info && (
-          <Tippy content={info}>
-            <span className="text-input__info">
-              <Icon name="Info" color="blue" weight="fill" size={16} />
-            </span>
-          </Tippy>
+          <IconTooltip
+            name="Info"
+            weight="regular"
+            color="Black"
+            size={16}
+            tooltip={info}
+            interactive={interactive}
+            className="tool"
+            popoverColor="black"
+          >
+            {tooltipChildren}
+          </IconTooltip>
         )}
       </label>
       <div

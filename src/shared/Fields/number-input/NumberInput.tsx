@@ -5,7 +5,7 @@ import "./NumberInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import Tippy from "@tippyjs/react";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface NumberInputProps {
   name: string;
@@ -25,6 +25,8 @@ interface NumberInputProps {
   step?: number;
   error?: string;
   svg?: keyof typeof PhosphorIcons;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactElement;
 }
 
 export const NumberInput = ({
@@ -44,6 +46,8 @@ export const NumberInput = ({
   step,
   svg,
   error,
+  interactive,
+  tooltipChildren,
 }: NumberInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -84,11 +88,18 @@ export const NumberInput = ({
         {required && <span className="number-input__required">*</span>}
 
         {info && (
-          <Tippy content={info}>
-            <span className="number-input__info">
-              <Icon name="Info" color="blue" weight="fill" size={16} />
-            </span>
-          </Tippy>
+          <IconTooltip
+            name="Info"
+            weight="regular"
+            color="Black"
+            size={16}
+            tooltip={info}
+            interactive={interactive}
+            className="tool"
+            popoverColor="black"
+          >
+            {tooltipChildren}
+          </IconTooltip>
         )}
       </label>
 

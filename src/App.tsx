@@ -21,6 +21,8 @@ import {
   TextareaInput,
   SelectSearch,
 } from "./shared/Fields";
+import { GlobalThemeContext } from "./theme/GlobalThemeProvider";
+import { useContext } from "react";
 
 /* const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -37,6 +39,8 @@ function App() {
   const formMethods = useForm({
     mode: "onBlur",
   });
+
+  const { toggle } = useContext(GlobalThemeContext);
 
   const customerOptions = [
     {
@@ -69,14 +73,25 @@ function App() {
 
   return (
     <span className="padding">
+      <button
+        tooltip="hello button"
+        className="mt-4 p-2 bg-blue-500 text-white rounded"
+        onClick={toggle}
+      >
+        Toggle Theme
+      </button>
       <FormProvider {...formMethods}>
         <span className="block">
-                    <SelectSearch name="search" label="search" options={ selectOptions } />
+          <SelectSearch
+            name="search"
+            label="search"
+            info="hello"
+            options={selectOptions}
+          />
           <TextInput
             name="Username"
             label="User name"
             placeholder="Enter full name"
-            error="true"
             info="text info"
             required
           />
@@ -85,6 +100,7 @@ function App() {
             label="password"
             placeholder="enter your password"
             info="password"
+            svg="Key"
             required
           />
           <TextInput
@@ -106,11 +122,12 @@ function App() {
           />
 
           <Select
-            name="customerType"
+            name="selectorType"
             label="Customer Type"
             placeholder="Choose customer type"
             options={selectOptions}
             info="hello im a info"
+            form
             required
           />
           <NumberInput
@@ -142,10 +159,14 @@ function App() {
             name="tecnologies"
             label="add tecnologies"
             options={tecnologyOptions}
+            info="some checkboxes"
           />
 
-          <TextareaInput name="reason" label="reasons"></TextareaInput>
-
+          <TextareaInput
+            info="many reasons"
+            name="reason"
+            label="reasons"
+          ></TextareaInput>
         </span>
       </FormProvider>
       {/*       <div className="p-4">

@@ -5,11 +5,10 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import Tippy from "@tippyjs/react";
-import { Icon } from "@/shared/Icons/Icon";
 import { Checkbox } from "../checkbox/Checkbox";
 import "./CheckBoxGroupButtons.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 export type CheckboxGroupValue = string | number;
 
@@ -18,6 +17,8 @@ export type CheckboxGroupOption<TValue extends CheckboxGroupValue = string> = {
   value: TValue;
   disabled?: boolean;
   info?: string;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 };
 
 type CheckboxGroupProps<
@@ -31,9 +32,10 @@ type CheckboxGroupProps<
   required?: boolean;
   disabled?: boolean;
   direction?: "row" | "column";
-
   onChange?: (values: TValue[]) => void;
   onBlur?: (values: TValue[]) => void;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactElement;
 };
 
 export const CheckboxGroup = <
@@ -49,6 +51,8 @@ export const CheckboxGroup = <
   direction = "column",
   onChange,
   onBlur,
+  interactive,
+  tooltipChildren,
 }: CheckboxGroupProps<TFieldValues, TValue>) => {
   const { control } = useFormContext();
 
@@ -89,11 +93,18 @@ export const CheckboxGroup = <
                 )}
 
                 {info && (
-                  <Tippy content={info}>
-                    <span className="checkbox-group__info">
-                      <Icon name="Info" color="blue" weight="fill" size={16} />
-                    </span>
-                  </Tippy>
+                  <IconTooltip
+                    name="Info"
+                    weight="regular"
+                    color="Black"
+                    size={16}
+                    tooltip={info}
+                    interactive={interactive}
+                    className="tool"
+                    popoverColor="black"
+                  >
+                    {tooltipChildren}
+                  </IconTooltip>
                 )}
               </div>
             )}

@@ -5,7 +5,7 @@ import "./EmailInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import Tippy from "@tippyjs/react";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface EmailInputProps {
   name: string;
@@ -22,6 +22,8 @@ interface EmailInputProps {
   required?: boolean | string;
   error?: string;
   svg?: keyof typeof PhosphorIcons;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 }
 
 export const EmailInput = ({
@@ -38,6 +40,8 @@ export const EmailInput = ({
   defaultValue,
   svg,
   error,
+  interactive,
+  tooltipChildren,
 }: EmailInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -89,11 +93,18 @@ export const EmailInput = ({
         {required && <span className="email-input__required">*</span>}
 
         {info && (
-          <Tippy content={info}>
-            <span className="email-input__info">
-              <Icon name="Info" color="blue" weight="fill" size={16} />
-            </span>
-          </Tippy>
+          <IconTooltip
+            name="Info"
+            weight="regular"
+            color="Black"
+            size={16}
+            tooltip={info}
+            interactive={interactive}
+            className="tool"
+            popoverColor="black"
+          >
+            {tooltipChildren}
+          </IconTooltip>
         )}
       </label>
 

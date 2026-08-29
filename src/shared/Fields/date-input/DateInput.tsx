@@ -8,8 +8,8 @@ import "./DateInput.scss";
 
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import Tippy from "@tippyjs/react";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface DateInputProps {
   name: string;
@@ -27,6 +27,8 @@ interface DateInputProps {
   };
   onChange?: (value: string) => void;
   onBlur?: (value: string) => void;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 }
 
 export const DateInput = ({
@@ -41,6 +43,8 @@ export const DateInput = ({
   disabledDates,
   onChange,
   onBlur,
+  interactive,
+  tooltipChildren,
 }: DateInputProps): JSX.Element => {
   const { control } = useFormContext();
   const { themeState } = useTheme();
@@ -97,11 +101,18 @@ export const DateInput = ({
               {required ? `${label} * ` : label}
 
               {info && (
-                <Tippy content={info}>
-                  <span className="date-input__info">
-                    <Icon name="Info" color="blue" weight="fill" size={16} />
-                  </span>
-                </Tippy>
+                <IconTooltip
+                  name="Info"
+                  weight="regular"
+                  color="Black"
+                  size={16}
+                  tooltip={info}
+                  interactive={interactive}
+                  className="tool"
+                  popoverColor="black"
+                >
+                  {tooltipChildren}
+                </IconTooltip>
               )}
             </label>
 

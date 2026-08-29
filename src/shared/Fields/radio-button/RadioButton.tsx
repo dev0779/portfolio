@@ -2,7 +2,8 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 
 import "./RadioButton.scss";
-import Tippy from "@tippyjs/react";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+
 
 export type RadioValue = string | number | boolean;
 
@@ -14,6 +15,8 @@ type RadioProps<T extends RadioValue = string> = {
   checked: boolean;
   disabled?: boolean;
   error?: boolean;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
   onChange: (value: T) => void;
   onBlur: (value: T) => void;
 };
@@ -28,6 +31,8 @@ export const Radio = <T extends RadioValue>({
   error = false,
   onChange,
   onBlur,
+  interactive,
+  tooltipChildren,
 }: RadioProps<T>) => {
   const { themeState } = useTheme();
 
@@ -65,11 +70,18 @@ export const Radio = <T extends RadioValue>({
       <span className="radio-button__text">
         {label}
         {info && (
-          <Tippy content={info}>
-            <span className="radio-button__info">
-              <Icon name="Info" color="blue" weight="fill" size={16} />
-            </span>
-          </Tippy>
+          <IconTooltip
+            name="Info"
+            weight="regular"
+            color="Black"
+            size={16}
+            tooltip={info}
+            interactive={interactive}
+            className="tool"
+            popoverColor="black"
+          >
+            {tooltipChildren}
+          </IconTooltip>
         )}
       </span>
     </label>

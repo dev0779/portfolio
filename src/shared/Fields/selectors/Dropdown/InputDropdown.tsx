@@ -20,7 +20,6 @@ export const InputDropdown = ({
     <Popover.Root
       open={open}
       onOpenChange={(value) => {
-        console.log("Radix open:", value);
         onOpenChange(value);
       }}
     >
@@ -33,6 +32,9 @@ export const InputDropdown = ({
           align="start"
           sideOffset={0}
           avoidCollisions
+          onOpenAutoFocus={(event) => {
+            event.preventDefault();
+          }}
         >
           {children}
         </Popover.Content>

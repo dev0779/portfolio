@@ -3,7 +3,7 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useMemo, useRef, type JSX } from "react";
 import { useFormContext } from "react-hook-form";
 import "./Checkbox.scss";
-import Tippy from "@tippyjs/react";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface CheckboxProps {
   name: string;
@@ -15,6 +15,8 @@ interface CheckboxProps {
   hideError?: boolean;
   value?: string;
   checked?: boolean;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
   onChange?: (checked: boolean) => void;
   onBlur?: (checked: boolean) => void;
 }
@@ -30,6 +32,8 @@ export const Checkbox = ({
   checked,
   onChange,
   onBlur,
+  interactive,
+  tooltipChildren,
 }: CheckboxProps): JSX.Element => {
   const { themeState } = useTheme();
   const {
@@ -103,11 +107,18 @@ export const Checkbox = ({
           <span>
             {labelToRender}
             {info && (
-              <Tippy content={info}>
-                <span className="checkbox__info">
-                  <Icon name="Info" color="blue" weight="fill" size={16} />
-                </span>
-              </Tippy>
+              <IconTooltip
+                name="Info"
+                weight="regular"
+                color="Black"
+                size={16}
+                tooltip={info}
+                interactive={interactive}
+                className="tool"
+                popoverColor="black"
+              >
+                {tooltipChildren}
+              </IconTooltip>
             )}
           </span>
         </label>

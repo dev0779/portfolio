@@ -8,9 +8,9 @@ import {
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import Tippy from "@tippyjs/react";
 import * as PhosphorIcons from "phosphor-react";
 import "./TextareaInput.scss";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 interface TextareaInputProps {
   name: string;
@@ -30,6 +30,8 @@ interface TextareaInputProps {
   minLength?: number;
   error?: string;
   svg?: keyof typeof PhosphorIcons;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 }
 
 export const TextareaInput = ({
@@ -50,6 +52,8 @@ export const TextareaInput = ({
   minLength,
   error,
   svg,
+  interactive,
+  tooltipChildren
 }: TextareaInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -90,18 +94,19 @@ export const TextareaInput = ({
         htmlFor={name}
       >
         {required ? `${label} *` : label}
-
         {info && (
-          <Tippy content={info}>
-            <span className="textarea-input__info">
-              <Icon
-                name="Info"
-                color="blue"
-                weight="fill"
-                size={16}
-              />
-            </span>
-          </Tippy>
+          <IconTooltip
+            name="Info"
+            weight="regular"
+            color="Black"
+            size={16}
+            tooltip={info}
+            interactive={interactive}
+            className="tool"
+            popoverColor="black"
+          >
+            {tooltipChildren}
+          </IconTooltip>
         )}
       </label>
 

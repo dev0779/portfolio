@@ -8,9 +8,8 @@ import {
 import { Radio, type RadioValue } from "../radio-button/RadioButton";
 
 import "./RadioGroupButtons.scss";
-import Tippy from "@tippyjs/react";
-import { Icon } from "@/shared/Icons/Icon";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
+import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
 
 export type RadioOption<T extends RadioValue = string> = {
   label: string;
@@ -32,6 +31,8 @@ type RadioButtonsProps<
   direction?: "row" | "column";
   onChange?: (value: TValue) => void;
   onBlur?: (value: TValue | "") => void;
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
 };
 
 export const RadioGroupButtons = <
@@ -47,6 +48,8 @@ export const RadioGroupButtons = <
   direction = "row",
   onChange,
   onBlur,
+  interactive,
+  tooltipChildren,
 }: RadioButtonsProps<TFieldValues, TValue>) => {
   const { control } = useFormContext();
 
@@ -69,11 +72,18 @@ export const RadioGroupButtons = <
 
               {required && <span className="radio__required">*</span>}
               {info && (
-                <Tippy content={info}>
-                  <span className="radio__info">
-                    <Icon name="Info" color="blue" weight="fill" size={16} />
-                  </span>
-                </Tippy>
+                <IconTooltip
+                  name="Info"
+                  weight="regular"
+                  color="Black"
+                  size={16}
+                  tooltip={info}
+                  interactive={interactive}
+                  className="tool"
+                  popoverColor="black"
+                >
+                  {tooltipChildren}
+                </IconTooltip>
               )}
             </div>
           )}

@@ -49,7 +49,9 @@ type SelectSearchProps<
   svg?: keyof typeof PhosphorIcons;
 
   form?: boolean;
-
+  interactive?: boolean;
+  tooltipChildren?: React.ReactNode;
+  loading?: boolean;
   onChange?: (value: TValue | undefined) => void;
   onBlur?: (value: TValue | undefined) => void;
 };
@@ -67,11 +69,13 @@ export const SelectSearch = <
   required = false,
   disabled = false,
   readOnly = false,
-  clearable = false,
   svg,
   form = true,
   onChange,
   onBlur,
+  interactive,
+  tooltipChildren,
+  loading,
 }: SelectSearchProps<TFieldValues, TValue>) => {
   const { themeState } = useTheme();
 
@@ -200,93 +204,23 @@ export const SelectSearch = <
             {required && <span className="select-search__required">*</span>}
 
             {info && (
-              <IconTooltip
-                title={info}
-                iconName="Info"
-                iconWeight="regular"
-                iconColor="Black"
-                iconSize={16}
-              ></IconTooltip>
+              <>
+                <IconTooltip
+                  name="Info"
+                  weight="regular"
+                  color="Black"
+                  size={16}
+                  tooltip={info}
+                  interactive={interactive}
+                  className="tool"
+                  popoverColor="black"
+                >
+                  {tooltipChildren}
+                </IconTooltip>
+              </>
             )}
           </div>
         )}
-
-        {/*         <div className="select-search__wrapper" onClick={() => setOpen(true)}>
-          {svg && <Icon name={svg} size={16} color={iconColor} />}
-
-          <input
-            id={name}
-            name={name}
-            type="text"
-            value={searchValue}
-            placeholder={placeholder}
-            disabled={disabled}
-            readOnly={readOnly}
-            ref={(element) => {
-              inputRef.current = element;
-            }}
-            onFocus={() => {
-              if (!disabled && !readOnly) {
-                setOpen(true);
-              }
-            }}
-            onBlur={() => {
-              fieldOnBlur();
-              onBlur?.(currentFieldValue);
-            }}
-            onChange={(e) => {
-              const value = e.target.value;
-
-              setSearchValue(value);
-              handleOptions(value);
-            }}
-            onKeyDown={handleKeyDown}
-            role="combobox"
-            aria-expanded={open}
-            aria-controls={listboxId}
-            aria-autocomplete="list"
-            aria-activedescendant={
-              highlightedIndex >= 0
-                ? `${listboxId}-option-${highlightedIndex}`
-                : undefined
-            }
-          />
-
-          {currentFieldValue !== undefined && (
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                handleClear();
-              }}
-              disabled={disabled}
-              className="select-search__button"
-            >
-              <Icon name="X" size={16} color={iconColor} />
-            </button>
-          )}
-          {!open && (
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              disabled={disabled}
-              className="select-search__button"
-            >
-              <Icon name="CaretDown" size={16} color={iconColor} />
-            </button>
-          )}
-
-          {open && (
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              disabled={disabled}
-              className="select-search__button"
-            >
-              <Icon name="CaretUp" size={16} color={iconColor} />
-            </button>
-          )}
-        </div> */}
 
         <InputDropdown
           open={open}
