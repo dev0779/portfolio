@@ -8,6 +8,7 @@ interface IconProps {
   hoverColor?: string;
   weight?: "thin" | "light" | "regular" | "bold" | "fill";
   className?: string;
+  onClick?: () => void;
 }
 
 export const Icon: React.FC<IconProps> = ({
@@ -17,6 +18,7 @@ export const Icon: React.FC<IconProps> = ({
   hoverColor,
   weight = "regular",
   className,
+  onClick,
 }: IconProps) => {
   const IconComponent = PhosphorIcons[name] as React.FC<PhosphorIconProps>;
   if (!IconComponent) return null;
@@ -31,6 +33,7 @@ export const Icon: React.FC<IconProps> = ({
           "--icon-hover-color": hoverColor,
         } as React.CSSProperties
       }
+      onClick={onClick}
     />
   );
 };
