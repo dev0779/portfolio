@@ -20,6 +20,7 @@ interface IconTooltip {
   popoverColor?: string;
   className?: string;
   arrow?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -39,21 +40,26 @@ export const IconTooltip = ({
   className,
   arrow = true,
   onClick,
+  disabled,
 }: IconTooltip): JSX.Element => {
   if (interactive) {
     return (
       <Popover.Root
         onOpenChange={(open) => {
-          if (open) {
+          if (open && !disabled) {
             onClick?.();
           }
         }}
       >
         <Popover.Trigger asChild>
-          <span className="icon-tooltip" tooltip="click to open">
+          <span
+            className={`icon-tooltip ${disabled ? "icon-tooltip--disabled" : ""}`}
+            tooltip="click to open"
+            options={JSON.stringify(options)}
+          >
             <Icon
               name={name as React.ComponentProps<typeof Icon>["name"]}
-              color={color}
+              color={disabled ? "gray" : color}
               hoverColor={hoverColor}
               weight={weight}
               size={size}
@@ -83,14 +89,14 @@ export const IconTooltip = ({
   return (
     <>
       <span
-        className="icon-tooltip"
+        className={`icon-tooltip ${disabled ? "icon-tooltip--disabled" : ""}`}
         tooltip={tooltip}
         options={JSON.stringify(options)}
-        onClick={onClick}
+        onClick={disabled ? undefined : onClick}
       >
         <Icon
           name={name as React.ComponentProps<typeof Icon>["name"]}
-          color={color}
+          color={disabled ? "gray" : color}
           hoverColor={hoverColor}
           weight={weight}
           size={size}

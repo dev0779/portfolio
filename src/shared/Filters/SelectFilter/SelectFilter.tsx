@@ -10,20 +10,17 @@ import "./Select.scss";
 import { ErrorMessage } from "../../Fields/fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
 import { InputDropdown } from "../../Fields/selectors/Dropdown/InputDropdown";
+import { Loader } from "@/shared/Loader/Loader";
 
 export type SelectValue = string | number | object;
 
-export type SelectOption<
-  TValue extends SelectValue = string,
-> = {
+export type SelectOption<TValue extends SelectValue = string> = {
   label: string;
   value: TValue;
   disabled?: boolean;
 };
 
-export type SelectFilterProps<
-  TValue extends SelectValue = string,
-> = {
+export type SelectFilterProps<TValue extends SelectValue = string> = {
   options: SelectOption<TValue>[];
   value?: TValue;
   label?: string;
@@ -36,13 +33,12 @@ export type SelectFilterProps<
   interactive?: boolean;
   tooltipChildren?: React.ReactNode;
   loading?: boolean;
+  apiError?: string;
   onChange?: (value: TValue | undefined) => void;
   onBlur?: (value: TValue | undefined) => void;
 };
 
-export const SelectFilter = <
-  TValue extends SelectValue = string,
->({
+export const SelectFilter = <TValue extends SelectValue = string>({
   options,
   value,
   label,
@@ -53,7 +49,8 @@ export const SelectFilter = <
   svg,
   interactive,
   tooltipChildren,
-  loading = false,
+  loading,
+  apiError,
   onChange,
   onBlur,
 }: SelectFilterProps<TValue>) => {
@@ -86,10 +83,16 @@ export const SelectFilter = <
     setSelectedOption(currentOption);
   }, [value, options]);
 
-  const handleSelect = (
-    option: SelectOption<TValue>,
-  ) => {
-    if (option.disabled || readOnly) {
+  useEffect(() => {
+    if (loading) {
+      setOpen(false);
+    }
+  }, [loading]);
+
+  const isDisabled = disabled || loading || !!apiError || options.length === 0;
+
+  const handleSelect = (option: SelectOption<TValue>) => {
+    if (isDisabled || option.disabled || readOnly) {
       return;
     }
 
@@ -102,9 +105,7 @@ export const SelectFilter = <
 
   const findOptionByKey = (key: string) => {
     const index = options.findIndex((option) =>
-      option.label
-        .toLowerCase()
-        .startsWith(key.toLowerCase()),
+      option.label.toLowerCase().startsWith(key.toLowerCase()),
     );
 
     if (index !== -1) {
@@ -116,10 +117,8 @@ export const SelectFilter = <
     }
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-  ) => {
-    if (disabled) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isDisabled) {
       return;
     }
 
@@ -176,7 +175,7 @@ export const SelectFilter = <
     }
   };
 
-  const iconColor = disabled
+  const iconColor = isDisabled
     ? themeState.grayColor
     : isFocused
       ? themeState.primaryColor
@@ -185,11 +184,7 @@ export const SelectFilter = <
   const listboxId = "select-filter-listbox";
 
   return (
-    <div
-      className={`select ${
-        disabled ? "select--disabled" : ""
-      }`}
-    >
+    <div className={`select ${isDisabled ? "select--disabled" : ""}`}>
       {label && (
         <div className="select__label">
           {label}
@@ -214,13 +209,14 @@ export const SelectFilter = <
       <InputDropdown
         open={open}
         onOpenChange={(event) => {
+          if (isDisabled) return;
           setOpen(event);
         }}
         trigger={
           <div
             ref={selectRef}
             className="select__wrapper"
-            tabIndex={disabled ? -1 : 0}
+            tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
             aria-controls={listboxId}
@@ -230,7 +226,7 @@ export const SelectFilter = <
                 : undefined
             }
             onFocus={() => {
-              if (!disabled) {
+              if (!isDisabled) {
                 setIsFocused(true);
               }
             }}
@@ -239,125 +235,94 @@ export const SelectFilter = <
               onBlur?.(value);
             }}
             onClick={() => {
-              if (!disabled && !readOnly) {
-                setOpen(true);
-              }
+              if (isDisabled && readOnly) return;
+              setOpen(true);
             }}
             onKeyDown={handleKeyDown}
           >
-            {svg && (
-              <Icon
-                name={svg}
-                size={16}
-                color={iconColor}
-              />
+            {svg && <Icon name={svg} size={16} color={iconColor} />}
+            {loading && <Loader size="s" text={true} />}
+            {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
+            {!loading && !apiError && (
+              <>
+                <input
+                  id="select-filter-input"
+                  type="text"
+                  value={selectedOption?.label ?? ""}
+                  placeholder={placeholder}
+                  disabled={isDisabled}
+                  readOnly
+                  tabIndex={-1}
+                />
+
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+
+                    if (!isDisabled && !readOnly) {
+                      setOpen((current) => !current);
+                    }
+                  }}
+                  disabled={isDisabled}
+                  className="select__button"
+                  tabIndex={-1}
+                >
+                  <Icon
+                    name={open ? "CaretUp" : "CaretDown"}
+                    size={16}
+                    color={iconColor}
+                  />
+                </button>
+              </>
             )}
-
-            <input
-              id="select-filter-input"
-              type="text"
-              value={selectedOption?.label ?? ""}
-              placeholder={placeholder}
-              disabled={disabled}
-              readOnly
-              tabIndex={-1}
-            />
-
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-
-                if (!disabled && !readOnly) {
-                  setOpen((current) => !current);
-                }
-              }}
-              disabled={disabled}
-              className="select__button"
-              tabIndex={-1}
-            >
-              <Icon
-                name={open ? "CaretUp" : "CaretDown"}
-                size={16}
-                color={iconColor}
-              />
-            </button>
           </div>
         }
       >
-        <div
-          className="select__options"
-          id={listboxId}
-          role="listbox"
-        >
-          {loading ? (
-            <div className="select__loading">
-              Loading...
-            </div>
-          ) : (
-            <>
-              {options.map((option, index) => {
-                const isSelected = isEqual(
-                  selectedOption?.value,
-                  option.value,
-                );
+        <div className="select__options" id={listboxId} role="listbox">
+          {options.map((option, index) => {
+            const isSelected = isEqual(selectedOption?.value, option.value);
 
-                return (
-                  <button
-                    key={index}
-                    id={`${listboxId}-option-${index}`}
-                    type="button"
-                    role="option"
-                    aria-selected={isSelected}
-                    disabled={option.disabled}
-                    className={`select__option ${
-                      isSelected
-                        ? "select__selected"
-                        : ""
-                    } ${
+            return (
+              <button
+                key={index}
+                id={`${listboxId}-option-${index}`}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                disabled={option.disabled}
+                className={`select__option ${
+                  isSelected ? "select__selected" : ""
+                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  handleSelect(option);
+                }}
+                onMouseEnter={() => {
+                  setHighlightedIndex(index);
+                }}
+                ref={(element) => {
+                  optionRefs.current[index] = element;
+                }}
+              >
+                {isSelected && (
+                  <Icon
+                    name="Check"
+                    color={
                       highlightedIndex === index
-                        ? "select__highlighted"
-                        : ""
-                    }`}
-                    onMouseDown={(event) => {
-                      event.preventDefault();
-                      handleSelect(option);
-                    }}
-                    onMouseEnter={() => {
-                      setHighlightedIndex(index);
-                    }}
-                    ref={(element) => {
-                      optionRefs.current[index] = element;
-                    }}
-                  >
-                    {isSelected && (
-                      <Icon
-                        name="Check"
-                        color={
-                          highlightedIndex === index
-                            ? themeState.whiteColor
-                            : themeState.blackColor
-                        }
-                        hoverColor={
-                          themeState.whiteColor
-                        }
-                        weight="bold"
-                        size={16}
-                      />
-                    )}
+                        ? themeState.whiteColor
+                        : themeState.blackColor
+                    }
+                    hoverColor={themeState.whiteColor}
+                    weight="bold"
+                    size={16}
+                  />
+                )}
 
-                    <span>{option.label}</span>
-                  </button>
-                );
-              })}
-
-              {options.length === 0 && (
-                <ErrorMessage>
-                  No Results Found
-                </ErrorMessage>
-              )}
-            </>
-          )}
+                <span>{option.label}</span>
+              </button>
+            );
+          })}
         </div>
       </InputDropdown>
     </div>

@@ -10,37 +10,35 @@ import "./SelectSearch.scss";
 import { ErrorMessage } from "../../Fields/fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
 import { InputDropdown } from "../../Fields/selectors/Dropdown/InputDropdown";
+import { Loader } from "@/shared/Loader/Loader";
 
 export type SelectSearchValue = string | number | object;
 
-export type SelectSearchOption<
-  TValue extends SelectSearchValue = string,
-> = {
+export type SelectSearchOption<TValue extends SelectSearchValue = string> = {
   label: string;
   value: TValue;
   disabled?: boolean;
 };
 
-export type SelectSearchFilterProps<
-  TValue extends SelectSearchValue = string,
-> = {
-  options: SelectSearchOption<TValue>[];
-  value?: TValue;
-  label?: string;
-  info?: string;
-  placeholder?: string;
-  disabled?: boolean;
-  readOnly?: boolean;
-  svg?: keyof typeof PhosphorIcons;
-  interactive?: boolean;
-  tooltipChildren?: React.ReactNode;
-  onChange?: (value: TValue | undefined) => void;
-  onBlur?: (value: TValue | undefined) => void;
-};
+export type SelectSearchFilterProps<TValue extends SelectSearchValue = string> =
+  {
+    options: SelectSearchOption<TValue>[];
+    value?: TValue;
+    label?: string;
+    info?: string;
+    placeholder?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
+    svg?: keyof typeof PhosphorIcons;
+    interactive?: boolean;
+    tooltipChildren?: React.ReactNode;
+    loading?: boolean;
+    apiError?: string;
+    onChange?: (value: TValue | undefined) => void;
+    onBlur?: (value: TValue | undefined) => void;
+  };
 
-export const SelectSearchFilter = <
-  TValue extends SelectSearchValue = string,
->({
+export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
   options,
   value,
   label,
@@ -49,6 +47,8 @@ export const SelectSearchFilter = <
   disabled = false,
   readOnly = false,
   svg,
+  loading,
+  apiError,
   onChange,
   onBlur,
   interactive,
@@ -81,13 +81,24 @@ export const SelectSearchFilter = <
   });
 
   useEffect(() => {
-    const currentOption = options.find((option) =>
+    setFilteredOptions(options);
+  }, [options]);
+
+  useEffect(() => {
+    const currentOption = (options ?? []).find((option) =>
       isEqual(option.value, value),
     );
-
-    setSelectedOption(currentOption);
     setSearchValue(currentOption?.label ?? "");
+    setSelectedOption(currentOption);
   }, [value, options]);
+
+  useEffect(() => {
+    if (loading) {
+      setOpen(false);
+    }
+  }, [loading]);
+
+  const isDisabled = disabled || loading || !!apiError;
 
   const handleOptions = (search: string) => {
     const filtered = options.filter((option) =>
@@ -125,10 +136,8 @@ export const SelectSearchFilter = <
     setHighlightedIndex(-1);
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-  ) => {
-    if (disabled || readOnly) return;
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isDisabled || readOnly) return;
 
     switch (event.key) {
       case "Enter":
@@ -186,7 +195,7 @@ export const SelectSearchFilter = <
     }
   };
 
-  const iconColor = disabled
+  const iconColor = isDisabled
     ? themeState.grayColor
     : isFocused
       ? themeState.primaryColor
@@ -196,9 +205,7 @@ export const SelectSearchFilter = <
 
   return (
     <div
-      className={`select-search ${
-        disabled ? "select-search--disabled" : ""
-      }`}
+      className={`select-search ${isDisabled ? "select-search--disabled" : ""}`}
     >
       {label && (
         <div className="select-search__label">
@@ -224,6 +231,7 @@ export const SelectSearchFilter = <
       <InputDropdown
         open={open}
         onOpenChange={(event) => {
+          if (isDisabled) return;
           setOpen(event);
 
           if (event) {
@@ -233,7 +241,7 @@ export const SelectSearchFilter = <
         trigger={
           <div
             className="select-search__wrapper"
-            tabIndex={disabled ? -1 : 0}
+            tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
             aria-controls={listboxId}
@@ -243,156 +251,131 @@ export const SelectSearchFilter = <
                 : undefined
             }
             onClick={() => {
-              if (disabled || readOnly) return;
-
+              if (isDisabled || readOnly) return;
               setOpen(true);
               resetListOptions();
-
-              requestAnimationFrame(() => {
-                inputRef.current?.focus();
-              });
+              
             }}
             onKeyDown={handleKeyDown}
           >
-            {svg && (
-              <Icon
-                name={svg}
-                size={16}
-                color={iconColor}
-              />
-            )}
+            {svg && <Icon name={svg} size={16} color={iconColor} />}
 
-            <input
-              id="select-search-filter-input"
-              type="text"
-              value={searchValue}
-              placeholder={placeholder}
-              disabled={disabled}
-              readOnly={readOnly}
-              ref={inputRef}
-              onFocus={() => {
-                if (!disabled && !readOnly) {
-                  setIsFocused(true);
-                  setOpen(true);
-                }
-              }}
-              onBlur={() => {
-                setIsFocused(false);
-                onBlur?.(value);
-              }}
-              onChange={(event) => {
-                const search = event.target.value;
+            {loading && <Loader size="s" text={true} />}
+            {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
+            {!loading && !apiError && (
+              <>
+                <input
+                  id="select-search-filter-input"
+                  type="text"
+                  value={searchValue}
+                  placeholder={placeholder}
+                  disabled={isDisabled}
+                  readOnly={readOnly}
+                  ref={inputRef}
+                  onFocus={() => {
+                    if (!isDisabled && !readOnly) {
+                      setIsFocused(true);
+                      setOpen(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    setIsFocused(false);
+                    onBlur?.(value);
+                  }}
+                  onChange={(event) => {
+                    const search = event.target.value;
 
-                setSearchValue(search);
-                handleOptions(search);
-              }}
-              onKeyDown={(event) => {
-                handleKeyDown(event);
-              }}
-              role="combobox"
-              aria-expanded={open}
-              aria-controls={listboxId}
-              aria-autocomplete="list"
-              aria-activedescendant={
-                highlightedIndex >= 0
-                  ? `${listboxId}-option-${highlightedIndex}`
-                  : undefined
-              }
-            />
-
-            {value !== undefined && (
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleClear();
-                }}
-                disabled={disabled}
-                className="select-search__button"
-              >
-                <Icon
-                  name="X"
-                  size={16}
-                  color={iconColor}
+                    setSearchValue(search);
+                    handleOptions(search);
+                  }}
+                  onKeyDown={(event) => {
+                    handleKeyDown(event);
+                  }}
+                  role="combobox"
+                  aria-expanded={open}
+                  aria-controls={listboxId}
+                  aria-autocomplete="list"
+                  aria-activedescendant={
+                    highlightedIndex >= 0
+                      ? `${listboxId}-option-${highlightedIndex}`
+                      : undefined
+                  }
                 />
-              </button>
-            )}
 
-            {!open && (
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
+                {value !== undefined && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleClear();
+                    }}
+                    disabled={isDisabled}
+                    className="select-search__button"
+                  >
+                    <Icon name="X" size={16} color={iconColor} />
+                  </button>
+                )}
 
-                  if (disabled || readOnly) return;
+                {!open && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
 
-                  setOpen(true);
-                  resetListOptions();
+                      if (isDisabled || readOnly) return;
 
-                  requestAnimationFrame(() => {
-                    inputRef.current?.focus();
-                  });
-                }}
-                disabled={disabled}
-                className="select-search__button"
-              >
-                <Icon
-                  name="CaretDown"
-                  size={16}
-                  color={iconColor}
-                />
-              </button>
-            )}
+                      setOpen(true);
+                      resetListOptions();
 
-            {open && (
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  setOpen(false);
-                }}
-                disabled={disabled}
-                className="select-search__button"
-              >
-                <Icon
-                  name="CaretUp"
-                  size={16}
-                  color={iconColor}
-                />
-              </button>
+                      requestAnimationFrame(() => {
+                        inputRef.current?.focus();
+                      });
+                    }}
+                    disabled={isDisabled}
+                    className="select-search__button"
+                  >
+                    <Icon name="CaretDown" size={16} color={iconColor} />
+                  </button>
+                )}
+
+                {open && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      if (isDisabled) return;
+                      event.stopPropagation();
+                      setOpen(false);
+                    }}
+                    disabled={isDisabled}
+                    className="select-search__button"
+                  >
+                    <Icon name="CaretUp" size={16} color={iconColor} />
+                  </button>
+                )}
+              </>
             )}
           </div>
         }
       >
-        <div
-          className="select-search__options"
-          id={listboxId}
-          role="listbox"
-        >
+        <div className="select-search__options" id={listboxId} role="listbox">
           {filteredOptions.map((option, index) => {
-            const isSelected = isEqual(
-              selectedOption?.value,
-              option.value,
-            );
+            const isSelected = isEqual(selectedOption?.value, option.value);
 
             return (
               <button
                 className={`select-search__option ${
-                  isSelected
-                    ? "select-search__selected"
-                    : ""
+                  isSelected ? "select-search__selected" : ""
                 } ${
-                  highlightedIndex === index
-                    ? "select-search__highlighted"
-                    : ""
+                  highlightedIndex === index ? "select-search__highlighted" : ""
                 }`}
                 id={`${listboxId}-option-${index}`}
                 key={index}
                 type="button"
                 role="option"
                 aria-selected={isSelected}
-                disabled={option.disabled}
+                disabled={option.disabled || readOnly}
                 onMouseDown={(event) => {
+                  if (option.disabled) return;
                   event.preventDefault();
                   handleSelect(option);
                 }}
@@ -424,9 +407,7 @@ export const SelectSearchFilter = <
           })}
 
           {filteredOptions.length === 0 && (
-            <ErrorMessage>
-              No Results Found
-            </ErrorMessage>
+            <ErrorMessage>No Results Found</ErrorMessage>
           )}
         </div>
       </InputDropdown>
