@@ -17,12 +17,12 @@ import "./Select.scss";
 import { ErrorMessage } from "../../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
 import { InputDropdown } from "../Dropdown/InputDropdown";
+import { Loader } from "@/shared/Loader/Loader";
+import { requiredErrorMessage } from "@/utils/errors";
 
 export type SelectValue = string | number | object;
 
-export type SelectOption<
-  TValue extends SelectValue = string,
-> = {
+export type SelectOption<TValue extends SelectValue = string> = {
   label: string;
   value: TValue;
   disabled?: boolean;
@@ -45,6 +45,7 @@ type SelectProps<
   interactive?: boolean;
   tooltipChildren?: React.ReactNode;
   loading?: boolean;
+  apiError?: string;
   onChange?: (value: TValue | undefined) => void;
   onBlur?: (value: TValue | undefined) => void;
 };
@@ -77,6 +78,7 @@ const SelectField = <
   interactive,
   tooltipChildren,
   loading = false,
+  apiError,
   onChange,
   onBlur,
   field,
@@ -90,6 +92,8 @@ const SelectField = <
   const [selectedOption, setSelectedOption] = useState<
     SelectOption<TValue> | undefined
   >();
+
+  const selectRef = useRef<HTMLDivElement | null>(null);
 
   const {
     highlightedIndex,
@@ -109,9 +113,13 @@ const SelectField = <
     setSelectedOption(currentOption);
   }, [field.value, options]);
 
-  const handleSelect = (
-    option: SelectOption<TValue>,
-  ) => {
+  useEffect(() => {
+    if (loading) {
+      setOpen(false);
+    }
+  }, [loading]);
+
+  const handleSelect = (option: SelectOption<TValue>) => {
     if (option.disabled || readOnly) {
       return;
     }
@@ -122,13 +130,14 @@ const SelectField = <
     setSelectedOption(option);
     setOpen(false);
     setHighlightedIndex(-1);
+    requestAnimationFrame(() => {
+      selectRef.current?.focus();
+    });
   };
 
   const findOptionByKey = (key: string) => {
     const index = options.findIndex((option) =>
-      option.label
-        .toLowerCase()
-        .startsWith(key.toLowerCase()),
+      option.label.toLowerCase().startsWith(key.toLowerCase()),
     );
 
     if (index !== -1) {
@@ -140,10 +149,8 @@ const SelectField = <
     }
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-  ) => {
-    if (disabled) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isDisabled) {
       return;
     }
 
@@ -200,9 +207,11 @@ const SelectField = <
     }
   };
 
+  const isDisabled = disabled || loading || !!apiError || options.length ===0 ;
+
   const iconColor = error
     ? themeState.errorColor
-    : disabled
+    : isDisabled
       ? themeState.grayColor
       : isFocused
         ? themeState.primaryColor
@@ -212,19 +221,15 @@ const SelectField = <
 
   return (
     <div
-      className={`select ${
-        error ? "select--error" : ""
-      } ${
-        disabled ? "select--disabled" : ""
+      className={`select ${error ? "select--error" : ""} ${
+        isDisabled ? "select--disabled" : ""
       }`}
     >
       {label && (
         <div className="select__label">
           {label}
 
-          {required && (
-            <span className="select__required">*</span>
-          )}
+          {required && <span className="select__required">*</span>}
 
           {info && (
             <IconTooltip
@@ -245,11 +250,15 @@ const SelectField = <
 
       <InputDropdown
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(nextOpen) => {
+          if (isDisabled) return;
+          setOpen(nextOpen);
+        }}
         trigger={
           <div
+            ref={selectRef}
             className="select__wrapper"
-            tabIndex={disabled ? -1 : 0}
+            tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
             aria-controls={listboxId}
@@ -259,7 +268,7 @@ const SelectField = <
                 : undefined
             }
             onFocus={() => {
-              if (!disabled) {
+              if (!isDisabled) {
                 setIsFocused(true);
               }
             }}
@@ -269,132 +278,101 @@ const SelectField = <
               onBlur?.(field.value);
             }}
             onClick={() => {
-              if (!disabled && !readOnly) {
-                setOpen(true);
-              }
+              if (isDisabled) return;
+              setOpen(true);
             }}
             onKeyDown={handleKeyDown}
           >
-            {svg && (
-              <Icon
-                name={svg}
-                size={16}
-                color={iconColor}
-              />
+            {svg && !loading && !apiError && (
+              <Icon name={svg} size={16} color={iconColor} />
             )}
+            {loading && <Loader size="s" text={true} />}
+            {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
 
-            <input
-              id={`${name}-input`}
-              name={name}
-              type="text"
-              value={selectedOption?.label ?? ""}
-              placeholder={placeholder}
-              disabled={disabled}
-              readOnly
-              tabIndex={-1}
-            />
+            {!loading && !apiError && (
+              <>
+                <input
+                  id={`${name}-input`}
+                  name={name}
+                  type="text"
+                  value={selectedOption?.label ?? ""}
+                  placeholder={placeholder}
+                  disabled={isDisabled}
+                  readOnly
+                  tabIndex={-1}
+                />
 
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-
-                if (!disabled && !readOnly) {
-                  setOpen((current) => !current);
-                }
-              }}
-              disabled={disabled}
-              className="select__button"
-              tabIndex={-1}
-            >
-              <Icon
-                name={open ? "CaretUp" : "CaretDown"}
-                size={16}
-                color={iconColor}
-              />
-            </button>
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    if (isDisabled) return;
+                    setOpen(true);
+                  }}
+                  disabled={isDisabled}
+                  className="select__button"
+                  tabIndex={-1}
+                >
+                  <Icon
+                    name={open ? "CaretUp" : "CaretDown"}
+                    size={16}
+                    color={iconColor}
+                  />
+                </button>
+              </>
+            )}
           </div>
         }
       >
-        <div
-          className="select__options"
-          id={listboxId}
-          role="listbox"
-        >
-          {loading ? (
-            <div className="select__loading">
-              Loading...
-            </div>
-          ) : (
-            <>
-              {options.map((option, index) => {
-                const isSelected = isEqual(
-                  selectedOption?.value,
-                  option.value,
-                );
-
-                return (
-                  <button
-                    key={index}
-                    id={`${listboxId}-option-${index}`}
-                    type="button"
-                    role="option"
-                    aria-selected={isSelected}
-                    disabled={option.disabled}
-                    className={`select__option ${
-                      isSelected
-                        ? "select__selected"
-                        : ""
-                    } ${
+        <div className="select__options" id={listboxId} role="listbox">
+          {options.map((option, index) => {
+            const isSelected = isEqual(selectedOption?.value, option.value);
+            return (
+              <button
+                key={index}
+                id={`${listboxId}-option-${index}`}
+                type="button"
+                role="option"
+                aria-selected={isSelected}
+                disabled={option.disabled || readOnly}
+                className={`select__option ${
+                  isSelected ? "select__selected" : ""
+                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
+                onMouseDown={(event) => {
+                  if (disabled || readOnly) return;
+                  event.preventDefault();
+                  handleSelect(option);
+                }}
+                onMouseEnter={() => {
+                  if (isDisabled || readOnly) return;
+                  setHighlightedIndex(index);
+                }}
+                ref={(element) => {
+                  optionRefs.current[index] = element;
+                }}
+              >
+                {isSelected && (
+                  <Icon
+                    name="Check"
+                    color={
                       highlightedIndex === index
-                        ? "select__highlighted"
-                        : ""
-                    }`}
-                    onMouseDown={(event) => {
-                      event.preventDefault();
-                      handleSelect(option);
-                    }}
-                    onMouseEnter={() => {
-                      setHighlightedIndex(index);
-                    }}
-                    ref={(element) => {
-                      optionRefs.current[index] = element;
-                    }}
-                  >
-                    {isSelected && (
-                      <Icon
-                        name="Check"
-                        color={
-                          highlightedIndex === index
-                            ? themeState.whiteColor
-                            : themeState.blackColor
-                        }
-                        hoverColor={
-                          themeState.whiteColor
-                        }
-                        weight="bold"
-                        size={16}
-                      />
-                    )}
+                        ? themeState.whiteColor
+                        : themeState.blackColor
+                    }
+                    hoverColor={themeState.whiteColor}
+                    weight="bold"
+                    size={16}
+                  />
+                )}
 
-                    <span>{option.label}</span>
-                  </button>
-                );
-              })}
-
-              {options.length === 0 && (
-                <ErrorMessage>
-                  No Results Found
-                </ErrorMessage>
-              )}
-            </>
-          )}
+                <span>{option.label}</span>
+              </button>
+            );
+          })}
         </div>
       </InputDropdown>
 
-      {error && (
-        <ErrorMessage>{error}</ErrorMessage>
-      )}
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </div>
   );
 };
@@ -416,6 +394,7 @@ export const Select = <
   interactive,
   tooltipChildren,
   loading,
+  apiError,
   onChange,
   onBlur,
 }: SelectProps<TFieldValues, TValue>) => {
@@ -426,9 +405,7 @@ export const Select = <
       name={name}
       control={formContext.control}
       rules={{
-        required: required
-          ? "Please select an option"
-          : false,
+        required: required ? requiredErrorMessage : false,
       }}
       render={({ field, fieldState }) => (
         <SelectField
@@ -449,9 +426,9 @@ export const Select = <
           onBlur={onBlur}
           field={field}
           error={fieldState.error?.message}
+          apiError={apiError}
         />
       )}
     />
   );
 };
-

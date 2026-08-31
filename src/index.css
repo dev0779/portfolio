@@ -128,8 +128,8 @@
   max-width: 100vw !important;
 }
 
-.tippy-box[data-theme~="select"] .tippy-content{
-  padding:0.5rem;
+.tippy-box[data-theme~="select"] .tippy-content {
+  padding: 0.5rem;
 }
 
 /* Base tooltip box */

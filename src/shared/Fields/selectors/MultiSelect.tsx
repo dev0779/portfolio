@@ -1,18 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import * as PhosphorIcons from "phosphor-react";
+import {
+  Controller,
+  useFormContext,
+  type FieldValues,
+  type Path,
+} from "react-hook-form";
 
+import * as PhosphorIcons from "phosphor-react";
+import isEqual from "lodash/isEqual";
+import "./Select.scss";
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
-
 import "./SelectSearch.scss";
-
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import isEqual from "lodash/isEqual";
-import { ErrorMessage } from "../../Fields/fields-styled/Fields.styled";
-import { InputDropdown } from "../../Fields/selectors/Dropdown/InputDropdown";
-import { Checkbox } from "../../Fields/checkbox/Checkbox";
+import { InputDropdown } from "./Dropdown/InputDropdown";
+import { Checkbox } from "../checkbox/Checkbox";
+import { requiredErrorMessage } from "@/utils/errors";
 import { Loader } from "@/shared/Loader/Loader";
 
 export type MultiSelectValue = string | number | object;
@@ -23,45 +29,66 @@ export type MultiSelectOption<TValue extends MultiSelectValue = string> = {
   disabled?: boolean;
 };
 
-type MultiSelectFilterProps<TValue extends MultiSelectValue = string> = {
+type MultiSelectProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TValue extends MultiSelectValue = string,
+> = {
+  name: Path<TFieldValues>;
   options: MultiSelectOption<TValue>[];
-  value?: TValue[];
   label?: string;
   info?: string;
   placeholder?: string;
+  required?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   svg?: keyof typeof PhosphorIcons;
   interactive?: boolean;
   tooltipChildren?: React.ReactNode;
+  onChange?: (value: TValue[]) => void;
+  onBlur?: (value: TValue[]) => void;
   loading?: boolean;
   apiError?: string;
-  onChange?: (value: TValue[] | undefined) => void;
-  onBlur?: (value: TValue[] | undefined) => void;
 };
 
-export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
+type MultiSelectFieldProps<
+  TFieldValues extends FieldValues,
+  TValue extends MultiSelectValue,
+> = MultiSelectProps<TFieldValues, TValue> & {
+  field: {
+    value: TValue[];
+    onChange: (value: TValue[]) => void;
+    onBlur: () => void;
+  };
+  error?: string;
+};
+
+const MultiSelectField = <
+  TFieldValues extends FieldValues,
+  TValue extends MultiSelectValue,
+>({
+  name,
   options,
-  value = [],
   label,
   info,
   placeholder = "Search...",
+  required = false,
   disabled = false,
   readOnly = false,
-  svg,
-  onChange,
-  onBlur,
   interactive,
   tooltipChildren,
-  loading,
+  onChange,
+  onBlur,
+  field,
+  error,
+  loading = false,
   apiError,
-}: MultiSelectFilterProps<TValue>) => {
+}: MultiSelectFieldProps<TFieldValues, TValue>) => {
   const { themeState } = useTheme();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const triggerRef = useRef<HTMLDivElement | null>(null);
 
   const [open, setOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   const [filteredOptions, setFilteredOptions] =
     useState<MultiSelectOption<TValue>[]>(options);
@@ -82,18 +109,17 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
     options: filteredOptions,
   });
 
-  const isDisabled = disabled || loading || !!apiError;
-
   useEffect(() => {
     setFilteredOptions(options);
   }, [options]);
 
   useEffect(() => {
     const currentOptions = options.filter((option) =>
-      value.some((selectedValue) => isEqual(selectedValue, option.value)),
+      field.value.some((value) => isEqual(value, option.value)),
     );
+
     setSelectedOptions(currentOptions);
-  }, [value, options]);
+  }, [field.value, options]);
 
   useEffect(() => {
     if (loading) {
@@ -101,39 +127,52 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
     }
   }, [loading]);
 
+  const isDisabled = disabled || loading || !!apiError || options.length === 0;
+
+  const handleOptions = (search: string) => {
+    const filtered = options.filter((option) =>
+      option.label.toLowerCase().includes(search.toLowerCase()),
+    );
+
+    setFilteredOptions(filtered);
+    setHighlightedIndex(-1);
+  };
+
   const handleSelect = (option: MultiSelectOption<TValue>) => {
-    if (option.disabled || readOnly) return;
+    if (option.disabled || isDisabled || readOnly) return;
 
     const selected = selectedOptions.some((selectedOption) =>
       isEqual(selectedOption.value, option.value),
     );
 
-    let newSelectedOptions: MultiSelectOption<TValue>[];
-
-    if (selected) {
-      newSelectedOptions = selectedOptions.filter(
-        (selectedOption) => !isEqual(selectedOption.value, option.value),
-      );
-    } else {
-      newSelectedOptions = [...selectedOptions, option];
-    }
+    const newSelectedOptions = selected
+      ? selectedOptions.filter(
+          (selectedOption) => !isEqual(selectedOption.value, option.value),
+        )
+      : [...selectedOptions, option];
 
     setSelectedOptions(newSelectedOptions);
 
-    const optionsToSend = newSelectedOptions.map(
+    const newValue = newSelectedOptions.map(
       (selectedOption) => selectedOption.value,
     );
 
-    onChange?.(optionsToSend);
+    field.onChange(newValue);
+    onChange?.(newValue);
   };
 
-  const handleOptions = (search: string) => {
-    const findOptions = options.filter((option) =>
-      option.label.toLowerCase().includes(search.toLowerCase()),
-    );
+  const clearSelection = () => {
+    if (isDisabled || readOnly) return;
 
-    setFilteredOptions(findOptions);
+    setSelectedOptions([]);
+    setSearchValue("");
+    setFilteredOptions(options);
     setHighlightedIndex(-1);
+    field.onChange([]);
+    onChange?.([]);
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
   };
 
   const resetListOptions = () => {
@@ -142,43 +181,40 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
     setHighlightedIndex(-1);
   };
 
-  const handleClear = () => {
-    setSelectedOptions([]);
-    setSearchValue("");
-    setFilteredOptions(options);
-    setHighlightedIndex(-1);
-
-    onChange?.([]);
-  };
-
   const showOnlySelected = () => {
-    if (selectedOptions.length === 0) return;
+    if (selectedOptions.length === 0 || isDisabled || readOnly) {
+      return;
+    }
 
-    const filter = options.filter((option) =>
+    const filtered = options.filter((option) =>
       selectedOptions.some((selectedOption) =>
         isEqual(selectedOption.value, option.value),
       ),
     );
 
-    setFilteredOptions(filter);
+    setFilteredOptions(filtered);
     setHighlightedIndex(-1);
   };
 
   const showNotSelected = () => {
-    if (selectedOptions.length === 0) return;
+    if (selectedOptions.length === 0 || isDisabled || readOnly) {
+      return;
+    }
 
-    const filter = options.filter(
+    const filtered = options.filter(
       (option) =>
         !selectedOptions.some((selectedOption) =>
           isEqual(selectedOption.value, option.value),
         ),
     );
 
-    setFilteredOptions(filter);
+    setFilteredOptions(filtered);
     setHighlightedIndex(-1);
   };
 
   const selectAll = () => {
+    if (isDisabled || readOnly) return;
+
     const newSelectedOptions = [
       ...selectedOptions,
       ...filteredOptions.filter(
@@ -192,22 +228,16 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
 
     setSelectedOptions(newSelectedOptions);
 
-    const optionsToSend = newSelectedOptions.map((option) => option.value);
+    const newValue = newSelectedOptions.map((option) => option.value);
 
-    onChange?.(optionsToSend);
-  };
-
-  const resetSelected = () => {
-    setSelectedOptions([]);
-    setFilteredOptions(options);
-    setSearchValue("");
-    setHighlightedIndex(-1);
-
-    onChange?.([]);
+    field.onChange(newValue);
+    onChange?.(newValue);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (isDisabled) return;
+    if (isDisabled || readOnly) {
+      return;
+    }
 
     switch (event.key) {
       case "Enter":
@@ -216,16 +246,22 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
         if (!open) {
           setOpen(true);
           resetListOptions();
+
+          requestAnimationFrame(() => {
+            inputRef.current?.focus();
+          });
+
           return;
         }
 
         if (highlightedIndex >= 0) {
           const option = filteredOptions[highlightedIndex];
 
-          if (option && !option.disabled && !readOnly) {
+          if (option && !option.disabled) {
             handleSelect(option);
           }
         }
+
         break;
 
       case "ArrowDown":
@@ -234,8 +270,14 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
         if (!open) {
           setOpen(true);
           resetListOptions();
+
+          requestAnimationFrame(() => {
+            inputRef.current?.focus();
+          });
+
           return;
         }
+
         moveDown();
         break;
 
@@ -245,35 +287,44 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
         if (!open) {
           setOpen(true);
           resetListOptions();
+
+          requestAnimationFrame(() => {
+            inputRef.current?.focus();
+          });
           return;
         }
+
         moveUp();
         break;
 
       case "Escape":
         event.preventDefault();
-        if (open) {
-          setOpen(false);
-        }
+        setOpen(false);
         break;
     }
   };
 
-  const iconColor = isDisabled
-    ? themeState.grayColor
-    : inputRef.current === document.activeElement
-      ? themeState.primaryColor
-      : themeState.blackColor;
+  const listboxId = `${name}-listbox`;
 
-  const listboxId = "multi-select-filter-listbox";
+  const iconColor = error
+    ? themeState.errorColor
+    : isDisabled
+      ? themeState.grayColor
+      : isFocused
+        ? themeState.primaryColor
+        : themeState.blackColor;
 
   return (
     <div
-      className={`select-search ${isDisabled ? "select-search--disabled" : ""}`}
+      className={`select-search ${
+        error ? "select-search--error" : ""
+      } ${isDisabled ? "select-search--disabled" : ""}`}
     >
       {label && (
         <div className="select-search__label">
           {label}
+
+          {required && <span className="select-search__required">*</span>}
 
           {info && (
             <IconTooltip
@@ -294,18 +345,18 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
 
       <InputDropdown
         open={open}
-        onOpenChange={(event) => {
-          if (isDisabled) return;
-          setOpen(event);
+        onOpenChange={(nextOpen) => {
+          if (isDisabled || readOnly) return;
 
-          if (event) {
+          setOpen(nextOpen);
+
+          if (nextOpen) {
             resetListOptions();
           }
         }}
         trigger={
           <div
             className="select-search__wrapper"
-            ref={triggerRef}
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
@@ -316,10 +367,9 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
                 : undefined
             }
             onClick={() => {
-              if (isDisabled) return;
+              if (isDisabled || readOnly) return;
               setOpen(true);
-              setSearchValue("");
-              setFilteredOptions(options);
+              resetListOptions();
               requestAnimationFrame(() => {
                 inputRef.current?.focus();
               });
@@ -328,41 +378,58 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
           >
             {loading && <Loader size="s" text={true} />}
             {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
-            {!open && !loading && !apiError && value.length > 0 && (
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleClear();
-                }}
-                disabled={isDisabled}
-                className="select-search__button"
-              >
-                <Icon name="X" size={16} color={iconColor} />
-                {value.length} selected
-              </button>
-            )}
+            {!loading && !apiError && (
+              <>
+                {!open && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      clearSelection();
+                    }}
+                    disabled={
+                      isDisabled || readOnly || selectedOptions.length === 0
+                    }
+                    className="select-search__button"
+                  >
+                    <Icon name="X" size={16} color={iconColor} />
+                    {selectedOptions.length} selected
+                  </button>
+                )}
 
-            {!open && !loading && !apiError && (
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                disabled={isDisabled}
-                className="select-search__button"
-              >
-                <Icon name="CaretDown" size={16} color={iconColor} />
-              </button>
-            )}
-
-            {open && !loading && !apiError && (
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                disabled={isDisabled}
-                className="select-search__button"
-              >
-                <Icon name="CaretUp" size={16} color={iconColor} />
-              </button>
+                {!open && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (isDisabled) return;
+                      setOpen(true);
+                      resetListOptions();
+                      requestAnimationFrame(() => {
+                        inputRef.current?.focus();
+                      });
+                    }}
+                    disabled={isDisabled || readOnly}
+                    className="select-search__button"
+                  >
+                    <Icon name="CaretDown" size={16} color={iconColor} />
+                  </button>
+                )}
+                {open && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      if (isDisabled) return;
+                      setOpen(false);
+                    }}
+                    disabled={isDisabled || readOnly}
+                    className="select-search__button"
+                  >
+                    <Icon name="CaretUp" size={16} color={iconColor} />
+                  </button>
+                )}
+              </>
             )}
           </div>
         }
@@ -370,56 +437,30 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
         <div className="select-search__options" id={listboxId} role="listbox">
           <div>
             <input
-              id={`${listboxId}-input`}
+              id={`${name}-input`}
+              name={name}
               type="text"
               value={searchValue}
               placeholder={placeholder}
               disabled={isDisabled}
               ref={inputRef}
               onFocus={() => {
-                if (!isDisabled) {
+                if (!isDisabled && !readOnly) {
+                  setIsFocused(true);
                   setOpen(true);
                 }
               }}
               onBlur={() => {
-                onBlur?.(value);
+                setIsFocused(false);
+                field.onBlur();
+                onBlur?.(field.value);
               }}
               onChange={(event) => {
                 const search = event.target.value;
                 setSearchValue(search);
                 handleOptions(search);
               }}
-              onKeyDown={(event) => {
-                if (event.key === "Escape") {
-                  event.preventDefault();
-                  setOpen(false);
-                  return;
-                }
-
-                if (event.key === "ArrowDown") {
-                  event.preventDefault();
-                  moveDown();
-                  return;
-                }
-
-                if (event.key === "ArrowUp") {
-                  event.preventDefault();
-                  moveUp();
-                  return;
-                }
-
-                if (event.key === "Enter") {
-                  event.preventDefault();
-
-                  if (highlightedIndex >= 0) {
-                    const option = filteredOptions[highlightedIndex];
-
-                    if (option && !option.disabled) {
-                      handleSelect(option);
-                    }
-                  }
-                }
-              }}
+              onKeyDown={handleKeyDown}
               role="combobox"
               aria-expanded={open}
               aria-controls={listboxId}
@@ -435,7 +476,7 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
               {open && (
                 <IconTooltip
                   name="List"
-                  tooltip="Reset List"
+                  tooltip="Reset Filters"
                   onClick={resetListOptions}
                 />
               )}
@@ -461,7 +502,7 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
                   name="ListChecked"
                   tooltip="Select all"
                   onClick={selectAll}
-                  disabled={readOnly}
+                  disabled={isDisabled || readOnly}
                 />
               )}
 
@@ -469,8 +510,8 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
                 <IconTooltip
                   name="List"
                   tooltip="Deselect all"
-                  onClick={resetSelected}
-                  disabled={readOnly}
+                  onClick={clearSelection}
+                  disabled={isDisabled || readOnly}
                 />
               )}
             </div>
@@ -493,14 +534,19 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
                 type="button"
                 role="option"
                 aria-selected={isSelected}
-                disabled={option.disabled}
+                disabled={option.disabled || isDisabled || readOnly}
                 onMouseDown={(event) => {
+                  if (option.disabled || isDisabled || readOnly) {
+                    return;
+                  }
+
                   event.preventDefault();
                   handleSelect(option);
                 }}
                 onMouseEnter={() => {
-                  if (option.disabled) return;
-                  setHighlightedIndex(index);
+                  if (!option.disabled && !isDisabled && !readOnly) {
+                    setHighlightedIndex(index);
+                  }
                 }}
                 ref={(element) => {
                   optionRefs.current[index] = element;
@@ -523,6 +569,62 @@ export const MultiSelectFilter = <TValue extends MultiSelectValue = string>({
           )}
         </div>
       </InputDropdown>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </div>
+  );
+};
+
+export const MultiSelect = <
+  TFieldValues extends FieldValues = FieldValues,
+  TValue extends MultiSelectValue = string,
+>({
+  name,
+  options,
+  label,
+  info,
+  placeholder = "Search...",
+  required = false,
+  disabled = false,
+  readOnly = false,
+  svg,
+  interactive,
+  tooltipChildren,
+  onChange,
+  onBlur,
+  loading = false,
+  apiError,
+}: MultiSelectProps<TFieldValues, TValue>) => {
+  const { control } = useFormContext<TFieldValues>();
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      rules={{
+        required: required ? requiredErrorMessage : false,
+      }}
+      render={({ field, fieldState }) => (
+        <MultiSelectField
+          name={name}
+          options={options}
+          label={label}
+          info={info}
+          placeholder={placeholder}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          svg={svg}
+          interactive={interactive}
+          tooltipChildren={tooltipChildren}
+          onChange={onChange}
+          onBlur={onBlur}
+          loading={loading}
+          apiError={apiError}
+          field={field}
+          error={fieldState.error?.message}
+        />
+      )}
+    />
   );
 };

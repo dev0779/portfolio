@@ -6,10 +6,10 @@ import isEqual from "lodash/isEqual";
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
-import "./Select.scss";
-import { ErrorMessage } from "../../Fields/fields-styled/Fields.styled";
+import "./FilterSelect.scss";
+import { ErrorMessage } from "../Fields/fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import { InputDropdown } from "../../Fields/selectors/Dropdown/InputDropdown";
+import { InputDropdown } from "../Fields/selectors/Dropdown/InputDropdown";
 import { Loader } from "@/shared/Loader/Loader";
 
 export type SelectValue = string | number | object;
@@ -184,12 +184,14 @@ export const SelectFilter = <TValue extends SelectValue = string>({
       ? themeState.primaryColor
       : themeState.blackColor;
 
-  const listboxId = "select-filter-listbox";
+  const listboxId = "filter-select-filter-listbox";
 
   return (
-    <div className={`select ${isDisabled ? "select--disabled" : ""}`}>
+    <div
+      className={`filter-select ${isDisabled ? "filter-select--disabled" : ""}`}
+    >
       {label && (
-        <div className="select__label">
+        <div className="filter-select__label">
           {label}
 
           {info && (
@@ -218,7 +220,7 @@ export const SelectFilter = <TValue extends SelectValue = string>({
         trigger={
           <div
             ref={selectRef}
-            className="select__wrapper"
+            className="filter-select__wrapper"
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
@@ -249,7 +251,7 @@ export const SelectFilter = <TValue extends SelectValue = string>({
             {!loading && !apiError && (
               <>
                 <input
-                  id="select-filter-input"
+                  id="filter-select-filter-input"
                   type="text"
                   value={selectedOption?.label ?? ""}
                   placeholder={placeholder}
@@ -268,7 +270,7 @@ export const SelectFilter = <TValue extends SelectValue = string>({
                     }
                   }}
                   disabled={isDisabled}
-                  className="select__button"
+                  className="filter-select__button"
                   tabIndex={-1}
                 >
                   <Icon
@@ -282,7 +284,7 @@ export const SelectFilter = <TValue extends SelectValue = string>({
           </div>
         }
       >
-        <div className="select__options" id={listboxId} role="listbox">
+        <div className="filter-select__options" id={listboxId} role="listbox">
           {options.map((option, index) => {
             const isSelected = isEqual(selectedOption?.value, option.value);
 
@@ -294,9 +296,9 @@ export const SelectFilter = <TValue extends SelectValue = string>({
                 role="option"
                 aria-selected={isSelected}
                 disabled={option.disabled}
-                className={`select__option ${
-                  isSelected ? "select__selected" : ""
-                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
+                className={`filter-select__option ${
+                  isSelected ? "filter-select__selected" : ""
+                } ${highlightedIndex === index ? "filter-select__highlighted" : ""}`}
                 onMouseDown={(event) => {
                   event.preventDefault();
                   handleSelect(option);

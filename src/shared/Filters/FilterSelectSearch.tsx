@@ -6,10 +6,10 @@ import isEqual from "lodash/isEqual";
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
-import "./SelectSearch.scss";
-import { ErrorMessage } from "../../Fields/fields-styled/Fields.styled";
+import "./FilterSelect.scss";
+import { ErrorMessage } from "../Fields/fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import { InputDropdown } from "../../Fields/selectors/Dropdown/InputDropdown";
+import { InputDropdown } from "../Fields/selectors/Dropdown/InputDropdown";
 import { Loader } from "@/shared/Loader/Loader";
 
 export type SelectSearchValue = string | number | object;
@@ -201,14 +201,14 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
       ? themeState.primaryColor
       : themeState.blackColor;
 
-  const listboxId = "select-search-filter-listbox";
+  const listboxId = "filter-select-search-listbox";
 
   return (
     <div
-      className={`select-search ${isDisabled ? "select-search--disabled" : ""}`}
+      className={`filter-select ${isDisabled ? "filter-select--disabled" : ""}`}
     >
       {label && (
-        <div className="select-search__label">
+        <div className="filter-select__label">
           {label}
 
           {info && (
@@ -240,7 +240,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
         }}
         trigger={
           <div
-            className="select-search__wrapper"
+            className="filter-select__wrapper"
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
@@ -254,7 +254,6 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
               if (isDisabled || readOnly) return;
               setOpen(true);
               resetListOptions();
-              
             }}
             onKeyDown={handleKeyDown}
           >
@@ -265,7 +264,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
             {!loading && !apiError && (
               <>
                 <input
-                  id="select-search-filter-input"
+                  id="filterselectsearch-filter-input"
                   type="text"
                   value={searchValue}
                   placeholder={placeholder}
@@ -310,7 +309,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                       handleClear();
                     }}
                     disabled={isDisabled}
-                    className="select-search__button"
+                    className="filter-select__button"
                   >
                     <Icon name="X" size={16} color={iconColor} />
                   </button>
@@ -332,7 +331,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                       });
                     }}
                     disabled={isDisabled}
-                    className="select-search__button"
+                    className="filter-select__button"
                   >
                     <Icon name="CaretDown" size={16} color={iconColor} />
                   </button>
@@ -347,7 +346,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                       setOpen(false);
                     }}
                     disabled={isDisabled}
-                    className="select-search__button"
+                    className="filter-select__button"
                   >
                     <Icon name="CaretUp" size={16} color={iconColor} />
                   </button>
@@ -357,16 +356,16 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
           </div>
         }
       >
-        <div className="select-search__options" id={listboxId} role="listbox">
+        <div className="filter-select__options" id={listboxId} role="listbox">
           {filteredOptions.map((option, index) => {
             const isSelected = isEqual(selectedOption?.value, option.value);
 
             return (
               <button
-                className={`select-search__option ${
-                  isSelected ? "select-search__selected" : ""
+                className={`filter-select__option ${
+                  isSelected ? "filter-select__selected" : ""
                 } ${
-                  highlightedIndex === index ? "select-search__highlighted" : ""
+                  highlightedIndex === index ? "filter-select__highlighted" : ""
                 }`}
                 id={`${listboxId}-option-${index}`}
                 key={index}
@@ -397,7 +396,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                     hoverColor={themeState.whiteColor}
                     weight="bold"
                     size={16}
-                    className="select-search__selected"
+                    className="filter-select__selected"
                   />
                 )}
 
