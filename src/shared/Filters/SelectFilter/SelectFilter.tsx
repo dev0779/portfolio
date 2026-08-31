@@ -101,6 +101,9 @@ export const SelectFilter = <TValue extends SelectValue = string>({
     setHighlightedIndex(-1);
 
     onChange?.(option.value);
+    requestAnimationFrame(() => {
+      selectRef.current?.focus();
+    });
   };
 
   const findOptionByKey = (key: string) => {

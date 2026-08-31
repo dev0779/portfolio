@@ -11,3 +11,4 @@ export { Select } from "./selectors/Select/Select";
 export { PasswordInput } from "./password-input/PasswordInput";
 export { DateInput } from "./date-input/DateInput";
 export { SignatureInput } from "./signature-input/SignatureInput";
+export { MultiSelect } from "./selectors/MultiSelect/MultiSelect";
