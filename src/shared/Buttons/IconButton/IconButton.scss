@@ -5,6 +5,14 @@
   align-items: center;
 }
 
+.iconButton--primary {
+  border: 1px solid blue;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  cursor: pointer !important;
+}
+
 .iconButton-popover {
   border-radius: 4px;
   padding: 10px 12px;

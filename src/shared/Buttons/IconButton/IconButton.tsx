@@ -3,6 +3,8 @@ import { Tooltip } from "@/shared/Tooltip";
 import { Popover } from "radix-ui";
 import React from "react";
 
+import "./IconButton.scss";
+
 interface IconButtonProps {
   label?: string;
   icon?: string;
@@ -11,7 +13,6 @@ interface IconButtonProps {
   iconHoverColor?: string;
   iconColor?: string;
   size?: "s" | "m" | "l";
-  iconSize?: number;
   iconWeight?: "regular" | "bold" | "fill" | "thin" | "light";
   type?: "primary" | "secondary";
   arrow?: boolean;
@@ -26,10 +27,16 @@ interface IconButtonProps {
 }
 
 const SIZES = {
-  s: { width: 20, height: 20 },
-  m: { width: 26, height: 26 },
-  l: { width: 32, height: 32 },
+  s: { width: 24, height: 24 },
+  m: { width: 36, height: 36 },
+  l: { width: 80, height: 80 },
 } as const;
+
+const ICONSIZES = {
+  s: 16,
+  m: 24,
+  l: 64,
+};
 
 export const IconButton = ({
   label,
@@ -37,7 +44,6 @@ export const IconButton = ({
   variant = "primary",
   color,
   icon = "RocketLaunch",
-  iconSize = 12,
   iconColor = "black",
   iconHoverColor,
   iconWeight = "regular",
@@ -52,6 +58,8 @@ export const IconButton = ({
   className,
 }: IconButtonProps) => {
   const buttonSize = SIZES[size];
+
+  const iconSize = ICONSIZES[size];
   if (interactive) {
     return (
       <Popover.Root>

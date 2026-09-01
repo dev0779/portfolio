@@ -20,6 +20,7 @@ import { Checkbox } from "../../checkbox/Checkbox";
 import { requiredErrorMessage } from "@/utils/errors";
 import { Loader } from "@/shared/Loader/Loader";
 import "./MultiSelectSearch.scss";
+import { IconButton } from "@/shared/Buttons/IconButton/IconButton";
 
 export type MultiSelectValue = string | number | object;
 
@@ -479,44 +480,52 @@ const MultiSelectField = <
 
             <>
               {open && (
-                <IconTooltip
-                  name="List"
-                  tooltip="Reset Filters"
+                <IconButton
+                  label="Reset Filters"
+                  icon="List"
                   onClick={resetListOptions}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="ListBullets"
-                  tooltip="Show Not selected"
-                  onClick={showNotSelected}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="ListChecks"
-                  tooltip="Show Selected"
-                  onClick={showOnlySelected}
+                  size="s"
+                  disabled={disabled}
                 />
               )}
 
               {open && (
-                <IconTooltip
-                  name="ListChecked"
-                  tooltip="Select all"
-                  onClick={selectAll}
-                  disabled={isDisabled || readOnly}
+                <IconButton
+                  icon="ListBullets"
+                  label="Show Not selected"
+                  onClick={showNotSelected}
+                  size="s"
+                  disabled={disabled || readOnly}
                 />
               )}
 
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="List"
-                  tooltip="Deselect all"
+              {open && (
+                <IconButton
+                  icon="ListChecks"
+                  label="Show Selected"
+                  onClick={showOnlySelected}
+                  size="s"
+                  disabled={disabled || readOnly}
+                />
+              )}
+
+              {open && (
+                <IconButton
+                  icon="ListChecks"
+                  label="Select all"
+                  onClick={selectAll}
+                  disabled={isDisabled || readOnly}
+                  size="s"
+                />
+              )}
+
+              {open && (
+                <IconButton
+                  icon="List"
+                  label="Deselect all"
                   onClick={clearSelection}
                   disabled={isDisabled || readOnly}
+                  size="s"
                 />
               )}
             </>
