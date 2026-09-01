@@ -3,7 +3,7 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useMemo, useRef, type JSX } from "react";
 import { useFormContext } from "react-hook-form";
 import "./Checkbox.scss";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 interface CheckboxProps {
   name: string;
@@ -112,7 +112,7 @@ export const Checkbox = ({
                 weight="regular"
                 color="Black"
                 size={16}
-                tooltip={info}
+                content={info}
                 interactive={interactive}
                 className="tool"
                 popoverColor="black"

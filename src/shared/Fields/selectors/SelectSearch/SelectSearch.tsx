@@ -9,32 +9,33 @@ import {
 
 import * as PhosphorIcons from "phosphor-react";
 import isEqual from "lodash/isEqual";
-import "./Select.scss";
+
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+
 import "./SelectSearch.scss";
-import { ErrorMessage } from "../fields-styled/Fields.styled";
+
+import { ErrorMessage } from "../../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import { InputDropdown } from "./Dropdown/InputDropdown";
-import { Checkbox } from "../checkbox/Checkbox";
+import { InputDropdown } from "../Dropdown/InputDropdown";
 import { requiredErrorMessage } from "@/utils/errors";
 import { Loader } from "@/shared/Loader/Loader";
 
-export type MultiSelectValue = string | number | object;
+export type SelectSearchValue = string | number | object;
 
-export type MultiSelectOption<TValue extends MultiSelectValue = string> = {
+export type SelectSearchOption<TValue extends SelectSearchValue = string> = {
   label: string;
   value: TValue;
   disabled?: boolean;
 };
 
-type MultiSelectProps<
+type SelectSearchProps<
   TFieldValues extends FieldValues = FieldValues,
-  TValue extends MultiSelectValue = string,
+  TValue extends SelectSearchValue = string,
 > = {
   name: Path<TFieldValues>;
-  options: MultiSelectOption<TValue>[];
+  options: SelectSearchOption<TValue>[];
   label?: string;
   info?: string;
   placeholder?: string;
@@ -44,27 +45,27 @@ type MultiSelectProps<
   svg?: keyof typeof PhosphorIcons;
   interactive?: boolean;
   tooltipChildren?: React.ReactNode;
-  onChange?: (value: TValue[]) => void;
-  onBlur?: (value: TValue[]) => void;
+  onChange?: (value: TValue | undefined) => void;
+  onBlur?: (value: TValue | undefined) => void;
   loading?: boolean;
   apiError?: string;
 };
 
-type MultiSelectFieldProps<
+type SelectSearchFieldProps<
   TFieldValues extends FieldValues,
-  TValue extends MultiSelectValue,
-> = MultiSelectProps<TFieldValues, TValue> & {
+  TValue extends SelectSearchValue,
+> = SelectSearchProps<TFieldValues, TValue> & {
   field: {
-    value: TValue[];
-    onChange: (value: TValue[]) => void;
+    value: TValue | undefined;
+    onChange: (value: TValue | undefined) => void;
     onBlur: () => void;
   };
   error?: string;
 };
 
-const MultiSelectField = <
+const SelectSearchField = <
   TFieldValues extends FieldValues,
-  TValue extends MultiSelectValue,
+  TValue extends SelectSearchValue,
 >({
   name,
   options,
@@ -74,15 +75,16 @@ const MultiSelectField = <
   required = false,
   disabled = false,
   readOnly = false,
+  svg,
   interactive,
   tooltipChildren,
   onChange,
   onBlur,
   field,
   error,
-  loading = false,
+  loading,
   apiError,
-}: MultiSelectFieldProps<TFieldValues, TValue>) => {
+}: SelectSearchFieldProps<TFieldValues, TValue>) => {
   const { themeState } = useTheme();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -91,13 +93,13 @@ const MultiSelectField = <
   const [isFocused, setIsFocused] = useState(false);
 
   const [filteredOptions, setFilteredOptions] =
-    useState<MultiSelectOption<TValue>[]>(options);
+    useState<SelectSearchOption<TValue>[]>(options);
 
   const [searchValue, setSearchValue] = useState("");
 
-  const [selectedOptions, setSelectedOptions] = useState<
-    MultiSelectOption<TValue>[]
-  >([]);
+  const [selectedOption, setSelectedOption] = useState<
+    SelectSearchOption<TValue> | undefined
+  >();
 
   const {
     highlightedIndex,
@@ -114,18 +116,19 @@ const MultiSelectField = <
   }, [options]);
 
   useEffect(() => {
-    const currentOptions = options.filter((option) =>
-      field.value.some((value) => isEqual(value, option.value)),
-    );
-
-    setSelectedOptions(currentOptions);
-  }, [field.value, options]);
-
-  useEffect(() => {
     if (loading) {
       setOpen(false);
     }
   }, [loading]);
+
+  useEffect(() => {
+    const currentOption = options.find((option) =>
+      isEqual(option.value, field.value),
+    );
+
+    setSelectedOption(currentOption);
+    setSearchValue(currentOption?.label ?? "");
+  }, [field.value, options]);
 
   const isDisabled = disabled || loading || !!apiError || options.length === 0;
 
@@ -138,104 +141,49 @@ const MultiSelectField = <
     setHighlightedIndex(-1);
   };
 
-  const handleSelect = (option: MultiSelectOption<TValue>) => {
+  const handleSelect = (option: SelectSearchOption<TValue>) => {
     if (option.disabled || isDisabled || readOnly) return;
 
-    const selected = selectedOptions.some((selectedOption) =>
-      isEqual(selectedOption.value, option.value),
-    );
+    setSelectedOption(option);
+    setSearchValue(option.label);
+    setFilteredOptions(options);
+    setHighlightedIndex(-1);
+    setOpen(false);
 
-    const newSelectedOptions = selected
-      ? selectedOptions.filter(
-          (selectedOption) => !isEqual(selectedOption.value, option.value),
-        )
-      : [...selectedOptions, option];
+    field.onChange(option.value);
+    onChange?.(option.value);
 
-    setSelectedOptions(newSelectedOptions);
-
-    const newValue = newSelectedOptions.map(
-      (selectedOption) => selectedOption.value,
-    );
-
-    field.onChange(newValue);
-    onChange?.(newValue);
+    requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
   };
 
-  const clearSelection = () => {
-    if (isDisabled || readOnly) return;
+  const handleClear = () => {
+    if (isDisabled || readOnly) {
+      return;
+    }
 
-    setSelectedOptions([]);
+    setSelectedOption(undefined);
     setSearchValue("");
     setFilteredOptions(options);
     setHighlightedIndex(-1);
-    field.onChange([]);
-    onChange?.([]);
+
+    field.onChange(undefined);
+    onChange?.(undefined);
+
     requestAnimationFrame(() => {
       inputRef.current?.focus();
     });
   };
 
   const resetListOptions = () => {
-    setSearchValue("");
+    setSearchValue(selectedOption?.label ?? "");
     setFilteredOptions(options);
     setHighlightedIndex(-1);
   };
 
-  const showOnlySelected = () => {
-    if (selectedOptions.length === 0 || isDisabled || readOnly) {
-      return;
-    }
-
-    const filtered = options.filter((option) =>
-      selectedOptions.some((selectedOption) =>
-        isEqual(selectedOption.value, option.value),
-      ),
-    );
-
-    setFilteredOptions(filtered);
-    setHighlightedIndex(-1);
-  };
-
-  const showNotSelected = () => {
-    if (selectedOptions.length === 0 || isDisabled || readOnly) {
-      return;
-    }
-
-    const filtered = options.filter(
-      (option) =>
-        !selectedOptions.some((selectedOption) =>
-          isEqual(selectedOption.value, option.value),
-        ),
-    );
-
-    setFilteredOptions(filtered);
-    setHighlightedIndex(-1);
-  };
-
-  const selectAll = () => {
-    if (isDisabled || readOnly) return;
-
-    const newSelectedOptions = [
-      ...selectedOptions,
-      ...filteredOptions.filter(
-        (option) =>
-          !option.disabled &&
-          !selectedOptions.some((selectedOption) =>
-            isEqual(selectedOption.value, option.value),
-          ),
-      ),
-    ];
-
-    setSelectedOptions(newSelectedOptions);
-
-    const newValue = newSelectedOptions.map((option) => option.value);
-
-    field.onChange(newValue);
-    onChange?.(newValue);
-  };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (isDisabled || readOnly) {
+    if (isDisabled) {
       return;
     }
 
@@ -246,11 +194,9 @@ const MultiSelectField = <
         if (!open) {
           setOpen(true);
           resetListOptions();
-
           requestAnimationFrame(() => {
             inputRef.current?.focus();
           });
-
           return;
         }
 
@@ -270,11 +216,6 @@ const MultiSelectField = <
         if (!open) {
           setOpen(true);
           resetListOptions();
-
-          requestAnimationFrame(() => {
-            inputRef.current?.focus();
-          });
-
           return;
         }
 
@@ -287,10 +228,6 @@ const MultiSelectField = <
         if (!open) {
           setOpen(true);
           resetListOptions();
-
-          requestAnimationFrame(() => {
-            inputRef.current?.focus();
-          });
           return;
         }
 
@@ -332,7 +269,7 @@ const MultiSelectField = <
               weight="regular"
               color="Black"
               size={16}
-              tooltip={info}
+              content={info}
               interactive={interactive}
               className="tool"
               popoverColor="black"
@@ -346,10 +283,9 @@ const MultiSelectField = <
       <InputDropdown
         open={open}
         onOpenChange={(nextOpen) => {
-          if (isDisabled || readOnly) return;
+          if (isDisabled) return;
 
           setOpen(nextOpen);
-
           if (nextOpen) {
             resetListOptions();
           }
@@ -367,33 +303,83 @@ const MultiSelectField = <
                 : undefined
             }
             onClick={() => {
-              if (isDisabled || readOnly) return;
+              if (isDisabled) return;
+
               setOpen(true);
               resetListOptions();
+
               requestAnimationFrame(() => {
                 inputRef.current?.focus();
               });
             }}
             onKeyDown={handleKeyDown}
           >
-            {loading && <Loader size="s" text={true} />}
+            {svg && (
+              <Icon
+                name={apiError ? "Warning" : svg}
+                size={16}
+                color={apiError ? "red" : iconColor}
+              />
+            )}
+
+            {!svg && apiError && (
+              <Icon name="Warning" size={16} weight="light" color="red" />
+            )}
+
+            {loading && <Loader size="xs" text={true} />}
             {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
+
             {!loading && !apiError && (
               <>
-                {!open && (
+                <input
+                  id={`${name}-input`}
+                  name={name}
+                  type="text"
+                  value={searchValue}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  readOnly={readOnly}
+                  ref={inputRef}
+                  onFocus={() => {
+                    if (!isDisabled) {
+                      setIsFocused(true);
+                      setOpen(true);
+                    }
+                  }}
+                  onBlur={() => {
+                    setIsFocused(false);
+                    field.onBlur();
+                    onBlur?.(field.value);
+                  }}
+                  onChange={(event) => {
+                    const search = event.target.value;
+                    setSearchValue(search);
+                    handleOptions(search);
+                  }}
+                  onKeyDown={handleKeyDown}
+                  role="combobox"
+                  aria-expanded={open}
+                  aria-controls={listboxId}
+                  aria-autocomplete="list"
+                  aria-activedescendant={
+                    highlightedIndex >= 0
+                      ? `${listboxId}-option-${highlightedIndex}`
+                      : undefined
+                  }
+                />
+
+                {field.value !== undefined && (
                   <button
                     type="button"
                     onClick={(event) => {
                       event.stopPropagation();
-                      clearSelection();
+                      handleClear();
                     }}
-                    disabled={
-                      isDisabled || readOnly || selectedOptions.length === 0
-                    }
+                    disabled={isDisabled || readOnly}
                     className="select-search__button"
+                    tooltip="delete value"
                   >
                     <Icon name="X" size={16} color={iconColor} />
-                    {selectedOptions.length} selected
                   </button>
                 )}
 
@@ -402,29 +388,33 @@ const MultiSelectField = <
                     type="button"
                     onClick={(event) => {
                       event.stopPropagation();
+
                       if (isDisabled) return;
                       setOpen(true);
                       resetListOptions();
-                      requestAnimationFrame(() => {
+                      /*    requestAnimationFrame(() => {
                         inputRef.current?.focus();
-                      });
+                      }); */
                     }}
-                    disabled={isDisabled || readOnly}
+                    disabled={isDisabled}
                     className="select-search__button"
+                    tooltip="open"
                   >
                     <Icon name="CaretDown" size={16} color={iconColor} />
                   </button>
                 )}
+
                 {open && (
                   <button
                     type="button"
                     onClick={(event) => {
-                      event.stopPropagation();
                       if (isDisabled) return;
+                      event.stopPropagation();
                       setOpen(false);
                     }}
-                    disabled={isDisabled || readOnly}
+                    disabled={isDisabled}
                     className="select-search__button"
+                    tooltip="close"
                   >
                     <Icon name="CaretUp" size={16} color={iconColor} />
                   </button>
@@ -435,92 +425,8 @@ const MultiSelectField = <
         }
       >
         <div className="select-search__options" id={listboxId} role="listbox">
-          <div>
-            <input
-              id={`${name}-input`}
-              name={name}
-              type="text"
-              value={searchValue}
-              placeholder={placeholder}
-              disabled={isDisabled}
-              ref={inputRef}
-              onFocus={() => {
-                if (!isDisabled && !readOnly) {
-                  setIsFocused(true);
-                  setOpen(true);
-                }
-              }}
-              onBlur={() => {
-                setIsFocused(false);
-                field.onBlur();
-                onBlur?.(field.value);
-              }}
-              onChange={(event) => {
-                const search = event.target.value;
-                setSearchValue(search);
-                handleOptions(search);
-              }}
-              onKeyDown={handleKeyDown}
-              role="combobox"
-              aria-expanded={open}
-              aria-controls={listboxId}
-              aria-autocomplete="list"
-              aria-activedescendant={
-                highlightedIndex >= 0
-                  ? `${listboxId}-option-${highlightedIndex}`
-                  : undefined
-              }
-            />
-
-            <div>
-              {open && (
-                <IconTooltip
-                  name="List"
-                  tooltip="Reset Filters"
-                  onClick={resetListOptions}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="ListBullets"
-                  tooltip="Show Not selected"
-                  onClick={showNotSelected}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="ListChecks"
-                  tooltip="Show Selected"
-                  onClick={showOnlySelected}
-                />
-              )}
-
-              {open && (
-                <IconTooltip
-                  name="ListChecked"
-                  tooltip="Select all"
-                  onClick={selectAll}
-                  disabled={isDisabled || readOnly}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="List"
-                  tooltip="Deselect all"
-                  onClick={clearSelection}
-                  disabled={isDisabled || readOnly}
-                />
-              )}
-            </div>
-          </div>
-
           {filteredOptions.map((option, index) => {
-            const isSelected = selectedOptions.some((selectedOption) =>
-              isEqual(selectedOption.value, option.value),
-            );
+            const isSelected = isEqual(selectedOption?.value, option.value);
 
             return (
               <button
@@ -529,37 +435,41 @@ const MultiSelectField = <
                 } ${
                   highlightedIndex === index ? "select-search__highlighted" : ""
                 }`}
-                key={index}
                 id={`${listboxId}-option-${index}`}
+                key={index}
                 type="button"
                 role="option"
                 aria-selected={isSelected}
-                disabled={option.disabled || isDisabled || readOnly}
+                disabled={option.disabled || readOnly}
                 onMouseDown={(event) => {
-                  if (option.disabled || isDisabled || readOnly) {
-                    return;
-                  }
-
+                  if (option.disabled || readOnly) return;
                   event.preventDefault();
                   handleSelect(option);
                 }}
                 onMouseEnter={() => {
-                  if (!option.disabled && !isDisabled && !readOnly) {
-                    setHighlightedIndex(index);
-                  }
+                  if (option.disabled || readOnly) return;
+                  setHighlightedIndex(index);
                 }}
                 ref={(element) => {
                   optionRefs.current[index] = element;
                 }}
               >
-                <Checkbox
-                  name={option.label}
-                  label={option.label}
-                  checked={isSelected}
-                  disabled={option.disabled || readOnly}
-                />
+                {isSelected && (
+                  <Icon
+                    name="Check"
+                    color={
+                      highlightedIndex === index
+                        ? themeState.whiteColor
+                        : themeState.blackColor
+                    }
+                    hoverColor={themeState.whiteColor}
+                    weight="bold"
+                    size={16}
+                    className="select-search__selected"
+                  />
+                )}
 
-                {option.label}
+                <span>{option.label}</span>
               </button>
             );
           })}
@@ -575,9 +485,9 @@ const MultiSelectField = <
   );
 };
 
-export const MultiSelect = <
+export const SelectSearch = <
   TFieldValues extends FieldValues = FieldValues,
-  TValue extends MultiSelectValue = string,
+  TValue extends SelectSearchValue = string,
 >({
   name,
   options,
@@ -592,20 +502,20 @@ export const MultiSelect = <
   tooltipChildren,
   onChange,
   onBlur,
-  loading = false,
+  loading,
   apiError,
-}: MultiSelectProps<TFieldValues, TValue>) => {
-  const { control } = useFormContext<TFieldValues>();
+}: SelectSearchProps<TFieldValues, TValue>) => {
+  const formContext = useFormContext<TFieldValues>();
 
   return (
     <Controller
       name={name}
-      control={control}
+      control={formContext.control}
       rules={{
         required: required ? requiredErrorMessage : false,
       }}
       render={({ field, fieldState }) => (
-        <MultiSelectField
+        <SelectSearchField
           name={name}
           options={options}
           label={label}
@@ -619,10 +529,10 @@ export const MultiSelect = <
           tooltipChildren={tooltipChildren}
           onChange={onChange}
           onBlur={onBlur}
-          loading={loading}
-          apiError={apiError}
           field={field}
           error={fieldState.error?.message}
+          loading={loading}
+          apiError={apiError}
         />
       )}
     />

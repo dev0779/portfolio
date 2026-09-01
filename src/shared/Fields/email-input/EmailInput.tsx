@@ -5,7 +5,7 @@ import "./EmailInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 interface EmailInputProps {
   name: string;
@@ -98,7 +98,7 @@ export const EmailInput = ({
             weight="regular"
             color="Black"
             size={16}
-            tooltip={info}
+            content={info}
             interactive={interactive}
             className="tool"
             popoverColor="black"

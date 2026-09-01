@@ -9,7 +9,7 @@ import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { useTheme } from "@/hooks/useTheme";
 
 import "./PhoneInput.scss";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 interface PhoneInputProps {
   name: string;
@@ -64,7 +64,7 @@ export const PhoneNumberInput = ({
                 weight="regular"
                 color="Black"
                 size={16}
-                tooltip={info}
+                content={info}
                 interactive={interactive}
                 className="tool"
                 popoverColor="black"

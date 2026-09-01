@@ -1,9 +1,11 @@
-.icon-tooltip {
+.iconButton {
   padding-left: 0.2rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
-.icon-tooltip-popover {
+.iconButton-popover {
   border-radius: 4px;
   padding: 10px 12px;
   background-color: white;
@@ -18,25 +20,25 @@
   will-change: transform, opacity;
 }
 
-.icon-tooltip-popover:focus {
+.iconButton-popover:focus {
   box-shadow:
     hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
     hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
 }
 
-.icon-tooltip-popover[data-state="open"][data-side="top"] {
+.iconButton-popover[data-state="open"][data-side="top"] {
   animation-name: slideDownAndFade;
 }
 
-.icon-tooltip-popover[data-state="open"][data-side="right"] {
+.iconButton-popover[data-state="open"][data-side="right"] {
   animation-name: slideLeftAndFade;
 }
 
-.icon-tooltip-popover[data-state="open"][data-side="bottom"] {
+.iconButton-popover[data-state="open"][data-side="bottom"] {
   animation-name: slideUpAndFade;
 }
 
-.icon-tooltip-popover[data-state="open"][data-side="left"] {
+.iconButton-popover[data-state="open"][data-side="left"] {
   animation-name: slideRightAndFade;
 }
 

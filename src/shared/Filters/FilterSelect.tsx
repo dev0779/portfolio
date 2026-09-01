@@ -5,7 +5,7 @@ import isEqual from "lodash/isEqual";
 
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 import "./FilterSelect.scss";
 import { ErrorMessage } from "../Fields/fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";

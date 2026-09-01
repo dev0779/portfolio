@@ -76,15 +76,17 @@
   &__option {
     width: 100%;
     display: flex;
-    padding: 0 0.3rem;
-    border-radius: 3px;
+    padding: 0.3rem 0.3rem;
+    margin: 0.2rem;
+    border-radius: 5px;
     cursor: pointer;
 
     &:hover {
-      background-color: rgb(73, 73, 248);
-      color: white;
+      background-color: rgba(109, 195, 245, 0.37);
+      color: black;
+      cursor: pointer;
 
-      .select-search__selected {
+      .select__selected {
         fill: white !important;
         polyline {
           stroke: white !important;
@@ -94,8 +96,8 @@
   }
 
   &__highlighted {
-    background-color: rgb(73, 73, 248);
-    color: white;
+    background-color: rgba(109, 195, 245, 0.37);
+    color: black;
   }
 
   &__selected {

@@ -15,7 +15,7 @@
 
   max-height: var(--radix-popover-content-available-height);
   overflow-y: auto;
-  z-index: 1000000;
+  z-index: 1000;
 
   &[data-state="open"] {
     animation-duration: 400ms;
@@ -35,4 +35,3 @@
 .input-dropdown[data-side="top"] {
   animation-name: slideDownAndFade;
 }
-

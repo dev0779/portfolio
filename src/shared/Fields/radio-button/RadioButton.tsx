@@ -2,8 +2,7 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 
 import "./RadioButton.scss";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
-
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 export type RadioValue = string | number | boolean;
 
@@ -75,7 +74,7 @@ export const Radio = <T extends RadioValue>({
             weight="regular"
             color="Black"
             size={16}
-            tooltip={info}
+            content={info}
             interactive={interactive}
             className="tool"
             popoverColor="black"

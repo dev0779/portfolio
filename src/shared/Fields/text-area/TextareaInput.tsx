@@ -1,16 +1,13 @@
 import { useRef, type JSX } from "react";
 
-import {
-  useFormContext,
-  type RegisterOptions,
-} from "react-hook-form";
+import { useFormContext, type RegisterOptions } from "react-hook-form";
 
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import * as PhosphorIcons from "phosphor-react";
 import "./TextareaInput.scss";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 interface TextareaInputProps {
   name: string;
@@ -53,7 +50,7 @@ export const TextareaInput = ({
   error,
   svg,
   interactive,
-  tooltipChildren
+  tooltipChildren,
 }: TextareaInputProps): JSX.Element => {
   const { themeState } = useTheme();
 
@@ -85,14 +82,9 @@ export const TextareaInput = ({
     <div
       className={`textarea-input ${
         disabled ? "textarea-input--disabled" : ""
-      } ${
-        hasError ? "textarea-input--error" : ""
-      }`}
+      } ${hasError ? "textarea-input--error" : ""}`}
     >
-      <label
-        className="textarea-input__label"
-        htmlFor={name}
-      >
+      <label className="textarea-input__label" htmlFor={name}>
         {required ? `${label} *` : label}
         {info && (
           <IconTooltip
@@ -100,7 +92,7 @@ export const TextareaInput = ({
             weight="regular"
             color="Black"
             size={16}
-            tooltip={info}
+            content={info}
             interactive={interactive}
             className="tool"
             popoverColor="black"
@@ -111,13 +103,7 @@ export const TextareaInput = ({
       </label>
 
       <div className="textarea-input__wrapper">
-        {svg && (
-          <Icon
-            name={svg}
-            size={16}
-            color={iconColor}
-          />
-        )}
+        {svg && <Icon name={svg} size={16} color={iconColor} />}
 
         <textarea
           id={name}

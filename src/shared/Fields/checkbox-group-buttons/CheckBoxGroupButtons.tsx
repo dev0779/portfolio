@@ -8,7 +8,7 @@ import {
 import { Checkbox } from "../checkbox/Checkbox";
 import "./CheckBoxGroupButtons.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 export type CheckboxGroupValue = string | number;
 
@@ -98,7 +98,7 @@ export const CheckboxGroup = <
                     weight="regular"
                     color="Black"
                     size={16}
-                    tooltip={info}
+                    content={info}
                     interactive={interactive}
                     className="tool"
                     popoverColor="black"

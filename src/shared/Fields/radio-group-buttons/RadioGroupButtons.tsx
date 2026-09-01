@@ -9,7 +9,7 @@ import { Radio, type RadioValue } from "../radio-button/RadioButton";
 
 import "./RadioGroupButtons.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 export type RadioOption<T extends RadioValue = string> = {
   label: string;
@@ -77,7 +77,7 @@ export const RadioGroupButtons = <
                   weight="regular"
                   color="Black"
                   size={16}
-                  tooltip={info}
+                  content={info}
                   interactive={interactive}
                   className="tool"
                   popoverColor="black"

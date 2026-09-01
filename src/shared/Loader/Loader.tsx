@@ -19,8 +19,8 @@ const SIZES = {
 export const Loader = ({ size, color, text = false }: LoaderProps) => {
   const { themeState } = useTheme();
 
-    const loaderSize = SIZES[size].loader;
-    const loaderText = SIZES[size].text;
+  const loaderSize = SIZES[size].loader;
+  const loaderText = SIZES[size].text;
   const loaderColor = color ?? themeState.primaryColor;
 
   if (size === "xl") {
@@ -31,8 +31,11 @@ export const Loader = ({ size, color, text = false }: LoaderProps) => {
             <Icon name="SpinnerGap" size={loaderSize} color={loaderColor} />
           </span>
 
-          <span className="loader__main__text" style={{ color: loaderColor, fontSize: loaderText}}>
-            {text ? text : "Loading ..."}
+          <span
+            className="loader__main__text"
+            style={{ color: loaderColor, fontSize: loaderText }}
+          >
+            {text ? text : "loading ..."}
           </span>
         </div>
       </div>
@@ -46,8 +49,11 @@ export const Loader = ({ size, color, text = false }: LoaderProps) => {
       </span>
 
       {text && (
-        <span className="loader__text" style={{ color: loaderColor, fontSize: loaderText }}>
-          {text === true ? "Loading ..." : text}
+        <span
+          className="loader__text"
+          style={{ color: loaderColor, fontSize: loaderText }}
+        >
+          {text === true ? "loading ..." : text}
         </span>
       )}
     </div>

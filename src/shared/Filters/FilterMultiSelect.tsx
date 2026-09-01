@@ -4,7 +4,7 @@ import * as PhosphorIcons from "phosphor-react";
 
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 import "./FilterSelect.scss";
 

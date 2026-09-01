@@ -20,10 +20,12 @@ import {
   CheckboxGroup,
   TextareaInput,
   SelectSearch,
+  MultiSelect,
 } from "./shared/Fields";
 import { GlobalThemeContext } from "./theme/GlobalThemeProvider";
 import { useContext } from "react";
-import { Loader } from "./shared/Loader/Loader";
+import { requiredErrorMessage } from "./utils/errors";
+import { Tooltip } from "./shared/Tooltip/Tooltip/Tooltip";
 
 /* const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -39,6 +41,9 @@ import { Loader } from "./shared/Loader/Loader";
 function App() {
   const formMethods = useForm({
     mode: "onBlur",
+    defaultValues: {
+      multiselect: [],
+    },
   });
 
   const { toggle } = useContext(GlobalThemeContext);
@@ -81,17 +86,34 @@ function App() {
       >
         Toggle Theme
       </button>
-      
+
+      <Tooltip content="Im a tooltip">
+        <span>Hi new tooltip</span>
+      </Tooltip>
+
       <FormProvider {...formMethods}>
         <span className="block">
-      {/*     <Loader size="xs" text={ true} />
+          {/*     <Loader size="xs" text={ true} />
           <Loader size="s" text={ true} />
           <Loader size="l" text={true} /> */}
 
           <SelectSearch
             name="search"
-            label="search"
-            info="hello"
+            label="Selectsearch"
+            info="hello search"
+            options={selectOptions}
+          />
+          <Select
+            name="select"
+            label="select"
+            info="hello select"
+            options={selectOptions}
+          />
+
+          <MultiSelect
+            name="multiselect"
+            label="MultiSelect"
+            info="hello multi"
             options={selectOptions}
           />
           <TextInput
@@ -99,7 +121,7 @@ function App() {
             label="User name"
             placeholder="Enter full name"
             info="text info"
-            required
+            required={requiredErrorMessage}
           />
           <PasswordInput
             name="password"

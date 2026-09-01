@@ -9,7 +9,7 @@ import "./DateInput.scss";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
 interface DateInputProps {
   name: string;
@@ -106,7 +106,7 @@ export const DateInput = ({
                   weight="regular"
                   color="Black"
                   size={16}
-                  tooltip={info}
+                  content={info}
                   interactive={interactive}
                   className="tool"
                   popoverColor="black"

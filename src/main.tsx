@@ -7,7 +7,6 @@ import { client } from "./Api/ApolloClient.ts";
 import { GlobalThemeProvider } from "./theme/GlobalThemeProvider.tsx";
 import { UserProvider } from "./context/UserContext/UserContext.tsx";
 import { TooltipProvider } from "./shared/Tooltip/TooltipProvider.tsx";
-import "tippy.js/dist/tippy.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -12,7 +12,7 @@ import isEqual from "lodash/isEqual";
 
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
-import { IconTooltip } from "@/shared/Tooltip/icon-tooltip/IconTooltip";
+import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 import "./Select.scss";
 import { ErrorMessage } from "../../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
@@ -207,7 +207,7 @@ const SelectField = <
     }
   };
 
-  const isDisabled = disabled || loading || !!apiError || options.length ===0 ;
+  const isDisabled = disabled || loading || !!apiError || options.length === 0;
 
   const iconColor = error
     ? themeState.errorColor
@@ -237,7 +237,7 @@ const SelectField = <
               weight="regular"
               color="Black"
               size={16}
-              tooltip={info}
+              content={info}
               interactive={interactive}
               className="tool"
               popoverColor="black"
@@ -283,8 +283,15 @@ const SelectField = <
             }}
             onKeyDown={handleKeyDown}
           >
-            {svg && !loading && !apiError && (
-              <Icon name={svg} size={16} color={iconColor} />
+            {svg && !loading && (
+              <Icon
+                name={apiError ? "Warning" : svg}
+                size={16}
+                color={apiError ? "red" : iconColor}
+              />
+            )}
+            {!svg && apiError && (
+              <Icon name="Warning" size={16} weight="light" color="red" />
             )}
             {loading && <Loader size="s" text={true} />}
             {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
@@ -362,6 +369,7 @@ const SelectField = <
                     hoverColor={themeState.whiteColor}
                     weight="bold"
                     size={16}
+                    className="select__selected"
                   />
                 )}
 
