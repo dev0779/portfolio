@@ -1,16 +1,17 @@
 import { Icon } from "@/shared/Icons/Icon";
-import { IconTooltip, Tooltip } from "@/shared/Tooltip";
+import { Tooltip } from "@/shared/Tooltip";
 import { Popover } from "radix-ui";
 import React from "react";
 
 interface IconButtonProps {
   label?: string;
   icon?: string;
+  variant?: "primary" | "secondary" | "tertiary";
   color?: string;
   iconHoverColor?: string;
   iconColor?: string;
+  size?: "s" | "m" | "l";
   iconSize?: number;
-  size?: number;
   iconWeight?: "regular" | "bold" | "fill" | "thin" | "light";
   type?: "primary" | "secondary";
   arrow?: boolean;
@@ -24,13 +25,20 @@ interface IconButtonProps {
   className?: string;
 }
 
+const SIZES = {
+  s: { width: 20, height: 20 },
+  m: { width: 26, height: 26 },
+  l: { width: 32, height: 32 },
+} as const;
+
 export const IconButton = ({
   label,
-  size,
-  type = "primary",
-  icon,
-  iconSize,
-  iconColor,
+  size = "s",
+  variant = "primary",
+  color,
+  icon = "RocketLaunch",
+  iconSize = 12,
+  iconColor = "black",
   iconHoverColor,
   iconWeight = "regular",
   arrow = false,
@@ -43,14 +51,19 @@ export const IconButton = ({
   popoverColor = "white",
   className,
 }: IconButtonProps) => {
+  const buttonSize = SIZES[size];
   if (interactive) {
     return (
       <Popover.Root>
         <Popover.Trigger asChild>
           <button
-            className={`iconButton ${disabled ? "iconButton--disabled" : ""}`}
+            className={`
+              iconButton
+              iconButton--${variant}
+              ${disabled ? "iconButton--disabled" : ""}`}
             onClick={onClick}
             disabled={disabled}
+            style={buttonSize}
           >
             <Icon
               name={icon as React.ComponentProps<typeof Icon>["name"]}
@@ -85,9 +98,10 @@ export const IconButton = ({
     <>
       <Tooltip content={label}>
         <button
-          className={`iconButton ${disabled ? "iconButton--disabled" : ""}`}
+          className={`iconButton iconButton--${variant} ${disabled ? "iconButton--disabled" : ""}`}
           onClick={disabled ? undefined : onClick}
           disabled={disabled}
+          style={buttonSize}
         >
           <Icon
             name={icon as React.ComponentProps<typeof Icon>["name"]}
