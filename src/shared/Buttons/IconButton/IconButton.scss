@@ -1,16 +1,59 @@
 .iconButton {
-  padding-left: 0.2rem;
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .iconButton--primary {
-  border: 1px solid blue;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
+  background-color: blue;
+  border-radius: 8px;
   cursor: pointer !important;
+}
+
+.iconButton--secondary {
+  border: 1px solid rgba(109, 195, 245, 0.37);
+  border-radius: 4px;
+  cursor: pointer !important;
+
+  &:hover {
+    background-color: rgba(109, 195, 245, 0.37);
+    .iconButtonIcon {
+      color: black;
+      fill: black !important;
+
+      rect,
+      path,
+      polyline,
+      circle,
+      line {
+        stroke: black !important;
+      }
+    }
+  }
+}
+
+.iconButton--tertiary {
+  border-radius: 4px;
+  cursor: pointer !important;
+
+  &:hover {
+    border-radius: 8px;
+    background-color: rgba(109, 195, 245, 0.37);
+
+    .iconButtonIcon {
+      fill: black !important;
+      color: black;
+
+      rect,
+      path,
+      polyline,
+      circle,
+      line {
+        stroke: black !important;
+      }
+    }
+  }
 }
 
 .iconButton-popover {

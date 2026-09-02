@@ -1,5 +1,6 @@
 import * as PhosphorIcons from "phosphor-react";
 import type { IconProps as PhosphorIconProps } from "phosphor-react";
+import { useState } from "react";
 
 interface IconProps {
   name: keyof typeof PhosphorIcons;
@@ -9,6 +10,8 @@ interface IconProps {
   weight?: "thin" | "light" | "regular" | "bold" | "fill";
   className?: string;
   onClick?: () => void;
+  onMouseEnter?: React.MouseEventHandler<SVGSVGElement>;
+  onMouseLeave?: React.MouseEventHandler<SVGSVGElement>;
 }
 
 export const Icon: React.FC<IconProps> = ({
@@ -21,19 +24,18 @@ export const Icon: React.FC<IconProps> = ({
   onClick,
 }: IconProps) => {
   const IconComponent = PhosphorIcons[name] as React.FC<PhosphorIconProps>;
+  const [hovered, setHovered] = useState(false);
+
   if (!IconComponent) return null;
   return (
     <IconComponent
       size={size}
-      color={color}
+      color={hovered && hoverColor ? hoverColor : color}
       weight={weight}
       className={className}
-      style={
-        {
-          "--icon-hover-color": hoverColor,
-        } as React.CSSProperties
-      }
       onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     />
   );
 };

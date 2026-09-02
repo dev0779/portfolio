@@ -1,7 +1,7 @@
 import { Icon } from "@/shared/Icons/Icon";
 import { Tooltip } from "@/shared/Tooltip";
 import { Popover } from "radix-ui";
-import React from "react";
+import React, { useState } from "react";
 
 import "./IconButton.scss";
 
@@ -29,20 +29,25 @@ interface IconButtonProps {
 const SIZES = {
   s: { width: 24, height: 24 },
   m: { width: 36, height: 36 },
-  l: { width: 80, height: 80 },
+  l: { width: 46, height: 46 },
 } as const;
 
 const ICONSIZES = {
   s: 16,
   m: 24,
-  l: 64,
+  l: 40,
+};
+
+const VARIANTCOLOR = {
+  primary: { color: "white", hover: "white" },
+  secondary: { color: "blue", hover: "white" },
+  tertiary: { color: "blue", hover: "white" },
 };
 
 export const IconButton = ({
   label,
   size = "s",
   variant = "primary",
-  color,
   icon = "RocketLaunch",
   iconColor = "black",
   iconHoverColor,
@@ -52,7 +57,7 @@ export const IconButton = ({
   children,
   onClick,
   interactive = false,
-  popoverSide = "right",
+  popoverSide = "bottom",
   popoverSideOffset = 5,
   popoverColor = "white",
   className,
@@ -60,6 +65,8 @@ export const IconButton = ({
   const buttonSize = SIZES[size];
 
   const iconSize = ICONSIZES[size];
+  const color = VARIANTCOLOR[variant];
+
   if (interactive) {
     return (
       <Popover.Root>
@@ -75,8 +82,7 @@ export const IconButton = ({
           >
             <Icon
               name={icon as React.ComponentProps<typeof Icon>["name"]}
-              color={disabled ? "gray" : iconColor}
-              hoverColor={iconHoverColor}
+              color={disabled ? "gray" : color.color}
               weight={iconWeight}
               size={iconSize}
             />
@@ -113,10 +119,12 @@ export const IconButton = ({
         >
           <Icon
             name={icon as React.ComponentProps<typeof Icon>["name"]}
-            color={disabled ? "gray" : iconColor}
-            hoverColor={iconHoverColor}
+            color={
+              disabled ? "gray" : variant === "primary" ? "white" : iconColor
+            }
             weight={iconWeight}
             size={iconSize}
+            className={`iconButtonIcon`}
           />
         </button>
       </Tooltip>

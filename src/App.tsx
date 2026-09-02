@@ -26,6 +26,7 @@ import { GlobalThemeContext } from "./theme/GlobalThemeProvider";
 import { useContext } from "react";
 import { requiredErrorMessage } from "./utils/errors";
 import { Tooltip } from "./shared/Tooltip/Tooltip/Tooltip";
+import { IconButton } from "./shared/Buttons/IconButton/IconButton";
 
 /* const Box = styled.div`
   background: ${({ theme }) => theme.background};
@@ -86,6 +87,18 @@ function App() {
       >
         Toggle Theme
       </button>
+
+      <IconButton icon="Info" label="primary" size="s" variant="primary" />
+      <IconButton icon="Info" label="primary" size="m" variant="primary" />
+      <IconButton icon="Info" label="primary" size="l" variant="primary" />
+
+      <IconButton icon="Info" label="secondary" size="s" variant="secondary" />
+      <IconButton icon="Info" label="secontary" size="m" variant="secondary" />
+      <IconButton icon="Info" label="secondary" size="l" variant="secondary" />
+
+      <IconButton icon="Info" label="tertiary" size="s" variant="tertiary" />
+      <IconButton icon="Info" label="tertiary" size="m" variant="tertiary" />
+      <IconButton icon="Info" label="tertiary" size="l" variant="tertiary" />
 
       <Tooltip content="Im a tooltip">
         <span>Hi new tooltip</span>

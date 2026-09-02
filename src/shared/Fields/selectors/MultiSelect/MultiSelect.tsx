@@ -485,6 +485,7 @@ const MultiSelectField = <
                   icon="List"
                   onClick={resetListOptions}
                   size="s"
+                  variant="tertiary"
                   disabled={disabled}
                 />
               )}
@@ -495,6 +496,7 @@ const MultiSelectField = <
                   label="Show Not selected"
                   onClick={showNotSelected}
                   size="s"
+                  variant="tertiary"
                   disabled={disabled || readOnly}
                 />
               )}
@@ -505,27 +507,30 @@ const MultiSelectField = <
                   label="Show Selected"
                   onClick={showOnlySelected}
                   size="s"
+                  variant="tertiary"
                   disabled={disabled || readOnly}
                 />
               )}
 
               {open && (
                 <IconButton
-                  icon="ListChecks"
+                  icon="Check"
                   label="Select all"
                   onClick={selectAll}
                   disabled={isDisabled || readOnly}
                   size="s"
+                  variant="tertiary"
                 />
               )}
 
               {open && (
                 <IconButton
-                  icon="List"
+                  icon="Trash"
                   label="Deselect all"
                   onClick={clearSelection}
                   disabled={isDisabled || readOnly}
                   size="s"
+                  variant="tertiary"
                 />
               )}
             </>
