@@ -27,21 +27,23 @@ interface IconButtonProps {
 }
 
 const SIZES = {
-  s: { width: 24, height: 24 },
+  xs: { width: 24, height: 24 },
+  s: { width: 28, height: 28 },
   m: { width: 36, height: 36 },
-  l: { width: 46, height: 46 },
+  l: { width: 40, height: 40 },
 } as const;
 
 const ICONSIZES = {
-  s: 16,
+  xs: 16,
+  s: 20,
   m: 24,
-  l: 40,
+  l: 28,
 };
 
 const VARIANTCOLOR = {
   primary: { color: "white", hover: "white" },
-  secondary: { color: "blue", hover: "white" },
-  tertiary: { color: "blue", hover: "white" },
+  secondary: { color: "black", hover: "white" },
+  tertiary: { color: "black", hover: "white" },
 };
 
 export const IconButton = ({
@@ -49,8 +51,6 @@ export const IconButton = ({
   size = "s",
   variant = "primary",
   icon = "RocketLaunch",
-  iconColor = "black",
-  iconHoverColor,
   iconWeight = "regular",
   arrow = false,
   disabled,
@@ -110,7 +110,7 @@ export const IconButton = ({
   }
   return (
     <>
-      <Tooltip content={label}>
+      <Tooltip content={label} side={popoverSide}>
         <button
           className={`iconButton iconButton--${variant} ${disabled ? "iconButton--disabled" : ""}`}
           onClick={disabled ? undefined : onClick}
@@ -120,7 +120,7 @@ export const IconButton = ({
           <Icon
             name={icon as React.ComponentProps<typeof Icon>["name"]}
             color={
-              disabled ? "gray" : variant === "primary" ? "white" : iconColor
+              disabled ? "gray" : variant === "primary" ? "white" : color.color
             }
             weight={iconWeight}
             size={iconSize}

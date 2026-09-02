@@ -1,0 +1,33 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  border: 1px solid red;
+
+  background: linear-gradient(
+    to bottom,
+    #1560BD 0%,
+    #1165cb 65%,
+    #000080 100%
+/* #071A2E 100% */
+  );
+
+
+  &__content {
+    flex: 1;
+  }
+}
+
+/* blue-500  #3b82f6  ← your current blue
+blue-600  #2563eb
+blue-700  #1d4ed8
+blue-800  #1e40af
+blue-900  #1e3a8a 
+azure: #007FFF
+trueblue: #0073CF
+denim blue: #1560BD
+
+Denim: #1560BD
+Dark Denim: #124E96
+Deep Denim: #0D3B73
+
+*/

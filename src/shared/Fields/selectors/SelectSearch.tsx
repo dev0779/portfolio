@@ -14,14 +14,14 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
-import "./SelectSearch.scss";
-
-import { ErrorMessage } from "../../fields-styled/Fields.styled";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import { InputDropdown } from "../Dropdown/InputDropdown";
+import { InputDropdown } from "./Dropdown/InputDropdown";
 import { requiredErrorMessage } from "@/utils/errors";
 import { Loader } from "@/shared/Loader/Loader";
 
+
+import "./GlobalSelect.scss";
 export type SelectSearchValue = string | number | object;
 
 export type SelectSearchOption<TValue extends SelectSearchValue = string> = {
@@ -253,15 +253,15 @@ const SelectSearchField = <
 
   return (
     <div
-      className={`select-search ${
-        error ? "select-search--error" : ""
-      } ${isDisabled ? "select-search--disabled" : ""}`}
+      className={`select ${
+        error ? "select--error" : ""
+      } ${isDisabled ? "select--disabled" : ""}`}
     >
       {label && (
-        <div className="select-search__label">
+        <div className="select__label">
           {label}
 
-          {required && <span className="select-search__required">*</span>}
+          {required && <span className="select__required">*</span>}
 
           {info && (
             <IconTooltip
@@ -292,7 +292,7 @@ const SelectSearchField = <
         }}
         trigger={
           <div
-            className="select-search__wrapper"
+            className="select__wrapper"
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
@@ -331,6 +331,7 @@ const SelectSearchField = <
 
             {!loading && !apiError && (
               <>
+                {open && <Icon name="MagnifyingGlass" size={16} color="black" />}
                 <input
                   id={`${name}-input`}
                   name={name}
@@ -376,7 +377,7 @@ const SelectSearchField = <
                       handleClear();
                     }}
                     disabled={isDisabled || readOnly}
-                    className="select-search__button"
+                    className="select__button"
                     tooltip="delete value"
                   >
                     <Icon name="X" size={16} color={iconColor} />
@@ -397,7 +398,7 @@ const SelectSearchField = <
                       }); */
                     }}
                     disabled={isDisabled}
-                    className="select-search__button"
+                    className="select__button"
                     tooltip="open"
                   >
                     <Icon name="CaretDown" size={16} color={iconColor} />
@@ -413,7 +414,7 @@ const SelectSearchField = <
                       setOpen(false);
                     }}
                     disabled={isDisabled}
-                    className="select-search__button"
+                    className="select__button"
                     tooltip="close"
                   >
                     <Icon name="CaretUp" size={16} color={iconColor} />
@@ -424,17 +425,15 @@ const SelectSearchField = <
           </div>
         }
       >
-        <div className="select-search__options" id={listboxId} role="listbox">
+        <div className="select__options" id={listboxId} role="listbox">
           {filteredOptions.map((option, index) => {
             const isSelected = isEqual(selectedOption?.value, option.value);
 
             return (
               <button
-                className={`select-search__option ${
-                  isSelected ? "select-search__selected" : ""
-                } ${
-                  highlightedIndex === index ? "select-search__highlighted" : ""
-                }`}
+                className={`select__option ${
+                  isSelected ? "select__selected" : ""
+                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
                 id={`${listboxId}-option-${index}`}
                 key={index}
                 type="button"
@@ -465,7 +464,7 @@ const SelectSearchField = <
                     hoverColor={themeState.whiteColor}
                     weight="bold"
                     size={16}
-                    className="select-search__selected"
+                    className="select__selected"
                   />
                 )}
 

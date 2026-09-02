@@ -7,6 +7,7 @@ import { client } from "./Api/ApolloClient.ts";
 import { GlobalThemeProvider } from "./theme/GlobalThemeProvider.tsx";
 import { UserProvider } from "./context/UserContext/UserContext.tsx";
 import { TooltipProvider } from "./shared/Tooltip/TooltipProvider.tsx";
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")!).render(
       <UserProvider>
         <GlobalThemeProvider>
           <TooltipProvider>
-            <App />
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
           </TooltipProvider>
         </GlobalThemeProvider>
       </UserProvider>

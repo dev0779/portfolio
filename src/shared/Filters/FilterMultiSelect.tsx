@@ -5,15 +5,17 @@ import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
-
-import "./FilterSelect.scss";
-
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
 import isEqual from "lodash/isEqual";
 import { ErrorMessage } from "../Fields/fields-styled/Fields.styled";
 import { InputDropdown } from "../Fields/selectors/Dropdown/InputDropdown";
 import { Checkbox } from "../Fields/checkbox/Checkbox";
 import { Loader } from "@/shared/Loader/Loader";
+
+import "./../Fields/selectors/GlobalSelect.scss";
+import { IconButton } from "../Buttons/IconButton/IconButton";
+import { useForm } from "react-hook-form";
+import { FilterCheckbox } from "./FilterCheckbox";
 
 export type MultiSelectValue = string | number | object;
 
@@ -264,23 +266,21 @@ export const FilterMultiSelect = <TValue extends MultiSelectValue = string>({
       ? themeState.primaryColor
       : themeState.blackColor;
 
-  const listboxId = "filter-select-multi-select-filter-listbox";
+  const listboxId = "multi-select-filter-listbox";
 
   return (
-    <div
-      className={`filter-select ${isDisabled ? "filter-select--disabled" : ""}`}
-    >
+    <div className={`select ${isDisabled ? "select--disabled" : ""}`}>
       {label && (
-        <div className="filter-select__label">
+        <div className="select__label">
           {label}
 
           {info && (
             <IconTooltip
               name="Info"
               weight="regular"
-              color="Black"
+              color="black"
               size={16}
-              tooltip={info}
+              content={info}
               interactive={interactive}
               className="tool"
               popoverColor="black"
@@ -303,7 +303,7 @@ export const FilterMultiSelect = <TValue extends MultiSelectValue = string>({
         }}
         trigger={
           <div
-            className="filter-select__wrapper"
+            className="select__wrapper"
             ref={triggerRef}
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
@@ -327,47 +327,49 @@ export const FilterMultiSelect = <TValue extends MultiSelectValue = string>({
           >
             {loading && <Loader size="s" text={true} />}
             {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
-            {!open && !loading && !apiError && value.length > 0 && (
-              <button
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleClear();
-                }}
-                disabled={isDisabled}
-                className="filter-select__button"
-              >
-                <Icon name="X" size={16} color={iconColor} />
-                {value.length} selected
-              </button>
+            {!loading && !apiError && (
+              <div className="select__multi">
+                <div className="select__multi__value">
+                  <button
+                    type="button"
+                    disabled={isDisabled}
+                    className="select__multi__value__button"
+                  >
+                    {selectedOptions?.length} selected
+                  </button>
+                </div>
+              </div>
             )}
 
-            {!open && !loading && !apiError && (
-              <button
-                type="button"
-                onClick={() => setOpen(true)}
-                disabled={isDisabled}
-                className="filter-select__button"
-              >
-                <Icon name="CaretDown" size={16} color={iconColor} />
-              </button>
-            )}
+            <div className="select__multi__value__actions">
+              {!open && !loading && !apiError && (
+                <button
+                  type="button"
+                  onClick={() => setOpen(true)}
+                  disabled={isDisabled}
+                  className="select__button"
+                >
+                  <Icon name="CaretDown" size={16} color={iconColor} />
+                </button>
+              )}
 
-            {open && !loading && !apiError && (
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                disabled={isDisabled}
-                className="filter-select__button"
-              >
-                <Icon name="CaretUp" size={16} color={iconColor} />
-              </button>
-            )}
+              {open && !loading && !apiError && (
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  disabled={isDisabled}
+                  className="select__button"
+                >
+                  <Icon name="CaretUp" size={16} color={iconColor} />
+                </button>
+              )}
+            </div>
           </div>
         }
       >
-        <div className="filter-select__options" id={listboxId} role="listbox">
-          <div>
+        <div className="select__multiOptions" id={listboxId} role="listbox">
+          <div className="select__multiOptions__filters">
+            <Icon name="MagnifyingGlass" size={16} color="black" />
             <input
               id={`${listboxId}-input`}
               type="text"
@@ -430,49 +432,62 @@ export const FilterMultiSelect = <TValue extends MultiSelectValue = string>({
               }
             />
 
-            <div>
+            <>
               {open && (
-                <IconTooltip
-                  name="List"
-                  tooltip="Reset List"
+                <IconButton
+                  label="Reset Filters"
+                  icon="List"
                   onClick={resetListOptions}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="ListBullets"
-                  tooltip="Show Not selected"
-                  onClick={showNotSelected}
-                />
-              )}
-
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="ListChecks"
-                  tooltip="Show Selected"
-                  onClick={showOnlySelected}
+                  size="s"
+                  variant="secondary"
+                  disabled={disabled}
                 />
               )}
 
               {open && (
-                <IconTooltip
-                  name="ListChecked"
-                  tooltip="Select all"
-                  onClick={selectAll}
-                  disabled={readOnly}
+                <IconButton
+                  icon="ListBullets"
+                  label="Show Not selected"
+                  onClick={showNotSelected}
+                  size="s"
+                  variant="secondary"
+                  disabled={disabled || readOnly}
                 />
               )}
 
-              {open && selectedOptions.length > 0 && (
-                <IconTooltip
-                  name="List"
-                  tooltip="Deselect all"
-                  onClick={resetSelected}
-                  disabled={readOnly}
+              {open && (
+                <IconButton
+                  icon="ListChecks"
+                  label="Show Selected"
+                  onClick={showOnlySelected}
+                  size="s"
+                  variant="secondary"
+                  disabled={disabled || readOnly}
                 />
               )}
-            </div>
+
+              {open && (
+                <IconButton
+                  icon="Check"
+                  label="Select all"
+                  onClick={selectAll}
+                  disabled={isDisabled || readOnly}
+                  size="s"
+                  variant="secondary"
+                />
+              )}
+
+              {open && (
+                <IconButton
+                  icon="Trash"
+                  label="Deselect all"
+                  onClick={resetSelected}
+                  disabled={isDisabled || readOnly}
+                  size="s"
+                  variant="secondary"
+                />
+              )}
+            </>
           </div>
 
           {filteredOptions.map((option, index) => {
@@ -482,11 +497,9 @@ export const FilterMultiSelect = <TValue extends MultiSelectValue = string>({
 
             return (
               <button
-                className={`filter-select__option ${
-                  isSelected ? "filter-select__selected" : ""
-                } ${
-                  highlightedIndex === index ? "filter-select__highlighted" : ""
-                }`}
+                className={`select__option ${
+                  isSelected ? "select__selected" : ""
+                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
                 key={index}
                 id={`${listboxId}-option-${index}`}
                 type="button"
@@ -505,14 +518,11 @@ export const FilterMultiSelect = <TValue extends MultiSelectValue = string>({
                   optionRefs.current[index] = element;
                 }}
               >
-                <Checkbox
-                  name={option.label}
+                <FilterCheckbox
                   label={option.label}
                   checked={isSelected}
                   disabled={option.disabled || readOnly}
                 />
-
-                {option.label}
               </button>
             );
           })}

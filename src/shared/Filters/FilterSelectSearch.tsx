@@ -6,12 +6,12 @@ import isEqual from "lodash/isEqual";
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
-import "./FilterSelect.scss";
 import { ErrorMessage } from "../Fields/fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
 import { InputDropdown } from "../Fields/selectors/Dropdown/InputDropdown";
 import { Loader } from "@/shared/Loader/Loader";
 
+import "./../Fields/selectors/GlobalSelect.scss";
 export type SelectSearchValue = string | number | object;
 
 export type SelectSearchOption<TValue extends SelectSearchValue = string> = {
@@ -38,7 +38,7 @@ export type SelectSearchFilterProps<TValue extends SelectSearchValue = string> =
     onBlur?: (value: TValue | undefined) => void;
   };
 
-export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
+export const FilterSelectSearch = <TValue extends SelectSearchValue = string>({
   options,
   value,
   label,
@@ -201,23 +201,21 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
       ? themeState.primaryColor
       : themeState.blackColor;
 
-  const listboxId = "filter-select-search-listbox";
+  const listboxId = "select-search-filter-listbox";
 
   return (
-    <div
-      className={`filter-select ${isDisabled ? "filter-select--disabled" : ""}`}
-    >
+    <div className={`select ${isDisabled ? "select--disabled" : ""}`}>
       {label && (
-        <div className="filter-select__label">
+        <div className="select__label">
           {label}
 
           {info && (
             <IconTooltip
               name="Info"
               weight="regular"
-              color="Black"
+              color="black"
               size={16}
-              tooltip={info}
+              content={info}
               interactive={interactive}
               className="tool"
               popoverColor="black"
@@ -240,7 +238,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
         }}
         trigger={
           <div
-            className="filter-select__wrapper"
+            className="select__wrapper"
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
@@ -263,8 +261,11 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
             {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
             {!loading && !apiError && (
               <>
+                {open && (
+                  <Icon name="MagnifyingGlass" size={16} color="black" />
+                )}
                 <input
-                  id="filterselectsearch-filter-input"
+                  id="select-search-filter-input"
                   type="text"
                   value={searchValue}
                   placeholder={placeholder}
@@ -301,7 +302,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                   }
                 />
 
-                {value !== undefined && (
+                {searchValue && (
                   <button
                     type="button"
                     onClick={(event) => {
@@ -309,7 +310,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                       handleClear();
                     }}
                     disabled={isDisabled}
-                    className="filter-select__button"
+                    className="select__button"
                   >
                     <Icon name="X" size={16} color={iconColor} />
                   </button>
@@ -320,18 +321,12 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                     type="button"
                     onClick={(event) => {
                       event.stopPropagation();
-
                       if (isDisabled || readOnly) return;
-
                       setOpen(true);
                       resetListOptions();
-
-                      requestAnimationFrame(() => {
-                        inputRef.current?.focus();
-                      });
                     }}
                     disabled={isDisabled}
-                    className="filter-select__button"
+                    className="select__button"
                   >
                     <Icon name="CaretDown" size={16} color={iconColor} />
                   </button>
@@ -346,7 +341,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                       setOpen(false);
                     }}
                     disabled={isDisabled}
-                    className="filter-select__button"
+                    className="select__button"
                   >
                     <Icon name="CaretUp" size={16} color={iconColor} />
                   </button>
@@ -356,17 +351,15 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
           </div>
         }
       >
-        <div className="filter-select__options" id={listboxId} role="listbox">
+        <div className="select__options" id={listboxId} role="listbox">
           {filteredOptions.map((option, index) => {
             const isSelected = isEqual(selectedOption?.value, option.value);
 
             return (
               <button
-                className={`filter-select__option ${
-                  isSelected ? "filter-select__selected" : ""
-                } ${
-                  highlightedIndex === index ? "filter-select__highlighted" : ""
-                }`}
+                className={`select__option ${
+                  isSelected ? "select__selected" : ""
+                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
                 id={`${listboxId}-option-${index}`}
                 key={index}
                 type="button"
@@ -396,7 +389,7 @@ export const SelectSearchFilter = <TValue extends SelectSearchValue = string>({
                     hoverColor={themeState.whiteColor}
                     weight="bold"
                     size={16}
-                    className="filter-select__selected"
+                    className="select__selected"
                   />
                 )}
 

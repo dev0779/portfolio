@@ -119,7 +119,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: rgb(73, 73, 248);
+      background-color: rgba(109, 195, 245, 0.37);
       color: white;
 
       .select-search__selected {
@@ -132,7 +132,7 @@
   }
 
   &__highlighted {
-    background-color: rgb(73, 73, 248);
+    background-color: rgba(109, 195, 245, 0.37);
     color: white;
   }
 

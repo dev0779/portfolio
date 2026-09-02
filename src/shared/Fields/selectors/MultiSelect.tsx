@@ -13,13 +13,13 @@ import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
-import { ErrorMessage } from "../../fields-styled/Fields.styled";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import { InputDropdown } from "../Dropdown/InputDropdown";
-import { Checkbox } from "../../checkbox/Checkbox";
+import { InputDropdown } from "./Dropdown/InputDropdown";
+import { Checkbox } from "../checkbox/Checkbox";
 import { requiredErrorMessage } from "@/utils/errors";
 import { Loader } from "@/shared/Loader/Loader";
-import "./MultiSelectSearch.scss";
+import "./GlobalSelect.scss";
 import { IconButton } from "@/shared/Buttons/IconButton/IconButton";
 
 export type MultiSelectValue = string | number | object;
@@ -317,15 +317,15 @@ const MultiSelectField = <
 
   return (
     <div
-      className={`select-search ${
-        error ? "select-search--error" : ""
-      } ${isDisabled ? "select-search--disabled" : ""}`}
+      className={`select ${
+        error ? "select--error" : ""
+      } ${isDisabled ? "select--disabled" : ""}`}
     >
       {label && (
-        <div className="select-search__label">
+        <div className="select__label">
           {label}
 
-          {required && <span className="select-search__required">*</span>}
+          {required && <span className="select__required">*</span>}
 
           {info && (
             <IconTooltip
@@ -357,7 +357,7 @@ const MultiSelectField = <
         }}
         trigger={
           <div
-            className="select-search__wrapper"
+            className="select__wrapper"
             tabIndex={isDisabled ? -1 : 0}
             role="combobox"
             aria-expanded={open}
@@ -380,24 +380,19 @@ const MultiSelectField = <
             {loading && <Loader size="s" text={true} />}
             {!loading && apiError && <ErrorMessage>{apiError}</ErrorMessage>}
             {!loading && !apiError && (
-              <div className="select-search__multi">
-                <div className="select-search__multi__value">
+              <div className="select__multi">
+                <div className="select__multi__value">
                   <button
                     type="button"
-                    /*                       onClick={(event) => {
-                        event.stopPropagation();
-                        clearSelection();
-                      }} */
                     disabled={
                       isDisabled || readOnly || selectedOptions.length === 0
                     }
-                    className="select-search__multi__value__button"
+                    className="select__multi__value__button"
                   >
-                    {/*   <Icon name="X" size={16} color={iconColor} /> */}
                     {selectedOptions.length} selected
                   </button>
                 </div>
-                <div className="select-search__multi__value__actions">
+                <div className="select__multi__value__actions">
                   {!open && (
                     <button
                       type="button"
@@ -411,7 +406,7 @@ const MultiSelectField = <
                         });
                       }}
                       disabled={isDisabled || readOnly}
-                      className="select-search__button"
+                      className="select__button"
                     >
                       <Icon name="CaretDown" size={16} color={iconColor} />
                     </button>
@@ -436,12 +431,9 @@ const MultiSelectField = <
           </div>
         }
       >
-        <div
-          className="select-search__multiOptions"
-          id={listboxId}
-          role="listbox"
-        >
-          <div className="select-search__multiOptions__filters">
+        <div className="select__multiOptions" id={listboxId} role="listbox">
+          <div className="select__multiOptions__filters">
+            <Icon name="MagnifyingGlass" size={16} color="black" />
             <input
               id={`${name}-input`}
               name={name}
@@ -485,7 +477,7 @@ const MultiSelectField = <
                   icon="List"
                   onClick={resetListOptions}
                   size="s"
-                  variant="tertiary"
+                  variant="secondary"
                   disabled={disabled}
                 />
               )}
@@ -496,7 +488,7 @@ const MultiSelectField = <
                   label="Show Not selected"
                   onClick={showNotSelected}
                   size="s"
-                  variant="tertiary"
+                  variant="secondary"
                   disabled={disabled || readOnly}
                 />
               )}
@@ -507,7 +499,7 @@ const MultiSelectField = <
                   label="Show Selected"
                   onClick={showOnlySelected}
                   size="s"
-                  variant="tertiary"
+                  variant="secondary"
                   disabled={disabled || readOnly}
                 />
               )}
@@ -519,7 +511,7 @@ const MultiSelectField = <
                   onClick={selectAll}
                   disabled={isDisabled || readOnly}
                   size="s"
-                  variant="tertiary"
+                  variant="secondary"
                 />
               )}
 
@@ -530,7 +522,7 @@ const MultiSelectField = <
                   onClick={clearSelection}
                   disabled={isDisabled || readOnly}
                   size="s"
-                  variant="tertiary"
+                  variant="secondary"
                 />
               )}
             </>
@@ -543,11 +535,9 @@ const MultiSelectField = <
 
             return (
               <button
-                className={`select-search__option ${
-                  isSelected ? "select-search__selected" : ""
-                } ${
-                  highlightedIndex === index ? "select-search__highlighted" : ""
-                }`}
+                className={`select__option ${
+                  isSelected ? "select__selected" : ""
+                } ${highlightedIndex === index ? "select__highlighted" : ""}`}
                 key={index}
                 id={`${listboxId}-option-${index}`}
                 type="button"

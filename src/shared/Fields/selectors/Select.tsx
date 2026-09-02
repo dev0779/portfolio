@@ -13,12 +13,13 @@ import isEqual from "lodash/isEqual";
 import { Icon } from "@/shared/Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
-import "./Select.scss";
-import { ErrorMessage } from "../../fields-styled/Fields.styled";
+import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { useSelectNavigation } from "@/hooks/useSelectNavigation";
-import { InputDropdown } from "../Dropdown/InputDropdown";
+import { InputDropdown } from "./Dropdown/InputDropdown";
 import { Loader } from "@/shared/Loader/Loader";
 import { requiredErrorMessage } from "@/utils/errors";
+
+import "./GlobalSelect.scss";
 
 export type SelectValue = string | number | object;
 

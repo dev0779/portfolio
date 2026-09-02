@@ -3,12 +3,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  outline: none;
+  margin: 0.2rem;
 }
 
 .iconButton--primary {
-  background-color: blue;
+  background-color: #1560bd;
   border-radius: 8px;
   cursor: pointer !important;
+
+  &:hover {
+    //background-color: #5B8FD0;
+     background: color-mix(in srgb, #1560BD 80%, white);
+  }
 }
 
 .iconButton--secondary {
@@ -18,18 +25,6 @@
 
   &:hover {
     background-color: rgba(109, 195, 245, 0.37);
-    .iconButtonIcon {
-      color: black;
-      fill: black !important;
-
-      rect,
-      path,
-      polyline,
-      circle,
-      line {
-        stroke: black !important;
-      }
-    }
   }
 }
 
@@ -38,21 +33,7 @@
   cursor: pointer !important;
 
   &:hover {
-    border-radius: 8px;
     background-color: rgba(109, 195, 245, 0.37);
-
-    .iconButtonIcon {
-      fill: black !important;
-      color: black;
-
-      rect,
-      path,
-      polyline,
-      circle,
-      line {
-        stroke: black !important;
-      }
-    }
   }
 }
 
