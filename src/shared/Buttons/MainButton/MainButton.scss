@@ -1,0 +1,48 @@
+.mainButton {
+  display: flex;
+  align-items: center;
+  //border-radius: 9999px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  &__label {
+    padding: 0 0.3rem;
+  }
+  &--s {
+    height: 32px;
+
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  &--m {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 16px;
+  }
+
+  &--l {
+    height: 48px;
+    padding: 0 20px;
+    font-size: 16px;
+  }
+}
+
+.mainButton--primary {
+  background: #1560BD;
+  color:white;
+
+  &:hover {
+    background: color-mix(in srgb, #1560bd 80%, white);
+  }
+}
+
+.mainButton--secondary {
+  border: 1px solid #c9e9fb;
+
+  &:hover {
+    background-color: #c9e9fb;
+    border: 1px solid #1560bd;
+  }
+}
+

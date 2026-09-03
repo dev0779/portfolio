@@ -3,14 +3,12 @@
   min-height: 100vh;
   border: 1px solid red;
 
-  background: linear-gradient(
+    background: linear-gradient(
     to bottom,
     #1560BD 0%,
-    #1165cb 65%,
+    #1165cb 75%,
     #000080 100%
-/* #071A2E 100% */
   );
-
 
   &__content {
     flex: 1;
@@ -31,3 +29,26 @@ Dark Denim: #124E96
 Deep Denim: #0D3B73
 
 */
+
+/* test yellow */
+/* #D99A2B  ← darker, more mustard
+#E0A12B  ← balanced ⭐
+#E5A82B  ← brighter, more golden
+#F0B429 */
+
+/* #1677FF — vivid electric blue ⭐
+#006BFF — stronger, punchier
+#0084FF — brighter / more digital
+#246BFF */
+/* 
+#FFB000 — vivid golden orange ⭐
+#FFAA00 — warmer
+#FFB800 — brighter yellow-gold
+#F5A800 — slightly more restrained */
+
+//#FFB000
+
+/* Lime: #32CD32 → greener, more natural
+Neon/lime: #39FF14 → extremely bright, fluorescent
+Electric green: #00FF66 → more digital/cyan-ish
+Acid green: #B6FF00 → much more yellow-green */

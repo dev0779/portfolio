@@ -1,3 +1,4 @@
+import { MainButton } from "@/shared/Buttons";
 import { IconButton } from "@/shared/Buttons/IconButton/IconButton";
 import {
   SelectSearch,
@@ -25,6 +26,8 @@ import { GlobalThemeContext } from "@/theme";
 import { requiredErrorMessage } from "@/utils/errors";
 import React, { useContext, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
+import "./Pages.scss";
 
 export const Designer = () => {
   const formMethods = useForm({
@@ -96,21 +99,73 @@ export const Designer = () => {
         info="hello"
         value={multiFilter}
         options={selectOptions}
-        onChange={(value) => console.log("multi search", value)}
+        onChange={(value) => {
+          console.log("multi search", value);
+          setMultiFilter(value);
+        }}
       />
       <FilterSelect
         label="im a filter"
         value={selectSearchFilter}
         options={tecnologyOptions}
-        onChange={(value) => console.log("selectSearchValue", value)}
+        onChange={(value) => {
+          console.log("selectSearchValue", value);
+          setSelectFilter(value);
+        }}
       />
       <FilterSelectSearch
         label="im a filter"
         value={selectFilter}
         options={tecnologyOptions}
-        onChange={(value) => console.log("select", value)}
+        onChange={(value) => {
+          console.log("select", value);
+          setSelectFilter(value);
+        }}
       />
-      /
+
+      <span className="buttonscontainer">
+        <MainButton
+          variant="primary"
+          label="primary"
+          icon="Rocket"
+          size="s"
+        ></MainButton>
+
+        <MainButton
+          variant="primary"
+          label="primary"
+          icon="Rocket"
+          size="m"
+        ></MainButton>
+        <MainButton
+          variant="primary"
+          label="primary"
+          icon="Rocket"
+          size="l"
+        ></MainButton>
+      </span>
+
+      <span className="buttonscontainer">
+        <MainButton
+          variant="secondary"
+          label="primary"
+          icon="Rocket"
+          size="s"
+        ></MainButton>
+        <MainButton
+          variant="secondary"
+          label="primary"
+          icon="Rocket"
+          size="m"
+        ></MainButton>
+        <MainButton
+          variant="secondary"
+          label="primary"
+          icon="Rocket"
+          size="l"
+        ></MainButton>
+      </span>
+
       <FormProvider {...formMethods}>
         <span className="block">
           {/*     <Loader size="xs" text={ true} />

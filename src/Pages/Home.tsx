@@ -1,5 +1,9 @@
 import React from "react";
 
 export const Home = () => {
-  return <img src="./images/hero.jpeg"></img>;
+  return (
+    <div className="hero">
+      <img src="./images/hero.jpeg"></img>
+    </div>
+  );
 };
