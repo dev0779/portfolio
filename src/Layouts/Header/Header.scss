@@ -1,0 +1,13 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  background-color: inherit;
+  padding: 0.5rem;
+
+  &__title {
+    font-size: 18px;
+  }
+}

@@ -4,9 +4,10 @@
   transform: translateY(-50%); */
 
   display: flex;
+  align-items: center;
   flex-direction: column;
 
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
+  //border: 1px solid rgba(255, 255, 255, 0.5);
+  //border-radius: 10px;
 }

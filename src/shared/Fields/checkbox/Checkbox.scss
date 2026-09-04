@@ -12,23 +12,23 @@
     //padding:0.5rem 0;
   }
 
-  &__box span{
-    padding-left:0.3rem;
+  &__box span {
+    padding-left: 0.3rem;
     font-size: 14px;
-    display:flex;
+    display: flex;
+    color: black;
   }
 
-  &__info{
-    padding-left:0.3rem;
-    cursor:pointer;
+  &__info {
+    padding-left: 0.3rem;
+    cursor: pointer;
   }
-
 
   input {
     display: none;
   }
 
-  &__error{
-    color:red;
+  &__error {
+    color: red;
   }
 }

@@ -29,8 +29,9 @@
 }
 
 .mainButton--primary {
-  background: #1560BD;
-  color:white;
+  background: #1560bd;
+  color: white;
+  border: 1px solid #c9e9fb;
 
   &:hover {
     background: color-mix(in srgb, #1560bd 80%, white);
@@ -39,10 +40,11 @@
 
 .mainButton--secondary {
   border: 1px solid #c9e9fb;
+  background-color: white;
+  color: #1560bd;
 
   &:hover {
     background-color: #c9e9fb;
     border: 1px solid #1560bd;
   }
 }
-

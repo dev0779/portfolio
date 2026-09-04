@@ -1,14 +1,8 @@
-.appNav {
-  display: flex;
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid red;
-}
 
-.block {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem !important;
-  width: 100%;
-}
 
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}

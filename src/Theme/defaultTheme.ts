@@ -1,5 +1,6 @@
-
 import type { Theme } from "./ThemeTypes";
+
+
 
 export const defaultTheme: Theme = {
   name: "default",

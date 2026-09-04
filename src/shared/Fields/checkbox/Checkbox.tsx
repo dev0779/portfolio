@@ -73,9 +73,7 @@ export const Checkbox = ({
     ? themeState.errorColor
     : disabled
       ? themeState.grayColor
-      : checkboxRef.current === document.activeElement
-        ? themeState.primaryColor
-        : themeState.blackColor;
+      : themeState.primaryColor;
 
   return (
     <div className="checkbox">

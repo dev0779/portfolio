@@ -7,6 +7,7 @@ import { IconButton } from "@/shared/Buttons/IconButton/IconButton";
 export const NavBar = () => {
   return (
     <nav className="navbar">
+      SERRA
       <Link to="/">
         <IconButton
           icon="HouseSimple"
@@ -17,9 +18,17 @@ export const NavBar = () => {
           arrow={false}
         />
       </Link>
-      <Link to="/about">About</Link>
+      <Link to="/about">
+        <IconButton
+          icon="UserSquare"
+          label="About"
+          variant="primary"
+          size="s"
+          popoverSide="right"
+          arrow={false}
+        />
+      </Link>
       <Link to="/projects">
-        {" "}
         <IconButton
           icon="Folder"
           label="Project"
@@ -27,11 +36,27 @@ export const NavBar = () => {
           size="s"
           popoverSide="right"
         />
-        Projects
       </Link>
-      <Link to="/contact">Contact</Link>
-      <Link to="/designer">Designer</Link>
-      <Link to="/login">Login</Link>
+      <Link to="/contact">
+        <IconButton
+          icon="AddressBook"
+          label="Contact"
+          variant="primary"
+          size="s"
+          popoverSide="right"
+        />
+      </Link>
+      <Link to="/designer">
+        <IconButton
+          icon="Palette"
+          label="Designer"
+          variant="primary"
+          size="s"
+          popoverSide="right"
+        />
+      </Link>
+      {/*       <Link to="/designer">Designer</Link>
+      <Link to="/login">Login</Link> */}
     </nav>
   );
 };

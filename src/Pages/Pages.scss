@@ -6,12 +6,37 @@
 
 .hero {
   display: flex;
-  align-items: center;
-  justify-content: right;
+  align-items: flex-end;
+  justify-content: flex-end;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
 
   img {
-    width: 100%;
-    height: 100%;
+    width: 900px;
+    max-height: 100%;
+    object-fit: contain;
   }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    align-items: flex-end;
+
+    img {
+      width: auto;
+      height: 40%;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+.designer {
+  padding: 0.5rem;
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  border-radius: 10px;
 }
