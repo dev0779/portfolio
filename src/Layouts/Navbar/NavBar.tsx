@@ -28,7 +28,7 @@ export const NavBar = () => {
           arrow={false}
         />
       </Link>
-      <Link to="/projects">
+      <Link to="/demoprojects">
         <IconButton
           icon="Folder"
           label="Project"

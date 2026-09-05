@@ -8,19 +8,19 @@ import "./Projects.scss";
 const projects = [
   {
     label: "home",
-    path: "/projects",
+    path: "/demoprojects",
   },
   {
     label: "Product",
-    path: "/projects/product",
+    path: "/demoprojects/product",
   },
   {
     label: "Dashboard",
-    path: "/projects/dashboard",
+    path: "/demoprojects/dashboard",
   },
   {
     label: "Budjet",
-    path: "/projects/budjet",
+    path: "/demoprojects/budjet",
   },
 ];
 

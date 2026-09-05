@@ -84,9 +84,16 @@ export const Designer = () => {
         >
           Toggle Theme
         </button>
+        <IconButton icon="Info" label="primary" size="xs"variant="primary"/>
         <IconButton icon="Info" label="primary" size="s" variant="primary" />
         <IconButton icon="Info" label="primary" size="m" variant="primary" />
         <IconButton icon="Info" label="primary" size="l" variant="primary" />
+        <IconButton
+          icon="Check"
+          label="secondary"
+          size="xs"
+          variant="secondary"
+        />
         <IconButton
           icon="Check"
           label="secondary"

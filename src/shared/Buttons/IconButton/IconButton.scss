@@ -1,10 +1,15 @@
 .iconButton {
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  flex: 0 0 auto;
+  box-sizing: border-box;
+
+  cursor: pointer;
   outline: none;
-  margin: 0.2rem;
+  padding:0;
+  margin: 0;
 }
 
 .iconButton--primary {
@@ -14,7 +19,7 @@
 
   &:hover {
     //background-color: #5B8FD0;
-     background: color-mix(in srgb, #1560BD 80%, white);
+    background: color-mix(in srgb, #1560bd 80%, white);
   }
 }
 

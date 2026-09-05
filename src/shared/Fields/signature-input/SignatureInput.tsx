@@ -4,6 +4,7 @@ import SignatureCanvas from "react-signature-canvas";
 
 import "./SignatureInput.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
+import { IconButton } from "@/shared/Buttons/IconButton/IconButton";
 
 interface SignatureInputProps {
   name: string;
@@ -39,8 +40,20 @@ export const SignatureInput = ({
 
           <div className="signature-input__wrapper">
             <div className="signature-input__actions">
-              {/*  // todo  add theme button */}
-              <button
+    
+              <IconButton
+                label="clear signature"
+                size="xs"
+                variant="secondary"
+                icon="Trash"
+                onClick={() => {
+                  signatureRef.current?.clear();
+                  field.onChange();
+                  onChange?.("");
+                  onBlur?.("");
+                }}
+              />
+{/*               <button
                 type="button"
                 className="signature-input__clear"
                 onClick={() => {
@@ -51,7 +64,7 @@ export const SignatureInput = ({
                 }}
               >
                 Clear
-              </button>
+              </button> */}
             </div>
             <SignatureCanvas
               ref={signatureRef}

@@ -4,7 +4,7 @@
   &__label {
     position: relative;
     //top: 7px;
-    top:3px;
+    top: 3px;
     left: 8px;
     z-index: 1;
     width: fit-content;
@@ -40,6 +40,7 @@
       background: transparent;
       font-size: 14px;
       padding-left: 0.3rem;
+      color: black;
     }
 
     select {
@@ -50,6 +51,7 @@
       background: transparent;
       font-size: 14px;
       cursor: pointer;
+      color: black;
     }
   }
 
@@ -110,15 +112,21 @@
 
     &__filters {
       display: flex;
-      width: 100%;
       align-items: center;
-      font-size: 14px;
-      border-radius: 8px;
-      border: 1px solid rgba(109, 195, 245, 0.37);
+      gap: 0.25rem;
+
+      width: 100%;
       padding: 0 0.3rem;
+
+      font-size: 14px;
+      border: 1px solid rgba(109, 195, 245, 0.37);
+      border-radius: 8px;
+
       input {
+        flex: 1 1 auto;
+        min-width: 0;
+        color: black;
         padding: 0.3rem;
-        width: 100%;
         border-radius: 8px;
       }
     }
@@ -131,6 +139,7 @@
     margin: 0.2rem;
     border-radius: 5px;
     cursor: pointer;
+    color: black;
 
     &:hover {
       background-color: rgba(109, 195, 245, 0.37);

@@ -12,7 +12,7 @@ interface IconButtonProps {
   color?: string;
   iconHoverColor?: string;
   iconColor?: string;
-  size?: "s" | "m" | "l";
+  size?: "xs" | "s" | "m" | "l";
   iconWeight?: "regular" | "bold" | "fill" | "thin" | "light";
   type?: "primary" | "secondary";
   arrow?: boolean;
@@ -27,14 +27,14 @@ interface IconButtonProps {
 }
 
 const SIZES = {
-  xs: { width: 24, height: 24 },
+  xs: { width: 20, height: 20 },
   s: { width: 28, height: 28 },
   m: { width: 36, height: 36 },
   l: { width: 40, height: 40 },
 } as const;
 
 const ICONSIZES = {
-  xs: 16,
+  xs: 12,
   s: 20,
   m: 24,
   l: 28,
@@ -79,6 +79,7 @@ export const IconButton = ({
             onClick={onClick}
             disabled={disabled}
             style={buttonSize}
+            type="button"
           >
             <Icon
               name={icon as React.ComponentProps<typeof Icon>["name"]}
@@ -116,6 +117,7 @@ export const IconButton = ({
           onClick={disabled ? undefined : onClick}
           disabled={disabled}
           style={buttonSize}
+          type="button"
         >
           <Icon
             name={icon as React.ComponentProps<typeof Icon>["name"]}

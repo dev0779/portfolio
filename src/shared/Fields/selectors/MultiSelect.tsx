@@ -476,7 +476,7 @@ const MultiSelectField = <
                   label="Reset Filters"
                   icon="List"
                   onClick={resetListOptions}
-                  size="s"
+                  size="xs"
                   variant="secondary"
                   disabled={disabled}
                 />
@@ -487,7 +487,7 @@ const MultiSelectField = <
                   icon="ListBullets"
                   label="Show Not selected"
                   onClick={showNotSelected}
-                  size="s"
+                  size="xs"
                   variant="secondary"
                   disabled={disabled || readOnly}
                 />
@@ -498,7 +498,7 @@ const MultiSelectField = <
                   icon="ListChecks"
                   label="Show Selected"
                   onClick={showOnlySelected}
-                  size="s"
+                  size="xs"
                   variant="secondary"
                   disabled={disabled || readOnly}
                 />
@@ -510,7 +510,7 @@ const MultiSelectField = <
                   label="Select all"
                   onClick={selectAll}
                   disabled={isDisabled || readOnly}
-                  size="s"
+                  size="xs"
                   variant="secondary"
                 />
               )}
@@ -521,7 +521,7 @@ const MultiSelectField = <
                   label="Deselect all"
                   onClick={clearSelection}
                   disabled={isDisabled || readOnly}
-                  size="s"
+                  size="xs"
                   variant="secondary"
                 />
               )}

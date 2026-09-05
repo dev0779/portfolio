@@ -29,8 +29,11 @@
     border: 1px solid gray;
     border-radius: 8px;
     transition: border-color 0.2s ease;
+    color: black;
+    width:100%;
 
     .PhoneInput {
+      width:100%;
       .PhoneInputCountry {
         border-right: 2px solid gray;
         padding: 0 0.3rem;
