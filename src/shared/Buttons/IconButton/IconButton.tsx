@@ -1,7 +1,7 @@
 import { Icon } from "@/shared/Icons/Icon";
 import { Tooltip } from "@/shared/Tooltip";
 import { Popover } from "radix-ui";
-import React, { useState } from "react";
+import React from "react";
 
 import "./IconButton.scss";
 

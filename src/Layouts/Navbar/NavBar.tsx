@@ -13,7 +13,7 @@ export const NavBar = () => {
           icon="HouseSimple"
           label="Home"
           variant="primary"
-          size="s"
+          size="m"
           popoverSide="right"
           arrow={false}
         />
@@ -23,7 +23,7 @@ export const NavBar = () => {
           icon="UserSquare"
           label="About"
           variant="primary"
-          size="s"
+          size="m"
           popoverSide="right"
           arrow={false}
         />
@@ -33,7 +33,7 @@ export const NavBar = () => {
           icon="Folder"
           label="Project"
           variant="primary"
-          size="s"
+          size="m"
           popoverSide="right"
         />
       </Link>
@@ -42,7 +42,7 @@ export const NavBar = () => {
           icon="AddressBook"
           label="Contact"
           variant="primary"
-          size="s"
+          size="m"
           popoverSide="right"
         />
       </Link>
@@ -51,7 +51,7 @@ export const NavBar = () => {
           icon="Palette"
           label="Designer"
           variant="primary"
-          size="s"
+          size="m"
           popoverSide="right"
         />
       </Link>
