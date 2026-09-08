@@ -4,15 +4,19 @@ import React from "react";
 
 import "./WizardNav.scss";
 
-interface WizardItem {
+export interface WizardItem {
+  id?: number;
   label?: string;
   name?: string;
   slug?: string;
   disabled?: boolean;
   active?: boolean;
   isChecked?: boolean;
-  percentage?: boolean;
+  percentage?: string;
   icon?: React.ComponentProps<typeof Icon>["name"];
+  title?: string;
+  description?: string;
+  info?: string;
 }
 
 interface WizardNavProps {
@@ -27,7 +31,7 @@ export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
       <div className="wizardNav__wrapper ">
         {steps.map((step: WizardItem, index) => {
           return (
-            <>
+            <React.Fragment key={step.id ?? index}>
               <button
                 className={clsx(
                   "wizardNav__button",
@@ -36,17 +40,23 @@ export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
                 key={index}
                 onClick={() => onClick?.(step)}
               >
-                {step.icon && (
+                {/*               {step.icon && (
                   <Icon
                     name={step.icon}
                     color={index === activeIndex ? "white" : "black"}
                   />
-                )}
-                {!step.icon && step.label}
+                )} */}
+                {step.label}
               </button>
-            </>
+            </React.Fragment>
           );
         })}
+      </div>
+      <div className="wizardNav__navBarWrapper">
+        <div
+          className="wizardNav__navBar"
+          style={{ width: steps[activeIndex]?.percentage ?? "0%" }}
+        ></div>
       </div>
     </div>
   );

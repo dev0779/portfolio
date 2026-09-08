@@ -1,0 +1,48 @@
+.accordion {
+  width: 100%;
+
+  &--border {
+    border: 1px solid lightblue;
+    border-radius: 5px;
+  }
+
+  &--borderBottom {
+    border-bottom: 1px solid lightblue;
+  }
+
+  &__header--active {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background-color: blue;
+    color: white;
+  }
+  &__header {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    background-color: inherit;
+    padding: 0.3rem;
+
+    &__label {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__labelName {
+      color: blue;
+      padding-left: 0.3rem;
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background-color: inherit;
+    padding: 0.3rem;
+  }
+}
