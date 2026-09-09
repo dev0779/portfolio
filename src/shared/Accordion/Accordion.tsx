@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "../Icons/Icon";
 
 import "./Accordion.scss";
@@ -28,6 +28,10 @@ export const Accordion = ({
   showActive,
 }: AccordionProps) => {
   const [open, setOpen] = useState(isOpen ?? false);
+
+  useEffect(() => {
+    setOpen(isOpen ?? false);
+  }, [isOpen]);
 
   return (
     <div
