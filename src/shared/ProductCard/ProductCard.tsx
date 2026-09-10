@@ -12,11 +12,12 @@ interface Product {
 
 interface ProductCardProps {
   product?: Product;
+  onClick?: (product: Product) => void;
 }
 
 export const ProductCard = ({ product, onClick }) => {
   return (
-    <div className="productCard" onClick={onClick}>
+    <div className="productCard" onClick={() => product && onClick?.(product)}>
       <div className="productCard__wrapper">
         <div className="productCard__hero">
           <div className="productCard__title">{product?.title}</div>
@@ -35,6 +36,7 @@ export const ProductCard = ({ product, onClick }) => {
                 <div className="productCard__features__feature">
                   <Icon name="PuzzlePiece" size={20} color="red"  weight="thin"/>
                   <span>{feature}</span>
+
                 </div>
               );
             })}

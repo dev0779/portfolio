@@ -5,9 +5,10 @@ import "./Carousel.scss";
 
 interface CarouselProps {
   children: React.ReactNode;
+  selectedIndex?: number;
 }
 
-export const Carousel = ({ children }: CarouselProps) => {
+export const Carousel = ({ children, selectedIndex = 0 }: CarouselProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel();
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [selectedSnap, setSelectedSnap] = useState(0);
@@ -19,13 +20,18 @@ export const Carousel = ({ children }: CarouselProps) => {
   useEffect(() => {
     if (!emblaApi) return;
 
+    emblaApi.scrollTo(selectedIndex);
+  }, [emblaApi, selectedIndex]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
     const updateDots = () => {
       setScrollSnaps(emblaApi.scrollSnapList());
       setSelectedSnap(emblaApi.selectedScrollSnap());
     };
 
     updateDots();
-
     emblaApi.on("select", updateDots);
     emblaApi.on("reInit", updateDots);
 

@@ -1,7 +1,6 @@
 .embla {
-  width: 460px;
+  width: min(460px, 100%);
   max-width: 100%;
-
 
   &__viewport {
     overflow: hidden;
