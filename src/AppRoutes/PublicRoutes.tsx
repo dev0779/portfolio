@@ -7,7 +7,7 @@ import { Projects } from "./../Pages/Projects/Projects";
 import { LogInPage } from "./../Pages/Log/LogInPage";
 import { Designer } from "./../Pages/Designer/Designer";
 import { Layout } from "./../Layouts/Layout/Layout";
-import { ProductRoute } from "./ProductRoute";
+//import { ProductRoute } from "./ProductRoute";
 import { Product } from "@/features/Product/Product";
 
 export const PublicRoutes = () => {
@@ -21,10 +21,11 @@ export const PublicRoutes = () => {
 
         <Route path="/demoprojects" element={<Projects />}>
           <Route index element={<div>Overview</div>} />
-          <Route path="product">
+          <Route path="product" element={<Product />} />
+          {/*         <Route path="product">
             <Route index element={<Product/>} />
             <Route path=":slug" element={<ProductRoute />} />
-          </Route>
+          </Route> */}
 
           <Route path="dashboard" element={<div>Dashboard</div>} />
           <Route path="budjet" element={<div>Angular</div>} />

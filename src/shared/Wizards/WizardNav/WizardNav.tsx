@@ -8,15 +8,12 @@ export interface WizardItem {
   id?: number;
   label?: string;
   name?: string;
-  slug?: string;
   disabled?: boolean;
-  active?: boolean;
-  isChecked?: boolean;
-  percentage?: string;
   icon?: React.ComponentProps<typeof Icon>["name"];
   title?: string;
   description?: string;
   info?: string;
+  element?: React.ReactNode;
 }
 
 interface WizardNavProps {
@@ -36,16 +33,18 @@ export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
                 className={clsx(
                   "wizardNav__button",
                   index === activeIndex && "wizardNav--active",
+                  index > activeIndex && "wizardNav--completed",
                 )}
                 key={index}
                 onClick={() => onClick?.(step)}
+                disabled={step.disabled}
               >
-                {/*               {step.icon && (
+                {step.icon && (
                   <Icon
                     name={step.icon}
                     color={index === activeIndex ? "white" : "black"}
                   />
-                )} */}
+                )}
                 {step.label}
               </button>
             </React.Fragment>

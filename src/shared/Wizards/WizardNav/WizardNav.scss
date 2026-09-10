@@ -16,11 +16,9 @@
     height: 40px;
     min-height: 40px;
     flex: 0 0 40px;
-
-    border: 1px solid greenyellow;
     border-radius: 999px;
-    color: black;
-
+    color: white;
+    background-color: lightgray;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,9 +26,13 @@
     z-index: 2;
   }
 
+  &--completed{
+    background-color:"green";
+  }
+
   &--active {
-    background-color: greenyellow;
-    color: black;
+    background-color: #1560bd;
+    color: white;
   }
 
   &__navBarWrapper {

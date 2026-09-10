@@ -1,4 +1,4 @@
-import { productSteps } from "@/features/Product/ProductSteps/productSteps";
+import { productSteps } from "@/features/Product/productSteps";
 import {
     useParams
 } from "react-router-dom";

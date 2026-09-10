@@ -1,5 +1,6 @@
 import React from "react";
 import { useTheme } from "@/hooks/useTheme";
+import clsx from "clsx";
 
 interface ColProps {
   xs?: number;
@@ -22,12 +23,12 @@ export const Col = ({ xs, sm, md, lg, xl, children }: ColProps) => {
     width: getWidthPercent(xs),
   };
 
-  const className = `
-    ${sm ? `sm:w-[${getWidthPercent(sm)}]` : ""}
-    ${md ? `md:w-[${getWidthPercent(md)}]` : ""}
-    ${lg ? `lg:w-[${getWidthPercent(lg)}]` : ""}
-    ${xl ? `xl:w-[${getWidthPercent(xl)}]` : ""}
-  `;
+  const className = clsx(
+    sm ? `sm:w-[${getWidthPercent(sm)}]` : "",
+    md ? `md:w-[${getWidthPercent(md)}]` : "",
+    lg ? `lg:w-[${getWidthPercent(lg)}]` : "",
+    xl ? `xl:w-[${getWidthPercent(xl)}]` : "",
+  );
 
   return (
     <div className={className} style={style}>
