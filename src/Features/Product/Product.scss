@@ -1,20 +1,27 @@
 .product {
   color: black;
 
-
-  &__nav{
-    width:100%;
-    display:flex;
+  &__nav {
+    width: 100%;
+    display: flex;
     justify-content: center;
     margin: 1rem 0;
 
-    &__wrapper{
-      width:700px;
+    &__wrapper {
+      width: 700px;
     }
-
   }
 
-  &__form{
-    width:100%;
+  &__form {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: calc(100vh - 150px);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
   }
 }

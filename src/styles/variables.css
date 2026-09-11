@@ -1,1 +1,53 @@
-/*# sourceMappingURL=variables.css.map */
+/* // my variables */
+
+:root {
+  /* Colors */
+  --color-white: #ffffff;
+  --color-surface: #f7f7f7;
+
+  --color-text: #000000;
+  --color-text-secondary: #707070;
+  --color-text-white: #ffffff;
+
+  --color-primary: #1560bd;
+  --color-primary-hover: #1165cb;
+
+  --color-secondary-light: #d9eefa;
+  --color-secondary:#c9e9fb;
+
+  --color-red: #e4003a;
+
+  --color-border: #d9d9d9;
+
+  --color-error: #e4003a;
+  --color-success: #80c896;
+
+  --color-function-yellow: yellow;
+  --color-function-green: rgb(27, 249, 27);
+  --color-funtion-orange: orange;
+  --color-function-blue: #1560bd;
+
+  /* Typography */
+  --font-family-base: Arial, Calibri, sans-serif;
+
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Radius */
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Layout */
+  --container-max-width: 2600px;
+  --page-padding: 14px;
+}

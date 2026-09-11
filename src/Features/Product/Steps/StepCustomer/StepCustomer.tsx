@@ -12,6 +12,7 @@ import React, { useContext } from "react";
 
 import "./StepCustomer.scss";
 import { Container } from "@/theme/layout/Container/Container";
+import { FieldSet } from "@/shared/Fields/FieldSet/FieldSet";
 
 export const StepCustomer = () => {
   const { selectedCustomerType } = useContext(ProductContext);
@@ -27,36 +28,40 @@ export const StepCustomer = () => {
   return (
     <div className="stepCustomer">
       <Container>
-        <div className="formGroupLayout">
+        <FieldSet title="Contact">
           {selectedCustomerType === "private" && (
-            <Row>
-              <Col xs={12} md={4}>
-                <Select
-                  name="salutation"
-                  label="Salutation"
-                  options={salutationOptions}
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <TextInput name="firstName" label="First Name" required />
-              </Col>
-              <Col xs={12} md={4}>
-                <TextInput name="lastName" label="Last Name" required />
-              </Col>
-              <Col xs={12}>
-                <TextInput name="fullName" label="Full Legal Name" required />
-              </Col>
-              <Col xs={12} md={6}>
-                <EmailInput name="email" label="your email" required />
-              </Col>
-              <Col xs={12} md={6}>
-                <PhoneNumberInput
-                  name="phoneNumber"
-                  label="Phone number"
-                  required
-                />
-              </Col>
-            </Row>
+            <>
+              <Row>
+                <Col xs={12} md={4}>
+                  <Select
+                    name="salutation"
+                    label="Salutation"
+                    options={salutationOptions}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} md={6}>
+                  <TextInput name="firstName" label="First Name" required />
+                </Col>
+                <Col xs={12} md={6}>
+                  <TextInput name="lastName" label="Last Name" required />
+                </Col>
+                <Col xs={12}>
+                  <TextInput name="fullName" label="Full Legal Name" required />
+                </Col>
+                <Col xs={12} md={6}>
+                  <EmailInput name="email" label="your email" required />
+                </Col>
+                <Col xs={12} md={6}>
+                  <PhoneNumberInput
+                    name="phoneNumber"
+                    label="Phone number"
+                    required
+                  />
+                </Col>
+              </Row>
+            </>
           )}
 
           {selectedCustomerType === "company" && (
@@ -76,31 +81,35 @@ export const StepCustomer = () => {
               </Col>
             </Row>
           )}
-        </div>
+        </FieldSet>
 
-        <Row>
-          <Col xs={8}>
-            <TextInput name="address" label="address" />
-          </Col>
-          <Col xs={4}>
-            <TextInput name="postalCode" label="postalCode" />
-          </Col>
-          <Col xs={6}>
-            <TextInput name="city" label="city" />
-          </Col>
-          <Col xs={6}>
-            <TextInput name="country" label="country" />
-          </Col>
-        </Row>
+        <FieldSet title="Address">
+          <Row>
+            <Col xs={8}>
+              <TextInput name="address" label="address" />
+            </Col>
+            <Col xs={4}>
+              <TextInput name="postalCode" label="postalCode" />
+            </Col>
+            <Col xs={6}>
+              <TextInput name="city" label="city" />
+            </Col>
+            <Col xs={6}>
+              <TextInput name="country" label="country" />
+            </Col>
+          </Row>
+        </FieldSet>
 
-        <Row>
-          <Col xs={12} md={6}>
-            <PasswordInput name="password" label="password" />
-          </Col>
-          <Col xs={12} md={6}>
-            <PasswordInput name="passwordRepeat" label="repeat-password" />
-          </Col>
-        </Row>
+        <FieldSet title="Contract password">
+          <Row>
+            <Col xs={12} md={6}>
+              <PasswordInput name="password" label="password" />
+            </Col>
+            <Col xs={12} md={6}>
+              <PasswordInput name="passwordRepeat" label="repeat-password" />
+            </Col>
+          </Row>
+        </FieldSet>
       </Container>
     </div>
   );

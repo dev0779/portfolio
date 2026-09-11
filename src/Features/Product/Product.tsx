@@ -65,10 +65,33 @@ export const Product = () => {
             <Col xs={12}>
               <div className="product__form">
                 {productSteps[currentIndex].element}
+                {currentIndex > 0 && (
+                  <Row>
+                    <Col xs={12}>
+                      <div className="product__footer">
+                        <MainButton
+                          type="button"
+                          label="back"
+                          variant="secondary"
+                          size="m"
+                          disabled={currentIndex < 0}
+                          onClick={handlePrev}
+                        />
+                        <MainButton
+                          type="button"
+                          label="next"
+                          variant="primary"
+                          size="m"
+                          onClick={handleNext}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                )}
               </div>
             </Col>
           </Row>
-          {currentIndex > 0 && (
+{/*           {currentIndex > 0 && (
             <Row>
               <Col xs={12}>
                 <div className="productFooter">
@@ -90,7 +113,7 @@ export const Product = () => {
                 </div>
               </Col>
             </Row>
-          )}
+          )} */}
         </Container>
       </FormProvider>
     </div>
