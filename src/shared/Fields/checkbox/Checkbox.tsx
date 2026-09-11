@@ -4,6 +4,7 @@ import { useMemo, useRef, type JSX } from "react";
 import { useFormContext } from "react-hook-form";
 import "./Checkbox.scss";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+import { requiredErrorMessage } from "@/utils/errors";
 
 interface CheckboxProps {
   name: string;
@@ -48,7 +49,7 @@ export const Checkbox = ({
   const currentChecked = checked ?? watchChecked;
 
   const { ref, ...rest } = register(name, {
-    required,
+    required: required ? requiredErrorMessage : false,
     onChange: (event) => {
       onChange?.(event.target.checked);
     },

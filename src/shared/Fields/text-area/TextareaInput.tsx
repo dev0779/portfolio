@@ -6,9 +6,11 @@ import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import * as PhosphorIcons from "phosphor-react";
-import "./TextareaInput.scss";
+
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 interface TextareaInputProps {
   name: string;
   label: string;
@@ -62,7 +64,7 @@ export const TextareaInput = ({
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { ref, ...rest } = register(name, {
-    required,
+    required: required ? requiredErrorMessage : false,
     validate,
     onChange,
     onBlur,
@@ -80,11 +82,11 @@ export const TextareaInput = ({
 
   return (
     <div
-      className={`textarea-input ${
-        disabled ? "textarea-input--disabled" : ""
-      } ${hasError ? "textarea-input--error" : ""}`}
+      className={`field-input ${
+        disabled ? "field-input--disabled" : ""
+      } ${hasError ? "field-input--error" : ""}`}
     >
-      <label className="textarea-input__label" htmlFor={name}>
+      <label className="field-input__label" htmlFor={name}>
         {required ? `${label} *` : label}
         {info && (
           <IconTooltip
@@ -102,7 +104,7 @@ export const TextareaInput = ({
         )}
       </label>
 
-      <div className="textarea-input__wrapper">
+      <div className="field-input__wrapper">
         {svg && <Icon name={svg} size={16} color={iconColor} />}
 
         <textarea

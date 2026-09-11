@@ -6,10 +6,11 @@ import {
 } from "react-hook-form";
 
 import { Radio, type RadioValue } from "../radio-button/RadioButton";
-
-import "./RadioGroupButtons.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+
+import './../Fields.scss';
+import { requiredErrorMessage } from "@/utils/errors";
 
 export type RadioOption<T extends RadioValue = string> = {
   label: string;
@@ -58,19 +59,19 @@ export const RadioGroupButtons = <
       name={name}
       control={control}
       rules={{
-        required: required ? "Please select an option" : false,
+        required: required ? requiredErrorMessage : false,
       }}
       render={({ field, fieldState }) => (
         <div
-          className={`radio ${fieldState.error ? "radio--error" : ""} ${
-            disabled ? "radio--disabled" : ""
+          className={`field-input ${fieldState.error ? "field-input--error" : ""} ${
+            disabled ? "field-input--disabled" : ""
           }`}
         >
           {label && (
-            <div className="radio__label">
+            <div className="field-input__label">
               {label}
 
-              {required && <span className="radio__required">*</span>}
+              {required && <span className="field-input__required">*</span>}
               {info && (
                 <IconTooltip
                   name="Info"
@@ -88,8 +89,8 @@ export const RadioGroupButtons = <
             </div>
           )}
 
-          <div className="radio__wrapper">
-            <div className={`radio__group radio__group--${direction}`}>
+          <div className="field-input__radiowrapper">
+            <div className={`field-input__group field-input__group--${direction}`}>
               {options.map((option) => (
                 <Radio
                   key={String(option.value)}

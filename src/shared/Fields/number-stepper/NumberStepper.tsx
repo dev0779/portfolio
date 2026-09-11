@@ -1,14 +1,14 @@
 import { useRef, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./../Fields.scss";
 import * as PhosphorIcons from "phosphor-react";
-import { Icon } from "../../Icons/Icon";
-import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+import { IconButton } from "@/shared/Buttons";
+
+import "./../Fields.scss";
 import { requiredErrorMessage } from "@/utils/errors";
 
-interface TextInputProps {
+interface NumberInputProps {
   name: string;
   label: string;
   info?: string;
@@ -16,18 +16,21 @@ interface TextInputProps {
   disabled?: boolean;
   loading?: boolean;
   readOnly?: boolean;
-  defaultValue?: string;
+  defaultValue?: number;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   validate?: RegisterOptions["validate"];
   required?: boolean | string;
+  min?: number;
+  max?: number;
+  step?: number;
   error?: string;
   svg?: keyof typeof PhosphorIcons;
   interactive?: boolean;
-  tooltipChildren?: React.ReactNode;
+  tooltipChildren?: React.ReactElement;
 }
 
-export const TextInput = ({
+export const NumberStepper = ({
   name,
   required,
   label,
@@ -37,45 +40,63 @@ export const TextInput = ({
   onChange,
   onBlur,
   disabled,
-  readOnly,
   defaultValue,
-  svg,
+  min,
+  max,
+  step,
   error,
   interactive,
   tooltipChildren,
-}: TextInputProps): JSX.Element => {
-  const { themeState } = useTheme();
-
+}: NumberInputProps): JSX.Element => {
   const {
     register,
+    setValue,
+    watch,
     formState: { errors },
   } = useFormContext();
 
-  const textInputRef = useRef<HTMLInputElement | null>(null);
+  const numberInputRef = useRef<HTMLInputElement | null>(null);
 
   const { ref, ...rest } = register(name, {
     required : required ? requiredErrorMessage : false,
     validate,
     onChange,
     onBlur,
+    setValueAs: (value) => (value === "" ? null : Number(value)),
   });
 
-  const iconColor = errors[name]
-    ? themeState.errorColor
-    : disabled
-      ? themeState.grayColor
-      : textInputRef.current === document.activeElement
-        ? themeState.primaryColor
-        : themeState.blackColor;
+  const value = watch(name) ?? 0;
+  const handleMinus = () => {
+    const nextValue = Math.max(min ?? 0, Number(value) - (step ?? 1));
+
+    setValue(name, nextValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
+
+  const handlePlus = () => {
+    const nextValue = Math.min(max ?? Infinity, Number(value) + (step ?? 1));
+
+    setValue(name, nextValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
 
   const hasError = !!errors[name] || !!error;
 
   return (
     <div
-      className={`field-input ${disabled ? "field-input--disabled" : ""} ${hasError ? "field-input--error" : ""}`}
+      className={`field-input ${
+        disabled ? "field-input--disabled" : ""
+      } ${hasError ? "field-input--error" : ""}`}
     >
       <label className="field-input__label" htmlFor={name}>
-        {required ? `${label} * ` : label}
+        {label}
+
+        {required && <span className="field-input__required">*</span>}
+
         {info && (
           <IconTooltip
             name="Info"
@@ -91,24 +112,46 @@ export const TextInput = ({
           </IconTooltip>
         )}
       </label>
+
       <div
-        className={`field-input__wrapper  ${errors?.[name] ? "field-input__wrapper--error" : ""}`}
+        className={`field-input__wrapper ${
+          errors?.[name] ? "field-input__wrapper--error" : ""
+        }`}
       >
-        {svg && <Icon name={svg || "User"} size={16} color={iconColor} />}
+        <IconButton
+          variant="primary"
+          size="s"
+          icon="Minus"
+          onClick={handleMinus}
+          label="Remove"
+          disabled={disabled}
+        ></IconButton>
         <input
           id={name}
-          type="text"
+          type="number"
           disabled={disabled}
           placeholder={placeholder}
-          readOnly={readOnly}
+          readOnly={true}
           defaultValue={defaultValue}
-          ref={(e) => {
-            ref(e);
-            textInputRef.current = e;
+          min={min}
+          max={max}
+          step={step}
+          ref={(element) => {
+            ref(element);
+            numberInputRef.current = element;
           }}
           {...rest}
         />
+        <IconButton
+          variant="primary"
+          size="s"
+          icon="Plus"
+          onClick={handlePlus}
+          label="Add"
+          disabled={disabled}
+        ></IconButton>
       </div>
+
       {errors?.[name] && (
         <ErrorMessage>{errors[name]?.message?.toString()}</ErrorMessage>
       )}

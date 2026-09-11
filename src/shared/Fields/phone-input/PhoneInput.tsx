@@ -8,8 +8,9 @@ import { Icon } from "@/shared/Icons/Icon";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { useTheme } from "@/hooks/useTheme";
 
-import "./PhoneInput.scss";
+import "./../Fields.scss";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+import { requiredErrorMessage } from "@/utils/errors";
 
 interface PhoneInputProps {
   name: string;
@@ -47,15 +48,15 @@ export const PhoneNumberInput = ({
       name={name}
       control={control}
       rules={{
-        required: required ? "This field is required" : false,
+        required: required ? requiredErrorMessage : false,
       }}
       render={({ field, fieldState }) => (
         <div
           className={`phone-input ${
-            fieldState.error ? "phone-input--error" : ""
-          } ${disabled ? "phone-input--disabled" : ""}`}
+            fieldState.error ? "field-input--error" : ""
+          } ${disabled ? "field-input--disabled" : ""}`}
         >
-          <label className="phone-input__label" htmlFor={name}>
+          <label className="field-input__label" htmlFor={name}>
             {required ? `${label} *` : label}
 
             {info && (
@@ -74,7 +75,7 @@ export const PhoneNumberInput = ({
             )}
           </label>
 
-          <div className="phone-input__wrapper">
+          <div className="field-input__wrapper">
             {svg && <Icon name={svg || "User"} size={16} color={iconColor} />}
             <PhoneInput
               id={name}

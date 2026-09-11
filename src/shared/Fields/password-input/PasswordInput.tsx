@@ -1,11 +1,13 @@
 import { useRef, useState, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./PasswordInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 
 interface PasswordInputProps {
   name: string;
@@ -54,27 +56,19 @@ export const PasswordInput = ({
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const { ref, ...rest } = register(name, {
-    required,
+    required: required ? requiredErrorMessage : false,
     validate,
     onChange,
     onBlur,
   });
 
-  const iconColor = errors[name]
-    ? themeState.errorColor
-    : disabled
-      ? themeState.grayColor
-      : textInputRef.current === document.activeElement
-        ? themeState.primaryColor
-        : themeState.blackColor;
-
   const hasError = !!errors[name] || !!error;
 
   return (
     <div
-      className={`text-input ${disabled ? "text-input--disabled" : ""} ${hasError ? "text-input--error" : ""}`}
+      className={`field-input ${disabled ? "field-input--disabled" : ""} ${hasError ? "field-input--error" : ""}`}
     >
-      <label className="text-input__label" htmlFor={name}>
+      <label className="field-input__label" htmlFor={name}>
         {required ? `${label} * ` : label}
         {info && (
           <IconTooltip
@@ -92,9 +86,9 @@ export const PasswordInput = ({
         )}
       </label>
       <div
-        className={`text-input__wrapper  ${errors?.[name] ? "text-input__wrapper--error" : ""}`}
+        className={`field-input__wrapper  ${errors?.[name] ? "field-input__wrapper--error" : ""}`}
       >
-        {svg && <Icon name={svg || "Key"} size={16} color={iconColor} />}
+        {svg && <Icon name={svg || "Key"} size={16} color="black" />}
         <input
           id={name}
           type={showPassword ? "text" : "password"}
@@ -113,7 +107,7 @@ export const PasswordInput = ({
           <Icon
             name={showPassword ? "Eye" : "EyeSlash"}
             size={18}
-            color={iconColor}
+            color="black"
           />
         </div>
       </div>

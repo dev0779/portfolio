@@ -2,10 +2,11 @@ import { useRef, type JSX } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import SignatureCanvas from "react-signature-canvas";
 
-import "./SignatureInput.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { IconButton } from "@/shared/Buttons/IconButton/IconButton";
 
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 interface SignatureInputProps {
   name: string;
   label: string;
@@ -31,16 +32,15 @@ export const SignatureInput = ({
     <Controller
       name={name}
       control={control}
-      rules={{ required }}
+      rules={{ required: required ? requiredErrorMessage : false }}
       render={({ field, fieldState }) => (
-        <div className="signature-input">
-          <label className="signature-input__label" htmlFor={name}>
+        <div className="field-input">
+          <label className="field-input__label" htmlFor={name}>
             {required ? `${label} *` : label}
           </label>
 
-          <div className="signature-input__wrapper">
-            <div className="signature-input__actions">
-    
+          <div className="field-input__wrapper">
+            <div className="field-input__actions">
               <IconButton
                 label="clear signature"
                 size="xs"
@@ -53,7 +53,7 @@ export const SignatureInput = ({
                   onBlur?.("");
                 }}
               />
-{/*               <button
+              {/*               <button
                 type="button"
                 className="signature-input__clear"
                 onClick={() => {
@@ -69,7 +69,7 @@ export const SignatureInput = ({
             <SignatureCanvas
               ref={signatureRef}
               canvasProps={{
-                className: "signature-input__canvas",
+                className: "field-input__canvas",
                 style: {
                   height: `${height}px`,
                 },

@@ -2,20 +2,18 @@
   width: 460px;
   min-height: 460px;
   padding: 0.3rem;
-/*   border: 1px solid red;
+  /*   border: 1px solid red;
   border-radius: 10px; */
   cursor: pointer;
 
   @media (max-width: 600px) {
     width: calc(100vw - 160px);
     min-height: 380px;
-  
-}
+  }
 
   &__wrapper {
     transition: transform 0.3s ease-out;
   }
-
 
   &:hover {
     .productCard__wrapper {
@@ -38,7 +36,7 @@
   }
 
   &__title {
-    font-size: clamp(80px, 25vw, 150px);
+    font-size: 130px;
     border-bottom: 1px solid white;
   }
 

@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState, type JSX } from "react";
-
 import { Controller, useFormContext } from "react-hook-form";
 import { format as formatDateDisplay } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
-import "./DateInput.scss";
-
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 
 interface DateInputProps {
   name: string;
@@ -82,7 +82,7 @@ export const DateInput = ({
     <Controller
       name={name}
       control={control}
-      rules={{ required }}
+      rules={{ required: required ? requiredErrorMessage : false }}
       render={({ field, fieldState }) => {
         const selectedDate = field.value
           ? new Date(`${field.value}T00:00:00`)
@@ -96,8 +96,8 @@ export const DateInput = ({
           : "";
 
         return (
-          <div className="date-input">
-            <label className="date-input__label" htmlFor={name}>
+          <div className="field-input">
+            <label className="field-input__label" htmlFor={name}>
               {required ? `${label} * ` : label}
 
               {info && (
@@ -116,7 +116,7 @@ export const DateInput = ({
               )}
             </label>
 
-            <div className="date-input__wrapper" ref={wrapperRef}>
+            <div className="field-input__wrapper" ref={wrapperRef}>
               {/* DATE FIELD */}
 
               <input
@@ -133,7 +133,7 @@ export const DateInput = ({
                 onClick={() => setIsOpen((current) => !current)}
               />
               <div
-                className="date-input__calendar"
+                className="field-input__calendar"
                 onClick={() => setIsOpen((current) => !current)}
               >
                 <Icon name="Calendar" size={18} color={themeState.blackColor} />
@@ -141,7 +141,7 @@ export const DateInput = ({
 
               {/* DATE PICKER */}
               {isOpen && (
-                <div className="date-input__picker">
+                <div className="field-input__picker">
                   <DayPicker
                     mode="single"
                     captionLayout="dropdown"

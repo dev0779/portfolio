@@ -1,12 +1,13 @@
 import { useRef, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./EmailInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 interface EmailInputProps {
   name: string;
   label: string;
@@ -53,7 +54,7 @@ export const EmailInput = ({
   const emailInputRef = useRef<HTMLInputElement | null>(null);
 
   const { ref, ...rest } = register(name, {
-    required,
+    required: required ? requiredErrorMessage : false,
     validate: (value, formValues) => {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -71,26 +72,18 @@ export const EmailInput = ({
     onBlur,
   });
 
-  const iconColor = errors[name]
-    ? themeState.errorColor
-    : disabled
-      ? themeState.grayColor
-      : emailInputRef.current === document.activeElement
-        ? themeState.primaryColor
-        : themeState.blackColor;
-
   const hasError = !!errors[name] || !!error;
 
   return (
     <div
-      className={`email-input ${
-        disabled ? "email-input--disabled" : ""
-      } ${hasError ? "email-input--error" : ""}`}
+      className={`field-input ${
+        disabled ? "field-input--disabled" : ""
+      } ${hasError ? "field-input--error" : ""}`}
     >
-      <label className="email-input__label" htmlFor={name}>
+      <label className="field-input__label" htmlFor={name}>
         {label}
 
-        {required && <span className="email-input__required">*</span>}
+        {required && <span className="field-input__required">*</span>}
 
         {info && (
           <IconTooltip
@@ -109,8 +102,8 @@ export const EmailInput = ({
       </label>
 
       <div
-        className={`email-input__wrapper ${
-          errors?.[name] ? "email-input__wrapper--error" : ""
+        className={`field-input__wrapper ${
+          errors?.[name] ? "field-input__wrapper--error" : ""
         }`}
       >
         {svg && <Icon name={svg} size={16} color={iconColor} />}

@@ -1,12 +1,13 @@
 import { useRef, type JSX } from "react";
 import { useFormContext, type RegisterOptions } from "react-hook-form";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
-import "./NumberInput.scss";
 import * as PhosphorIcons from "phosphor-react";
 import { Icon } from "../../Icons/Icon";
 import { useTheme } from "@/hooks";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
 
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 interface NumberInputProps {
   name: string;
   label: string;
@@ -59,7 +60,7 @@ export const NumberInput = ({
   const numberInputRef = useRef<HTMLInputElement | null>(null);
 
   const { ref, ...rest } = register(name, {
-    required,
+    required: required ? requiredErrorMessage : false,
     validate,
     onChange,
     onBlur,
@@ -78,14 +79,14 @@ export const NumberInput = ({
 
   return (
     <div
-      className={`number-input ${
-        disabled ? "number-input--disabled" : ""
-      } ${hasError ? "number-input--error" : ""}`}
+      className={`field-input ${
+        disabled ? "field-input--disabled" : ""
+      } ${hasError ? "field-input--error" : ""}`}
     >
-      <label className="number-input__label" htmlFor={name}>
+      <label className="field-input__label" htmlFor={name}>
         {label}
 
-        {required && <span className="number-input__required">*</span>}
+        {required && <span className="field-input__required">*</span>}
 
         {info && (
           <IconTooltip
@@ -104,8 +105,8 @@ export const NumberInput = ({
       </label>
 
       <div
-        className={`number-input__wrapper ${
-          errors?.[name] ? "number-input__wrapper--error" : ""
+        className={`field-input__wrapper ${
+          errors?.[name] ? "field-input__wrapper--error" : ""
         }`}
       >
         {svg && <Icon name={svg} size={16} color={iconColor} />}

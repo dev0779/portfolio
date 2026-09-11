@@ -12,3 +12,4 @@ export { PasswordInput } from "./password-input/PasswordInput";
 export { DateInput } from "./date-input/DateInput";
 export { SignatureInput } from "./signature-input/SignatureInput";
 export { MultiSelect } from "./selectors/MultiSelect";
+export { NumberStepper } from "./number-stepper/NumberStepper";

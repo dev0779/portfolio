@@ -6,9 +6,11 @@ import {
 } from "react-hook-form";
 
 import { Checkbox } from "../checkbox/Checkbox";
-import "./CheckBoxGroupButtons.scss";
 import { ErrorMessage } from "../fields-styled/Fields.styled";
 import { IconTooltip } from "@/shared/Tooltip/IconTooltip/IconTooltip";
+
+import "./../Fields.scss";
+import { requiredErrorMessage } from "@/utils/errors";
 
 export type CheckboxGroupValue = string | number;
 
@@ -63,7 +65,7 @@ export const CheckboxGroup = <
       rules={{
         validate: required
           ? (values) =>
-              values?.length > 0 || "Please select at least one option"
+              values?.length > 0 || requiredErrorMessage
           : undefined,
       }}
       render={({ field, fieldState }) => {
@@ -80,17 +82,15 @@ export const CheckboxGroup = <
 
         return (
           <div
-            className={`checkbox-group ${
-              fieldState.error ? "checkbox-group--error" : ""
-            } ${disabled ? "checkbox-group--disabled" : ""}`}
+            className={`field-input ${
+              fieldState.error ? "field-input--error" : ""
+            } ${disabled ? "field-input--disabled" : ""}`}
           >
             {label && (
-              <div className="checkbox-group__label">
+              <div className="field-input__label">
                 {label}
 
-                {required && (
-                  <span className="checkbox-group__required">*</span>
-                )}
+                {required && <span className="field-input__required">*</span>}
 
                 {info && (
                   <IconTooltip
@@ -109,32 +109,33 @@ export const CheckboxGroup = <
               </div>
             )}
 
-            <div
-              className={`checkbox-group__wrapper checkbox-group__wrapper--${direction}`}
-            >
-              {options.map((option) => {
-                const isChecked = selectedValues.includes(option.value);
+            <div className="field-input__radiowrapper">
+              <div
+                className={`field-input__group field-input__group--${direction}`}
+              >
+                {options.map((option) => {
+                  const isChecked = selectedValues.includes(option.value);
 
-                return (
-                  <Checkbox
-                    key={String(option.value)}
-                    name={`${name}-${String(option.value)}`}
-                    label={option.label}
-                    checked={isChecked}
-                    disabled={disabled || option.disabled}
-                    info={option.info}
-                    onChange={(checked) => {
-                      handleChange(option.value, checked);
-                    }}
-                    onBlur={() => {
-                      field.onBlur();
-                      onBlur?.(selectedValues);
-                    }}
-                  />
-                );
-              })}
+                  return (
+                    <Checkbox
+                      key={String(option.value)}
+                      name={`${name}-${String(option.value)}`}
+                      label={option.label}
+                      checked={isChecked}
+                      disabled={disabled || option.disabled}
+                      info={option.info}
+                      onChange={(checked) => {
+                        handleChange(option.value, checked);
+                      }}
+                      onBlur={() => {
+                        field.onBlur();
+                        onBlur?.(selectedValues);
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
-
             {fieldState.error && (
               <ErrorMessage>{fieldState.error.message}</ErrorMessage>
             )}
