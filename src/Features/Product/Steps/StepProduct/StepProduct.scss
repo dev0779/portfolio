@@ -1,8 +1,24 @@
 .stepProduct {
-   width: 100%;
-  min-height: 700px;
+  width: 100%;
+  min-height: 650px;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-y: auto;
+
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem;
+    //border-bottom: 1px solid lightblue;
+  }
+
+  &__wrapper {
+    padding: 0.5rem;
+  }
+  &__inner {
+    //border: 1px solid lightblue;
+    border-radius: 10px;
+  }
 }

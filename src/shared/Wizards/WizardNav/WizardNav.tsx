@@ -19,7 +19,7 @@ export interface WizardItem {
 interface WizardNavProps {
   steps?: WizardItem[];
   activeIndex?: number;
-  onClick?: (step: WizardItem) => void;
+  onClick?: (index: number) => void;
 }
 
 export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
@@ -36,7 +36,7 @@ export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
                   index > activeIndex && "wizardNav--completed",
                 )}
                 key={index}
-                onClick={() => onClick?.(step)}
+                onClick={() => onClick?.(index)}
                 disabled={step.disabled}
               >
                 {step.icon && (

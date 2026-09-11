@@ -1,79 +1,132 @@
-export const productsData = {
+export interface Product {
+  id: number;
+  title: string;
+  name: string;
+  price: number;
+  description: string;
+  features: string[];
+  type: "private" | "company";
+}
+
+export const productsData: {
+  private: Product[];
+  company: Product[];
+} = {
   private: [
     {
       id: 1,
       title: "ESS",
       name: "Essential",
-      price: 4.98,
+      price: 49,
       description: "A simple package for getting started.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"private"
+      features: [
+        "1 user",
+        "10 GB storage",
+        "Basic analytics",
+        "1 integration",
+      ],
+      type: "private",
     },
     {
       id: 2,
-      name: "Essential Plus",
       title: "ESS+",
-      price: 59,
+      name: "Essential Plus",
+      price: 79,
       description: "More flexibility and features for personal use.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"private"
+      features: [
+        "3 users",
+        "50 GB storage",
+        "Basic analytics",
+        "2 integrations",
+      ],
+      type: "private",
     },
     {
       id: 3,
+      title: "PRO",
       name: "Professional",
-      title: "Pro",
-      price: 100,
+      price: 129,
       description: "A complete solution for more demanding needs.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"private"
+      features: [
+        "10 users",
+        "250 GB storage",
+        "Advanced analytics",
+        "5 integrations",
+      ],
+      type: "private",
     },
     {
       id: 4,
+      title: "PRIME",
       name: "Premium",
-      title: "Prime",
-      price: 500,
+      price: 199,
       description: "The complete premium experience.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type: "private"
+      features: [
+        "Unlimited users",
+        "Unlimited storage",
+        "Advanced analytics",
+        "Unlimited integrations",
+      ],
+      type: "private",
     },
   ],
 
   company: [
     {
       id: 1,
+      title: "CORE",
       name: "Starter",
-      title: "Core",
-      price: 29,
+      price: 99,
       description: "A straightforward solution for small businesses.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"company"
+      features: [
+        "5 users",
+        "50 GB storage",
+        "Basic analytics",
+        "2 integrations",
+      ],
+      type: "company",
     },
     {
       id: 2,
+      title: "SCALE",
       name: "Business",
-      title: "Scale",
-      price: 99,
+      price: 199,
       description: "More capabilities for growing teams.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"company"
+      features: [
+        "15 users",
+        "250 GB storage",
+        "Advanced analytics",
+        "5 integrations",
+      ],
+      type: "company",
     },
     {
       id: 3,
+      title: "PRO",
       name: "Enterprise",
-      title: "Pro",
-      price: 249,
+      price: 399,
       description: "Advanced features for larger organizations.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"company"
+      features: [
+        "50 users",
+        "1 TB storage",
+        "Advanced analytics",
+        "10 integrations",
+      ],
+      type: "company",
     },
     {
       id: 4,
+      title: "ELITE",
       name: "Corporate",
-      title: "Elite",
-      price: 499,
+      price: 599,
       description: "A complete solution for large-scale business needs.",
-      features: ["feature 1", "feature 2", "feature 3"],
-      type:"company"
+      features: [
+        "Unlimited users",
+        "Unlimited storage",
+        "Advanced analytics",
+        "Unlimited integrations",
+      ],
+      type: "company",
     },
   ],
 };

@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding-left: var(--container-gutter);
+  padding-right: var(--container-gutter);
+
+  box-sizing: border-box;
+}

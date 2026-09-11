@@ -1,16 +1,17 @@
 import React, { type PropsWithChildren } from "react";
 import { useTheme } from "@/hooks";
 
-export const Container = ({ children }: PropsWithChildren) => {
+import "./Row.scss";
+
+export const Row = ({ children }: PropsWithChildren) => {
   const { gridConfig } = useTheme();
 
   return (
     <div
-      className="mx-auto"
+      className="row"
       style={{
-        paddingLeft: gridConfig.gutter,
-        paddingRight: gridConfig.gutter,
-        maxWidth: "100%",
+        marginLeft: `-${gridConfig.gutter}`,
+        marginRight: `-${gridConfig.gutter}`,
       }}
     >
       {children}

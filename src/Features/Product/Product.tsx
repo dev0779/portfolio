@@ -1,17 +1,25 @@
 import { WizardNav } from "@/shared/Wizards/WizardNav/WizardNav";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Product.scss";
 import { productSteps } from "./productSteps";
-import { Container } from "@/theme/layout/Container";
+import { Container } from "@/theme/layout/Container/Container";
 import { FormProvider, useForm } from "react-hook-form";
 import { MainButton } from "@/shared/Buttons";
-import { Col } from "@/theme/layout/Col";
-import { Row } from "@/theme/layout/Row";
+import { Col } from "@/theme/layout/Col/Col";
+import { Row } from "@/theme/layout/Row/Row";
+import { Switch } from "@/shared/Switch/Switch";
+import { ProductContext } from "@/context/UserContext/ProductContext";
 
 interface ProductForm {}
 
 export const Product = () => {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const {
+    selectedCustomerType,
+    setSelectedCustomerType,
+    currentIndex,
+    setCurrentIndex,
+  } = useContext(ProductContext);
+
   const form = useForm<ProductForm>({
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -45,7 +53,11 @@ export const Product = () => {
       <FormProvider {...form}>
         <div className="product__nav">
           <div className="product__nav__wrapper">
-            <WizardNav steps={productSteps} activeIndex={currentIndex} />
+            <WizardNav
+              steps={productSteps}
+              activeIndex={currentIndex}
+              onClick={(index) => setCurrentIndex(index)}
+            />
           </div>
         </div>
         <Container>

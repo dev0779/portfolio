@@ -19,7 +19,7 @@ export const productSteps: WizardItem[] = [
     info: " extra info",
     element: <StepProduct />,
   },
-  {
+    {
     id: 2,
     label: "2",
     name: "",
@@ -28,7 +28,7 @@ export const productSteps: WizardItem[] = [
     title: "find your product",
     description: "some description",
     info: " extra info",
-    element: <StepCustomer />,
+    element: <StepOptions />,
   },
   {
     id: 3,
@@ -39,7 +39,7 @@ export const productSteps: WizardItem[] = [
     title: "find your product",
     description: "some description",
     info: " extra info",
-    element: <StepOptions />,
+    element: <StepCustomer />,
   },
   {
     id: 4,

@@ -1,0 +1,29 @@
+.package-comparison-table {
+  width: 100%;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+
+  thead th {
+    font-weight: 600;
+  }
+
+  tbody th {
+    font-weight: 500;
+  }
+}
