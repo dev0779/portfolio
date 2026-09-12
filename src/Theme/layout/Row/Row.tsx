@@ -12,6 +12,8 @@ export const Row = ({ children }: PropsWithChildren) => {
       style={{
         marginLeft: `-${gridConfig.gutter}`,
         marginRight: `-${gridConfig.gutter}`,
+        marginTop: gridConfig.gutter,
+        marginBottom: gridConfig.gutter
       }}
     >
       {children}

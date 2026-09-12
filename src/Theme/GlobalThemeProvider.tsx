@@ -19,7 +19,7 @@ const gridConfig = {
     xl: 1280,
   },
   columns: 12,
-  gutter: "1rem",
+  gutter: "1.5rem",
 };
 
 const defaultContext: ThemeContextType = {
