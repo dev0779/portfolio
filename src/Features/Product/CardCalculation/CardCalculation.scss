@@ -1,0 +1,37 @@
+.cardCalculator {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  font-size: 12px;
+  width: 300px;
+  max-width: 100%;
+
+  &__details {
+    padding: 0.5rem 0.5rem;
+    width: 100%;
+
+    .card {
+      width: 100%;
+      &__description {
+        font-weight: 700;
+      }
+
+      &__features {
+        display: flex;
+        flex-direction: column;
+        padding:0.5rem 0;
+
+        &__feature {
+          display: flex;
+          align-items: center;
+          span {
+            padding-left: 0.3rem;
+          }
+        }
+      }
+    }
+  }
+}

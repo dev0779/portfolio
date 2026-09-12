@@ -36,7 +36,7 @@
   }
 
   &__title {
-    font-size: 130px;
+    font-size: 150px;
     border-bottom: 1px solid white;
   }
 
@@ -76,6 +76,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 0.5rem 0;
+
     &__feature {
       display: flex;
       align-items: center;
@@ -84,5 +86,60 @@
         font-size: clamp(13px, 3vw, 14px);
       }
     }
+  }
+}
+
+.compactCard {
+  width: 300px;
+  padding: 0.3rem;
+
+
+  &__hero {
+    position: relative;
+    background-color: red;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+  }
+
+  &__title {
+    font-size: 100px;
+    border-bottom: 1px solid white;
+  }
+  &__heroInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+}
+
+.emptyCard {
+  width: 300px;
+  padding: 0.3rem;
+  cursor: pointer;
+
+  @media (max-width: 600px) {
+    width: calc(100vw - 160px);
+  }
+
+  &__hero {
+    position: relative;
+    background-color: var(--color-gray-light);
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+  }
+
+  &__title {
+    font-size: 100px;
+    border-bottom: 1px solid white;
+    padding:0.5rem
+  }
+  &__heroInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
   }
 }

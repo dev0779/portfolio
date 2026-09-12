@@ -43,7 +43,7 @@ export const Projects = () => {
           />
         </div>
       </div>
-      <div>
+      <div className="projects__inner">
         <Outlet />
       </div>
     </PageContainer>

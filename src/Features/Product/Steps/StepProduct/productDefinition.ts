@@ -1,12 +1,5 @@
-export interface Product {
-  id: number;
-  title: string;
-  name: string;
-  price: number;
-  description: string;
-  features: string[];
-  type: "private" | "company";
-}
+import type { Product } from "@/context/UserContext/ProductContext";
+
 
 export const productsData: {
   private: Product[];
@@ -15,21 +8,16 @@ export const productsData: {
   private: [
     {
       id: 1,
-      title: "ESS",
+      title: "BASE",
       name: "Essential",
       price: 49,
       description: "A simple package for getting started.",
-      features: [
-        "1 user",
-        "10 GB storage",
-        "Basic analytics",
-        "1 integration",
-      ],
+      features: ["1 user", "10 GB storage", "Basic analytics", "1 integration"],
       type: "private",
     },
     {
       id: 2,
-      title: "ESS+",
+      title: "PLUS",
       name: "Essential Plus",
       price: 79,
       description: "More flexibility and features for personal use.",
@@ -57,7 +45,7 @@ export const productsData: {
     },
     {
       id: 4,
-      title: "PRIME",
+      title: "PRO+",
       name: "Premium",
       price: 199,
       description: "The complete premium experience.",
@@ -88,7 +76,7 @@ export const productsData: {
     },
     {
       id: 2,
-      title: "SCALE",
+      title: "TEAM",
       name: "Business",
       price: 199,
       description: "More capabilities for growing teams.",
@@ -102,7 +90,7 @@ export const productsData: {
     },
     {
       id: 3,
-      title: "PRO",
+      title: "EDGE",
       name: "Enterprise",
       price: 399,
       description: "Advanced features for larger organizations.",
@@ -116,7 +104,7 @@ export const productsData: {
     },
     {
       id: 4,
-      title: "ELITE",
+      title: "APEX",
       name: "Corporate",
       price: 599,
       description: "A complete solution for large-scale business needs.",

@@ -3,6 +3,7 @@ import clsx from "clsx";
 import React from "react";
 
 import "./WizardNav.scss";
+import { Tooltip } from "@/shared/Tooltip";
 
 export interface WizardItem {
   id?: number;
@@ -29,24 +30,25 @@ export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
         {steps.map((step: WizardItem, index) => {
           return (
             <React.Fragment key={step.id ?? index}>
-              <button
-                className={clsx(
-                  "wizardNav__button",
-                  index === activeIndex && "wizardNav--active",
-                  index > activeIndex && "wizardNav--completed",
-                )}
-                key={index}
-                onClick={() => onClick?.(index)}
-                disabled={step.disabled}
-              >
-                {step.icon && (
-                  <Icon
-                    name={step.icon}
-                    color={index === activeIndex ? "white" : "black"}
-                  />
-                )}
-                {step.label}
-              </button>
+              <Tooltip content={step.label} side="bottom">
+                <button
+                  className={clsx(
+                    "wizardNav__button",
+                    index === activeIndex && "wizardNav--active",
+                    index > activeIndex && "wizardNav--completed",
+                  )}
+                  key={index}
+                  onClick={() => onClick?.(index)}
+                  disabled={step.disabled}
+                >
+                  {step.icon && (
+                    <Icon
+                      name={step.icon}
+                      color={index === activeIndex ? "white" : "black"}
+                    />
+                  )}
+                </button>
+              </Tooltip>
             </React.Fragment>
           );
         })}

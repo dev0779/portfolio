@@ -14,7 +14,6 @@ interface IconButtonProps {
   iconColor?: string;
   size?: "xs" | "s" | "m" | "l";
   iconWeight?: "regular" | "bold" | "fill" | "thin" | "light";
-  type?: "primary" | "secondary";
   arrow?: boolean;
   disabled?: boolean;
   children?: React.ReactNode;
@@ -24,6 +23,7 @@ interface IconButtonProps {
   popoverSideOffset?: number;
   popoverColor?: string;
   className?: string;
+  type?: "button" | "submit" | "reset";
 }
 
 const SIZES = {
@@ -61,6 +61,7 @@ export const IconButton = ({
   popoverSideOffset = 5,
   popoverColor = "white",
   className,
+  type = "button",
 }: IconButtonProps) => {
   const buttonSize = SIZES[size];
 
@@ -79,7 +80,7 @@ export const IconButton = ({
             onClick={onClick}
             disabled={disabled}
             style={buttonSize}
-            type="button"
+            type={type}
           >
             <Icon
               name={icon as React.ComponentProps<typeof Icon>["name"]}
@@ -117,7 +118,7 @@ export const IconButton = ({
           onClick={disabled ? undefined : onClick}
           disabled={disabled}
           style={buttonSize}
-          type="button"
+          type={type}
         >
           <Icon
             name={icon as React.ComponentProps<typeof Icon>["name"]}

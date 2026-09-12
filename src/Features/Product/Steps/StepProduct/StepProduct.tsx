@@ -1,13 +1,14 @@
 import { Carousel } from "@/shared/Carousel/Carousel";
 import { ProductCard } from "@/shared/ProductCard/ProductCard";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { productsData } from "./productDefinition";
 import { ProductContext } from "@/context/UserContext/ProductContext";
 
 import "./StepProduct.scss";
 import { PackageTable } from "@/shared/PackageTable/PackgeTable";
-import { MainButton } from "@/shared/Buttons";
+import { IconButton } from "@/shared/Buttons";
 import { Switch } from "@/shared/Switch/Switch";
+import { Dialog } from "@/shared/Dialog/Dialog";
 
 export const StepProduct = () => {
   const {
@@ -25,8 +26,6 @@ export const StepProduct = () => {
   const handleProductSelection = (product) => {
     setSelectedProduct(product);
     setCurrentIndex(1);
-
-    console.log("product", product);
   };
 
   const handleCustomerType = (checked) => {
@@ -43,10 +42,11 @@ export const StepProduct = () => {
     <div className="stepProduct__wrapper">
       <div className="stepProduct__inner">
         <div className="stepProduct__nav">
-          <MainButton
-            variant={viewTable ? "secondary" : "primary"}
+          <IconButton
+            variant="secondary"
+            icon="Table"
             size="s"
-            label={viewTable ? "view card" : "view table"}
+            label="View package options"
             onClick={() => setViewTable(!viewTable)}
           />
           <Switch
@@ -63,6 +63,25 @@ export const StepProduct = () => {
             ))}
           </Carousel>
         </div>
+        <Dialog
+          open={viewTable}
+          onOpenChange={setViewTable}
+          width="700px"
+          height="400px"
+        >
+          <div className="stepProduct__modal">
+            <div className="stepProduct__modal__table">
+              <PackageTable products={products} />
+            </div>
+            {/*             <div className="stepProduct__modal__nav">
+              <Switch
+                labels={["private", "company"]}
+                checked={selectedCustomerType === "company"}
+                onCheckedChange={(checked) => handleCustomerType(checked)}
+              />
+            </div> */}
+          </div>
+        </Dialog>
       </div>
     </div>
   );

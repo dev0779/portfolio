@@ -1,0 +1,16 @@
+.number-stepper {
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+    transition: border-color 0.2s ease;
+    min-height: 32px;
+    background-color: white;
+    width:100px;
+  }
+  &__value {
+  }
+}
