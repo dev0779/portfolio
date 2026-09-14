@@ -8,13 +8,17 @@ import { MainButton } from "@/shared/Buttons";
 
 import { ProductContext } from "@/context/UserContext/ProductContext";
 import { CardCalculation } from "./CardCalculation/CardCalculation";
+import { WizardInfo } from "@/shared/Wizards/WizardInfo/WizardInfo";
 
-interface ProductForm {}
+interface ProductForm {
+  integrations: string[];
+}
 
 export const Product = () => {
   const { currentIndex, setCurrentIndex } = useContext(ProductContext);
 
   const form = useForm<ProductForm>({
+    defaultValues: { integrations: [] },
     mode: "onSubmit",
     reValidateMode: "onChange",
     shouldUnregister: false,
@@ -66,9 +70,9 @@ export const Product = () => {
             }`}
           >
             {!isFirstStep && (
-              <aside className="product__aside">
-                <span>to do</span>
-              </aside>
+              <div className="product__aside">
+                <WizardInfo step={productSteps[currentIndex]} />
+              </div>
             )}
 
             <div className="product__form">

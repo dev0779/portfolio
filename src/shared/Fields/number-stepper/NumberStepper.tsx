@@ -29,6 +29,7 @@ interface NumberInputProps {
   svg?: keyof typeof PhosphorIcons;
   interactive?: boolean;
   tooltipChildren?: React.ReactElement;
+  onChange?: (value) => void;
 }
 
 export const NumberStepper = ({
@@ -44,6 +45,7 @@ export const NumberStepper = ({
   error,
   interactive,
   tooltipChildren,
+  onChange,
 }: NumberInputProps): JSX.Element => {
   const {
     setValue,
@@ -54,29 +56,25 @@ export const NumberStepper = ({
   const value = watch(name) ?? min ?? 0;
 
   const handleMinus = () => {
-    const nextValue = Math.max(
-      min ?? 0,
-      Number(value) - (step ?? 1),
-    );
+    const nextValue = Math.max(min ?? 0, Number(value) - (step ?? 1));
 
     setValue(name, nextValue, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
+    onChange?.(nextValue);
   };
 
   const handlePlus = () => {
-    const nextValue = Math.min(
-      max ?? Infinity,
-      Number(value) + (step ?? 1),
-    );
+    const nextValue = Math.min(max ?? Infinity, Number(value) + (step ?? 1));
 
     setValue(name, nextValue, {
       shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
+    onChange?.(nextValue);
   };
 
   const hasError = !!errors[name] || !!error;
@@ -90,9 +88,7 @@ export const NumberStepper = ({
       <label className="field-input__label" htmlFor={name}>
         {label}
 
-        {required && (
-          <span className="field-input__required">*</span>
-        )}
+        {required && <span className="field-input__required">*</span>}
 
         {info && (
           <IconTooltip
@@ -125,11 +121,7 @@ export const NumberStepper = ({
           disabled={disabled || value <= (min ?? 0)}
         />
 
-        <span
-          id={name}
-          className="number-stepper__value"
-          aria-live="polite"
-        >
+        <span id={name} className="number-stepper__value" aria-live="polite">
           {value}
         </span>
 
@@ -145,9 +137,7 @@ export const NumberStepper = ({
       </div>
 
       {errors?.[name] && (
-        <ErrorMessage>
-          {errors[name]?.message?.toString()}
-        </ErrorMessage>
+        <ErrorMessage>{errors[name]?.message?.toString()}</ErrorMessage>
       )}
     </div>
   );

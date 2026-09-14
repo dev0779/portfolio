@@ -4,21 +4,10 @@ import React from "react";
 
 import "./WizardNav.scss";
 import { Tooltip } from "@/shared/Tooltip";
-
-export interface WizardItem {
-  id?: number;
-  label?: string;
-  name?: string;
-  disabled?: boolean;
-  icon?: React.ComponentProps<typeof Icon>["name"];
-  title?: string;
-  description?: string;
-  info?: string;
-  element?: React.ReactNode;
-}
+import type { StepOption } from "@/context/UserContext/ProductContext";
 
 interface WizardNavProps {
-  steps?: WizardItem[];
+  steps?: StepOption[];
   activeIndex?: number;
   onClick?: (index: number) => void;
 }
@@ -27,7 +16,7 @@ export const WizardNav = ({ steps, activeIndex, onClick }: WizardNavProps) => {
   return (
     <div className="wizardNav">
       <div className="wizardNav__wrapper ">
-        {steps.map((step: WizardItem, index) => {
+        {steps.map((step: StepOption, index) => {
           return (
             <React.Fragment key={step.id ?? index}>
               <Tooltip content={step.label} side="bottom">

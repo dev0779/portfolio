@@ -20,9 +20,13 @@
 
   &__layout {
     display: grid;
-    grid-template-columns: 2fr 6fr 4fr;
+    grid-template-columns: 3fr 6fr 3fr;
     align-items: start;
     width: 100%;
+
+    @media (max-width: 1280px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   &__layout--full {
@@ -45,11 +49,6 @@
     box-sizing: border-box;
   }
 }
-
-
-
-
-
 
 /* .product {
   color: black;

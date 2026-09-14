@@ -34,7 +34,7 @@ export const StepPayment = () => {
     <Container>
       <FieldSet title="Billing Address">
         <Row>
-          <Col xs={12} md={6}>
+          <Col xs={12}>
             <NumberInput name="taxNumber" label="VAT Number / NIF" required />
           </Col>
         </Row>
@@ -43,16 +43,16 @@ export const StepPayment = () => {
           <Col xs={12}>
             <TextInput name="invoiceName" label="Full Name" required />
           </Col>
-          <Col xs={8}>
+          <Col xs={12}  >
             <TextInput name="address" label="address" required />
           </Col>
-          <Col xs={4}>
+          <Col xs={12}  lg={4}>
             <TextInput name="postalCode" label="postalCode" required />
           </Col>
-          <Col xs={6}>
+          <Col xs={12}  lg={4}>
             <TextInput name="city" label="city" required />
           </Col>
-          <Col xs={6}>
+          <Col xs={12} lg={4}>
             <TextInput name="country" label="country" required />
           </Col>
           <Col xs={12}>

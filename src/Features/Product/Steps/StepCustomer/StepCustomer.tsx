@@ -29,7 +29,7 @@ export const StepCustomer = () => {
         {selectedCustomerType === "private" && (
           <>
             <Row>
-              <Col xs={12} md={2} >
+              <Col xs={12} md={4} >
                 <Select
                   name="salutation"
                   label="Salutation"
@@ -113,7 +113,10 @@ export const StepCustomer = () => {
 
       <FieldSet title="Address">
         <Row>
-          <Col xs={12} md={5}>
+          <Col xs={12}>
+          <TextInput name="addressName" label="Name"/>
+          </Col>
+          <Col xs={12}>
             <TextInput name="address" label="Address" />
           </Col>
 
@@ -121,11 +124,11 @@ export const StepCustomer = () => {
             <TextInput name="postalCode" label="Postal Code" />
           </Col>
 
-          <Col xs={12} md={6}>
+          <Col xs={12} md={4}>
             <TextInput name="city" label="City" />
           </Col>
 
-          <Col xs={12} md={6}>
+          <Col xs={12} md={4}>
             <TextInput name="country" label="Country" />
           </Col>
         </Row>

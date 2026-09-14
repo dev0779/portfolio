@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 interface AccordionProps {
   header?: React.ReactNode;
-  name?: string;
+  title?: string;
   isOpen?: boolean;
   color?: string;
   onClick?: () => void;
@@ -19,8 +19,8 @@ interface AccordionProps {
 export const Accordion = ({
   onClick,
   isOpen,
-  name,
-  color = "blue",
+  title,
+  color = "#1560bd",
   header,
   children,
   border = true,
@@ -52,7 +52,7 @@ export const Accordion = ({
         }}
       >
         {header && <div className="accordion__header__label">{header}</div>}
-        {name && <div className="accordion__header__labelName">{name}</div>}
+        {title && <div className="accordion__header__labelName">{title}</div>}
 
         <Icon name={open ? "CaretUp" : "CaretDown"} color={color} />
       </div>

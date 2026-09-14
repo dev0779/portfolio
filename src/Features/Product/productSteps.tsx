@@ -1,4 +1,4 @@
-import type { WizardItem } from "@/shared/Wizards/WizardNav/WizardNav";
+import type { StepOption } from "@/context/UserContext/ProductContext";
 import {
   StepProduct,
   StepCustomer,
@@ -7,7 +7,7 @@ import {
   StepConfirmation,
 } from "./Steps";
 
-export const productSteps: WizardItem[] = [
+export const productSteps: StepOption[] = [
   {
     id: 1,
     label: "Select Product",
@@ -19,7 +19,7 @@ export const productSteps: WizardItem[] = [
     info: " extra info",
     element: <StepProduct />,
   },
-    {
+  {
     id: 2,
     label: "Configure Options",
     name: "",

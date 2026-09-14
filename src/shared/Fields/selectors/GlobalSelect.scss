@@ -69,7 +69,7 @@
         background-color: rgba(109, 195, 245, 0.37);
         color: black;
         border-radius: 8px;
-        padding: 0rem 0.5rem;
+        padding: 0.2rem 0.5rem;
         font-size: 14px;
       }
 
@@ -125,6 +125,11 @@
         color: black;
         padding: 0.3rem;
         border-radius: 8px;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 14px;
+        height: 30px;
       }
     }
   }
